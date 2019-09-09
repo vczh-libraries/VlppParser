@@ -1,7 +1,7 @@
 #ifndef VCZH_PARSERGEN
 #define VCZH_PARSERGEN
 
-#include "../../../Release/Vlpp.h"
+#include "VlppParser.h"
 #ifdef VCZH_MSVC
 #include <windows.h>
 #endif
