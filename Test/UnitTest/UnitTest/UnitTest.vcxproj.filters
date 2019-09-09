@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{a0063a3f-fb90-4cc0-8369-26646e7eadf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Parsing">
+      <UniqueIdentifier>{83da0f6f-4209-45ee-8d25-d1e6c7afc176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Parsing\Json">
+      <UniqueIdentifier>{66b19514-27d4-4814-82b7-159317d9cc17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Parsing\Xml">
+      <UniqueIdentifier>{48f419a9-47af-4651-b758-b0412c577aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Import">
+      <UniqueIdentifier>{c876426a-660d-4cc5-9757-af7d4c120b59}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\TestParsing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\Parsing.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingAnalyzer.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_Closure.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_EPDA.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_GenerateTable.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_JPDA.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_MergeStates.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_NPDA.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingDefinitions.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingDefinitions_CreateParserDefinition.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingLogging.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingState.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingTable.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\ParsingTree.cpp">
+      <Filter>Common\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\Json\ParsingJson.cpp">
+      <Filter>Common\Parsing\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\Json\ParsingJson_Parser.cpp">
+      <Filter>Common\Parsing\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml.cpp">
+      <Filter>Common\Parsing\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml_Parser.cpp">
+      <Filter>Common\Parsing\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\Json\ParsingJson_Ast.cpp">
+      <Filter>Common\Parsing\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml_Ast.cpp">
+      <Filter>Common\Parsing\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Import\VlppReflection.cpp">
+      <Filter>Import</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Import\VlppRegex.cpp">
+      <Filter>Import</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Import\Vlpp.cpp">
+      <Filter>Import</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Import\VlppOS.cpp">
+      <Filter>Import</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Source\Parsing\Parsing.h">
+      <Filter>Common\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\ParsingAnalyzer.h">
+      <Filter>Common\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\ParsingAutomaton.h">
+      <Filter>Common\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\ParsingDefinitions.h">
+      <Filter>Common\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\ParsingState.h">
+      <Filter>Common\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\ParsingTable.h">
+      <Filter>Common\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\ParsingTree.h">
+      <Filter>Common\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\Json\ParsingJson.h">
+      <Filter>Common\Parsing\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\Json\ParsingJson_Parser.h">
+      <Filter>Common\Parsing\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml.h">
+      <Filter>Common\Parsing\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml_Parser.h">
+      <Filter>Common\Parsing\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\Json\ParsingJson_Ast.h">
+      <Filter>Common\Parsing\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml_Ast.h">
+      <Filter>Common\Parsing\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Import\VlppReflection.h">
+      <Filter>Import</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Import\VlppRegex.h">
+      <Filter>Import</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Import\Vlpp.h">
+      <Filter>Import</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Import\VlppOS.h">
+      <Filter>Import</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\Source\Parsing\Json\ParsingJson.parser.txt">
+      <Filter>Common\Parsing\Json</Filter>
+    </Text>
+    <Text Include="..\..\..\Source\Parsing\Xml\ParsingXml.parser.txt">
+      <Filter>Common\Parsing\Xml</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
