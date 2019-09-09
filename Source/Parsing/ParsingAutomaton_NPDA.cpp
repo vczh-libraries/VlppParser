@@ -1,5 +1,4 @@
 #include "ParsingAutomaton.h"
-#include "../Collections/Operation.h"
 
 namespace vl
 {

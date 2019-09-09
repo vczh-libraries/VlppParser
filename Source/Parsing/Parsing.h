@@ -182,8 +182,6 @@ Reflection for AST
 
 #ifndef VCZH_DEBUG_NO_REFLECTION
 
-#include "../Reflection/GuiTypeDescriptorReflection.h"
-
 namespace vl
 {
 	namespace reflection

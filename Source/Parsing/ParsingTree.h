@@ -9,12 +9,7 @@ Classes:
 #ifndef VCZH_PARSING_PARSINGTREE
 #define VCZH_PARSING_PARSINGTREE
 
-#include "../Regex/Regex.h"
-#include "../Stream/Accessor.h"
-#include "../Stream/CompressionStream.h"
-#include "../Stream/CharFormat.h"
-#include "../Collections/OperationCopyFrom.h"
-#include "../Reflection/GuiTypeDescriptor.h"
+#include "../../Import/VlppReflection.h"
 
 namespace vl
 {

@@ -1,6 +1,4 @@
 #include "ParsingAnalyzer.h"
-#include "../Regex/RegexExpression.h"
-#include "../Collections/Operation.h"
 
 namespace vl
 {

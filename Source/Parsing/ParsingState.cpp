@@ -1,5 +1,4 @@
 #include "ParsingState.h"
-#include "../Collections/Operation.h"
 
 #if defined(VCZH_GCC) && defined(__clang__)
 #pragma clang diagnostic push
