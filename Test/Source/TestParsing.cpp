@@ -118,8 +118,18 @@ namespace test
 
 	Ptr<ParsingTreeNode> Parse(Ptr<ParsingTable> table, const WString& input, const WString& name, const WString& rule, vint index, bool showInput, bool autoRecover)
 	{
+		WString inputFirstLine;
+		{
+			StringReader reader(input);
+			inputFirstLine = reader.ReadLine();
+			if (input != inputFirstLine)
+			{
+				inputFirstLine += L" ...";
+			}
+		}
+
 		Ptr<ParsingTreeNode> node;
-		TEST_CASE(L"Parse: " + input)
+		TEST_CASE(L"Parse: " + inputFirstLine)
 		{
 			TokenStreamStatus status = Normal;
 			{
@@ -425,7 +435,7 @@ namespace test
 		for (vint i = 0; i < Count; i++)
 		{
 			Parse(table, input[i], name, rule, i, true, false);
-			TEST_CASE(L"Test serialization: " + WString(input[i]))
+			TEST_CASE(L"Print: " + WString(input[i]))
 			{
 				Ptr<T> node = deserializer(input[i], table, -1);
 				WString text = serializer(node);
