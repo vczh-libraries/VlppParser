@@ -93,7 +93,7 @@ void CombineWriteHeader(
 
 void Combine(
 	const Dictionary<FilePath, WString>& inputFileToOutputFiles,
-	Dictionary<FilePath, LazyList<FilePath>>& scannedFiles,
+	Dictionary<FilePath, LazyList<FilePath>>& cachedFileToIncludes,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs,
 	const List<FilePath>& files,
@@ -111,7 +111,7 @@ void Combine(
 		Group<FilePath, FilePath> depGroup;
 		FOREACH(FilePath, file, files)
 		{
-			FOREACH(FilePath, dep, GetIncludedFiles(file, scannedFiles, conditionOns, conditionOffs))
+			FOREACH(FilePath, dep, GetIncludedFiles(file, cachedFileToIncludes, conditionOns, conditionOffs))
 			{
 				if (files.Contains(dep))
 				{

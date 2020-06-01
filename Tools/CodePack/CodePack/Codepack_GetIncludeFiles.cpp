@@ -6,16 +6,16 @@ Regex regexInstruction(LR"/(^\s*\/\*\s*CodePack:(<name>\w+)\(((<param>[^,)]+)(,\
 
 LazyList<FilePath> GetIncludedFiles(
 	const FilePath& codeFile,
-	Dictionary<FilePath, LazyList<FilePath>>& scannedFiles,
+	Dictionary<FilePath, LazyList<FilePath>>& cachedFileToIncludes,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs
 )
 {
 	{
-		vint index = scannedFiles.Keys().IndexOf(codeFile);
+		vint index = cachedFileToIncludes.Keys().IndexOf(codeFile);
 		if (index != -1)
 		{
-			return scannedFiles.Values()[index];
+			return cachedFileToIncludes.Values()[index];
 		}
 	}
 	Console::SetColor(true, true, false, true);
@@ -98,11 +98,11 @@ LazyList<FilePath> GetIncludedFiles(
 		From(includes)
 			.Concat(From(includes).SelectMany([&](const FilePath& includedFile)
 			{
-				return GetIncludedFiles(includedFile, scannedFiles, conditionOns, conditionOffs);
+				return GetIncludedFiles(includedFile, cachedFileToIncludes, conditionOns, conditionOffs);
 			}))
 			.Distinct()
 		);
 
-	scannedFiles.Add(codeFile, result);
+	cachedFileToIncludes.Add(codeFile, result);
 	return result;
 }

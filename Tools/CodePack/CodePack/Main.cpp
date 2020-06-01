@@ -2,8 +2,6 @@
 
 int main(int argc, char* argv[])
 {
-	Dictionary<FilePath, LazyList<FilePath>> scannedFiles;
-	Group<FilePath, Tuple<WString, FilePath>> conditionOns, conditionOffs;
 
 	Console::SetTitle(L"Vczh CodePack for C++");
 	if (argc != 2)
@@ -24,8 +22,11 @@ int main(int argc, char* argv[])
 	}
 
 	// collect code files
-	List<FilePath> unprocessedCppFiles;		// all cpp files need to combine
-	List<FilePath> unprocessedHeaderFiles;	// all header files need to combine
+	List<FilePath> unprocessedCppFiles;								// all cpp files need to combine
+	List<FilePath> unprocessedHeaderFiles;							// all header files need to combine
+	Dictionary<FilePath, LazyList<FilePath>> cachedFileToIncludes;	// file -> directly/indirectly included files
+	Group<FilePath, Tuple<WString, FilePath>> conditionOns;			// #ifdef -> files to include
+	Group<FilePath, Tuple<WString, FilePath>> conditionOffs;		// #ifndef -> files to include
 	{
 		List<FilePath> folders;
 		CopyFrom(
@@ -72,7 +73,7 @@ int main(int argc, char* argv[])
 				.Concat(unprocessedCppFiles)
 				.SelectMany([&](const FilePath& includedFile)
 				{
-					return GetIncludedFiles(includedFile, scannedFiles, conditionOns, conditionOffs);
+					return GetIncludedFiles(includedFile, cachedFileToIncludes, conditionOns, conditionOffs);
 				})
 				.Concat(headerFiles)
 				.Distinct()
@@ -80,11 +81,11 @@ int main(int argc, char* argv[])
 	}
 
 	// categorize code files
-	Group<WString, FilePath> categorizedCppFiles;					// category name to cpp file
-	Group<WString, FilePath> categorizedHeaderFiles;				// category name to header file
-	Dictionary<FilePath, WString> inputFileToCategories;			// files to category name
-	Dictionary<FilePath, WString> inputFileToOutputFiles;			// files to category output file
-	Dictionary<WString, Tuple<WString, bool>> categorizedOutput;	// category name to (category output file, need to generate or not)
+	Group<WString, FilePath> categorizedCppFiles;					// category -> cpp files
+	Group<WString, FilePath> categorizedHeaderFiles;				// category -> header files
+	Dictionary<FilePath, WString> inputFileToCategories;			// input file -> category
+	Dictionary<FilePath, WString> inputFileToOutputFiles;			// input file -> output file
+	Dictionary<WString, Tuple<WString, bool>> categorizedOutput;	// category -> {output file, generate?}
 	{
 		// categorize all *.cpp and *.h files
 		CategorizeCodeFiles(config, unprocessedCppFiles, categorizedCppFiles, inputFileToCategories);
@@ -124,7 +125,7 @@ int main(int argc, char* argv[])
 		CopyFrom(items, From(unprocessedCppFiles).Concat(unprocessedHeaderFiles));
 		FOREACH(FilePath, filePath, items)
 		{
-			FOREACH(FilePath, includedFile, GetIncludedFiles(filePath, scannedFiles, conditionOns, conditionOffs))
+			FOREACH(FilePath, includedFile, GetIncludedFiles(filePath, cachedFileToIncludes, conditionOns, conditionOffs))
 			{
 				depGroup.Add(filePath, includedFile);
 			}
@@ -186,7 +187,7 @@ int main(int argc, char* argv[])
 		{
 			Combine(
 				inputFileToOutputFiles,
-				scannedFiles,
+				cachedFileToIncludes,
 				conditionOns,
 				conditionOffs,
 				categorizedHeaderFiles[categoryName],
@@ -217,7 +218,7 @@ int main(int argc, char* argv[])
 			auto outputIncludeOnlyPath = outputIncludeOnlyFolder / (categorizedOutput[categoryName].f0 + L".cpp");
 			Combine(
 				inputFileToOutputFiles,
-				scannedFiles,
+				cachedFileToIncludes,
 				conditionOns,
 				conditionOffs,
 				categorizedCppFiles[categoryName],

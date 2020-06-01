@@ -41,14 +41,14 @@ extern void CategorizeCodeFiles(
 
 extern LazyList<FilePath> GetIncludedFiles(
 	const FilePath& codeFile,
-	Dictionary<FilePath, LazyList<FilePath>>& scannedFiles,
+	Dictionary<FilePath, LazyList<FilePath>>& cachedFileToIncludes,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs
 	);
 
 extern void Combine(
 	const Dictionary<FilePath, WString>& inputFileToOutputFiles,
-	Dictionary<FilePath, LazyList<FilePath>>& scannedFiles,
+	Dictionary<FilePath, LazyList<FilePath>>& cachedFileToIncludes,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs,
 	const List<FilePath>& files,
