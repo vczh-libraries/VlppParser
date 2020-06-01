@@ -387,19 +387,6 @@ void Combine(const Dictionary<FilePath, WString>& reverseCategories, const List<
 	Console::SetColor(true, true, true, false);
 }
 
-void Combine(const Dictionary<FilePath, WString>& reverseCategories, FilePath inputFilePath, FilePath outputFilePath, LazyList<WString> externalIncludes)
-{
-	List<FilePath> files;
-	CopyFrom(files, GetIncludedFiles(inputFilePath));
-	if (!files.Contains(inputFilePath))
-	{
-		files.Add(inputFilePath);
-	}
-
-	SortedList<WString> systemIncludes;
-	Combine(reverseCategories, files, outputFilePath, systemIncludes, externalIncludes);
-}
-
 int main(int argc, char* argv[])
 {
 	Console::SetTitle(L"Vczh CodePack for C++");
