@@ -165,6 +165,10 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="Codepack_CategorizeCodeFiles.cpp" />
+    <ClCompile Include="Codepack_Combine.cpp" />
+    <ClCompile Include="Codepack_GetFiles.cpp" />
+    <ClCompile Include="Codepack_GetIncludeFiles.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +177,7 @@
     <ClInclude Include="..\..\..\Import\VlppReflection.h" />
     <ClInclude Include="..\..\..\Import\VlppRegex.h" />
     <ClInclude Include="..\..\..\Release\VlppParser.h" />
+    <ClInclude Include="Codepack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
