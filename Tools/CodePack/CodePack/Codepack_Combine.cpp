@@ -44,7 +44,7 @@ void CollectConditions(
 
 void CombineWriteHeader(
 	List<WString>& lines,
-	const Dictionary<FilePath, WString>& reverseCategories,
+	const Dictionary<FilePath, WString>& inputFileToOutputFiles,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs,
 	const List<FilePath>& files,
@@ -63,17 +63,17 @@ void CombineWriteHeader(
 		Group<WString, WString> categorizedConditionOns, categorizedConditionOffs;
 		FOREACH(FilePath, file, files)
 		{
-			CollectConditions(categorizedConditionOns, conditionOns, file, reverseCategories);
-			CollectConditions(categorizedConditionOffs, conditionOffs, file, reverseCategories);
+			CollectConditions(categorizedConditionOns, conditionOns, file, inputFileToOutputFiles);
+			CollectConditions(categorizedConditionOffs, conditionOffs, file, inputFileToOutputFiles);
 		}
 
 		for (vint i = 0; i < categorizedConditionOns.Count(); i++)
 		{
 			lines.Add(L"#ifdef " + categorizedConditionOns.Keys()[i]);
-			const auto& categories = categorizedConditionOns.GetByIndex(i);
-			FOREACH(WString, category, categories)
+			const auto& onFiles = categorizedConditionOns.GetByIndex(i);
+			FOREACH(WString, onFile, onFiles)
 			{
-				lines.Add(L"#include \"" + reverseCategories[category] + L"\"");
+				lines.Add(L"#include \"" + inputFileToOutputFiles[onFile] + L"\"");
 			}
 			lines.Add(L"#endif");
 		}
@@ -81,10 +81,10 @@ void CombineWriteHeader(
 		for (vint i = 0; i < categorizedConditionOffs.Count(); i++)
 		{
 			lines.Add(L"#ifndef " + categorizedConditionOffs.Keys()[i]);
-			const auto& categories = categorizedConditionOffs.GetByIndex(i);
-			FOREACH(WString, category, categories)
+			const auto& offFiles = categorizedConditionOffs.GetByIndex(i);
+			FOREACH(WString, offFile, offFiles)
 			{
-				lines.Add(L"#include \"" + category + L".h\"");
+				lines.Add(L"#include \"" + offFile + L".h\"");
 			}
 			lines.Add(L"#endif");
 		}
@@ -92,7 +92,7 @@ void CombineWriteHeader(
 }
 
 void Combine(
-	const Dictionary<FilePath, WString>& reverseCategories,
+	const Dictionary<FilePath, WString>& inputFileToOutputFiles,
 	Dictionary<FilePath, LazyList<FilePath>>& scannedFiles,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs,
@@ -146,7 +146,7 @@ void Combine(
 	}
 	{
 		List<WString> lines;
-		CombineWriteHeader(lines, reverseCategories, conditionOns, conditionOffs, files, externalIncludes);
+		CombineWriteHeader(lines, inputFileToOutputFiles, conditionOns, conditionOffs, files, externalIncludes);
 		{
 			auto prefix = GetCommonFolder(files);
 			FOREACH(FilePath, file, From(sortedFiles).Intersect(files))
@@ -195,7 +195,7 @@ void Combine(
 	}
 	{
 		List<WString> lines;
-		CombineWriteHeader(lines, reverseCategories, conditionOns, conditionOffs, files, externalIncludes);
+		CombineWriteHeader(lines, inputFileToOutputFiles, conditionOns, conditionOffs, files, externalIncludes);
 		lines.Add(L"");
 		{
 			auto prefix = outputIncludeFilePath.GetFolder();

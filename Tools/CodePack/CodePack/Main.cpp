@@ -49,6 +49,7 @@ int main(int argc, char* argv[])
 
 		List<FilePath> headerFiles;
 
+		// enumerate all *.cpp files in specified folders
 		CopyFrom(
 			unprocessedCppFiles,
 			From(folders)
@@ -56,6 +57,7 @@ int main(int argc, char* argv[])
 				.Distinct()
 			);
 
+		// enumerate all *.h files in specified folders
 		CopyFrom(
 			headerFiles,
 			From(folders)
@@ -63,6 +65,7 @@ int main(int argc, char* argv[])
 				.Distinct()
 			);
 
+		// collect all extra included files from all *.cpp files
 		CopyFrom(
 			unprocessedHeaderFiles,
 			From(headerFiles)
@@ -77,15 +80,17 @@ int main(int argc, char* argv[])
 	}
 
 	// categorize code files
-	Group<WString, FilePath> categorizedCppFiles;		// category name to cpp file
-	Group<WString, FilePath> categorizedHeaderFiles;	// category name to header file
-	Dictionary<FilePath, WString> reverseCategoryNames;	// files to category name
-	Dictionary<FilePath, WString> reverseCategoryFiles;	// files to category output file
-	Dictionary<WString, Tuple<WString, bool>> categorizedOutput; // category name to (category output file, need to generate or not)
+	Group<WString, FilePath> categorizedCppFiles;					// category name to cpp file
+	Group<WString, FilePath> categorizedHeaderFiles;				// category name to header file
+	Dictionary<FilePath, WString> inputFileToCategories;			// files to category name
+	Dictionary<FilePath, WString> inputFileToOutputFiles;			// files to category output file
+	Dictionary<WString, Tuple<WString, bool>> categorizedOutput;	// category name to (category output file, need to generate or not)
 	{
-		CategorizeCodeFiles(config, unprocessedCppFiles, categorizedCppFiles, reverseCategoryNames);
-		CategorizeCodeFiles(config, unprocessedHeaderFiles, categorizedHeaderFiles, reverseCategoryNames);
+		// categorize all *.cpp and *.h files
+		CategorizeCodeFiles(config, unprocessedCppFiles, categorizedCppFiles, inputFileToCategories);
+		CategorizeCodeFiles(config, unprocessedHeaderFiles, categorizedHeaderFiles, inputFileToCategories);
 
+		// get configuration for all categories
 		CopyFrom(
 			categorizedOutput,
 			XmlGetElements(XmlGetElement(config->rootElement, L"output"), L"codepair")
@@ -100,11 +105,12 @@ int main(int argc, char* argv[])
 					};
 				})
 		);
-		for (vint i = 0; i < reverseCategoryNames.Count(); i++)
+
+		for (vint i = 0; i < inputFileToCategories.Count(); i++)
 		{
-			auto key = reverseCategoryNames.Keys()[i];
-			auto value = reverseCategoryNames.Values()[i];
-			reverseCategoryFiles.Add(key, categorizedOutput[value].f0);
+			auto key = inputFileToCategories.Keys()[i];
+			auto value = inputFileToCategories.Values()[i];
+			inputFileToOutputFiles.Add(key, categorizedOutput[value].f0);
 		}
 	}
 
@@ -124,7 +130,7 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		popCategories.InitWithSubClass(items, depGroup, reverseCategoryNames);
+		popCategories.InitWithSubClass(items, depGroup, inputFileToCategories);
 		popCategories.Sort();
 
 		for (vint i = 0; i < popCategories.components.Count(); i++)
@@ -134,7 +140,7 @@ int main(int argc, char* argv[])
 			{
 				auto& firstNode = popCategories.nodes[component.firstNode[j]];
 				auto firstFile = items[firstNode.firstSubClassItem[0]];
-				componentToCategoryNames.Add(i, reverseCategoryNames[firstFile]);
+				componentToCategoryNames.Add(i, inputFileToCategories[firstFile]);
 			}
 		}
 
@@ -179,7 +185,7 @@ int main(int argc, char* argv[])
 		if (categorizedOutput[categoryName].f1)
 		{
 			Combine(
-				reverseCategoryFiles,
+				inputFileToOutputFiles,
 				scannedFiles,
 				conditionOns,
 				conditionOffs,
@@ -210,7 +216,7 @@ int main(int argc, char* argv[])
 			auto outputPath = outputFolder / (categorizedOutput[categoryName].f0 + L".cpp");
 			auto outputIncludeOnlyPath = outputIncludeOnlyFolder / (categorizedOutput[categoryName].f0 + L".cpp");
 			Combine(
-				reverseCategoryFiles,
+				inputFileToOutputFiles,
 				scannedFiles,
 				conditionOns,
 				conditionOffs,

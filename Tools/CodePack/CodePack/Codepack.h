@@ -36,7 +36,7 @@ extern void CategorizeCodeFiles(
 	Ptr<XmlDocument> config,
 	LazyList<FilePath> files,
 	Group<WString, FilePath>& categorizedFiles,
-	Dictionary<FilePath, WString>& reverseCategoryNames
+	Dictionary<FilePath, WString>& inputFileToCategories
 	);
 
 extern LazyList<FilePath> GetIncludedFiles(
@@ -47,7 +47,7 @@ extern LazyList<FilePath> GetIncludedFiles(
 	);
 
 extern void Combine(
-	const Dictionary<FilePath, WString>& reverseCategories,
+	const Dictionary<FilePath, WString>& inputFileToOutputFiles,
 	Dictionary<FilePath, LazyList<FilePath>>& scannedFiles,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
 	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs,

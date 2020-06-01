@@ -4,7 +4,7 @@ void CategorizeCodeFiles(
 	Ptr<XmlDocument> config,
 	LazyList<FilePath> files,
 	Group<WString, FilePath>& categorizedFiles,
-	Dictionary<FilePath, WString>& reverseCategoryNames
+	Dictionary<FilePath, WString>& inputFileToCategories
 )
 {
 	FOREACH(Ptr<XmlElement>, e, XmlGetElements(XmlGetElement(config->rootElement, L"categories"), L"category"))
@@ -41,7 +41,7 @@ void CategorizeCodeFiles(
 			if (!categorizedFiles.Contains(name, file))
 			{
 				categorizedFiles.Add(name, file);
-				reverseCategoryNames.Add(file, name);
+				inputFileToCategories.Add(file, name);
 			}
 		}
 	}
