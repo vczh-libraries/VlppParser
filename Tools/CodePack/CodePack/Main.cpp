@@ -21,6 +21,25 @@ int main(int argc, char* argv[])
 		config = XmlParseDocument(text, table);
 	}
 
+	Dictionary<WString, Tuple<WString, bool>> categorizedOutput;	// category -> {output file, generate?}
+	{
+		// get configuration for all categories
+		CopyFrom(
+			categorizedOutput,
+			XmlGetElements(XmlGetElement(config->rootElement, L"output"), L"codepair")
+				.Select([&](Ptr<XmlElement> e)->decltype(categorizedOutput)::ElementType
+				{
+					return {
+						XmlGetAttribute(e, L"category")->value.value,
+						{
+							XmlGetAttribute(e, L"filename")->value.value,
+							XmlGetAttribute(e, L"generate")->value.value == L"true"
+						}
+					};
+				})
+		);
+	}
+
 	// collect code files
 	List<FilePath> unprocessedCppFiles;								// all cpp files need to combine
 	List<FilePath> unprocessedHeaderFiles;							// all header files need to combine
@@ -28,6 +47,7 @@ int main(int argc, char* argv[])
 	Group<FilePath, Tuple<WString, FilePath>> conditionOns;			// #ifdef -> files to include
 	Group<FilePath, Tuple<WString, FilePath>> conditionOffs;		// #ifndef -> files to include
 	{
+		// get included folders
 		List<FilePath> folders;
 		CopyFrom(
 			folders,
@@ -38,6 +58,7 @@ int main(int argc, char* argv[])
 				})
 			);
 
+		// get excluded folders
 		List<WString> exceptions;
 		CopyFrom(
 			exceptions,
@@ -47,6 +68,7 @@ int main(int argc, char* argv[])
 					return XmlGetAttribute(e, L"pattern")->value.value;
 				})
 			);
+
 
 		List<FilePath> headerFiles;
 
@@ -60,24 +82,24 @@ int main(int argc, char* argv[])
 
 		// enumerate all *.h files in specified folders
 		CopyFrom(
-			headerFiles,
+			unprocessedHeaderFiles,
 			From(folders)
 				.SelectMany([&](const FilePath& folder) { return GetHeaderFiles(folder, exceptions); })
 				.Distinct()
 			);
 
 		// collect all extra included files from all *.cpp files
-		CopyFrom(
-			unprocessedHeaderFiles,
-			From(headerFiles)
-				.Concat(unprocessedCppFiles)
-				.SelectMany([&](const FilePath& includedFile)
-				{
-					return GetIncludedFiles(includedFile, cachedFileToIncludes, conditionOns, conditionOffs);
-				})
-				.Concat(headerFiles)
-				.Distinct()
-			);
+		//CopyFrom(
+		//	unprocessedHeaderFiles,
+		//	From(headerFiles)
+		//		.Concat(unprocessedCppFiles)
+		//		.SelectMany([&](const FilePath& includedFile)
+		//		{
+		//			return GetIncludedFiles(includedFile, cachedFileToIncludes, conditionOns, conditionOffs);
+		//		})
+		//		.Concat(headerFiles)
+		//		.Distinct()
+		//	);
 	}
 
 	// categorize code files
@@ -90,9 +112,23 @@ int main(int argc, char* argv[])
 		CategorizeCodeFiles(config, unprocessedHeaderFiles, categorizedHeaderFiles, inputFileToCategories);
 	}
 
+	// collect import files as system include
+	Dictionary<WString, FilePath> skippedImportFiles;				// file name -> file path
+	for (vint i = 0; i < categorizedOutput.Count(); i++)
+	{
+		if (!categorizedOutput.Values()[i].f1)
+		{
+			auto category = categorizedOutput.Keys()[i];
+			FOREACH(FilePath, skippedImportFile, categorizedHeaderFiles[category])
+			{
+				skippedImportFiles.Add(skippedImportFile.GetName(), skippedImportFile);
+			}
+		}
+	}
+
 	// calculate category dependencies
-	PartialOrderingProcessor popCategories;			// POP for category ordering
-	Group<vint, WString> componentToCategoryNames;	// component index to category names
+	PartialOrderingProcessor popCategories;							// POP for category ordering
+	Group<vint, WString> componentToCategoryNames;					// component index to category names
 	{
 		SortedList<FilePath> items;
 		Group<FilePath, FilePath> depGroup;
@@ -139,24 +175,7 @@ int main(int argc, char* argv[])
 	}
 
 	Dictionary<FilePath, WString> inputFileToOutputFiles;			// input file -> output file
-	Dictionary<WString, Tuple<WString, bool>> categorizedOutput;	// category -> {output file, generate?}
 	{
-		// get configuration for all categories
-		CopyFrom(
-			categorizedOutput,
-			XmlGetElements(XmlGetElement(config->rootElement, L"output"), L"codepair")
-				.Select([&](Ptr<XmlElement> e)->decltype(categorizedOutput)::ElementType
-				{
-					return {
-						XmlGetAttribute(e, L"category")->value.value,
-						{
-							XmlGetAttribute(e, L"filename")->value.value,
-							XmlGetAttribute(e, L"generate")->value.value == L"true"
-						}
-					};
-				})
-		);
-
 		for (vint i = 0; i < inputFileToCategories.Count(); i++)
 		{
 			auto key = inputFileToCategories.Keys()[i];
