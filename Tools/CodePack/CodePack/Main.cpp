@@ -69,9 +69,6 @@ int main(int argc, char* argv[])
 				})
 			);
 
-
-		List<FilePath> headerFiles;
-
 		// enumerate all *.cpp files in specified folders
 		CopyFrom(
 			unprocessedCppFiles,
@@ -87,19 +84,6 @@ int main(int argc, char* argv[])
 				.SelectMany([&](const FilePath& folder) { return GetHeaderFiles(folder, exceptions); })
 				.Distinct()
 			);
-
-		// collect all extra included files from all *.cpp files
-		//CopyFrom(
-		//	unprocessedHeaderFiles,
-		//	From(headerFiles)
-		//		.Concat(unprocessedCppFiles)
-		//		.SelectMany([&](const FilePath& includedFile)
-		//		{
-		//			return GetIncludedFiles(includedFile, cachedFileToIncludes, conditionOns, conditionOffs);
-		//		})
-		//		.Concat(headerFiles)
-		//		.Distinct()
-		//	);
 	}
 
 	// categorize code files
@@ -123,6 +107,35 @@ int main(int argc, char* argv[])
 			{
 				skippedImportFiles.Add(skippedImportFile.GetName(), skippedImportFile);
 			}
+		}
+	}
+
+	// check if there any *.h file is included without assigning a category
+	{
+		List<FilePath> headerFiles;
+		CopyFrom(
+			headerFiles,
+			From(unprocessedHeaderFiles)
+				.Concat(unprocessedCppFiles)
+				.SelectMany([&](const FilePath& includedFile)
+				{
+					return GetIncludedFiles(includedFile, skippedImportFiles, cachedFileToIncludes, conditionOns, conditionOffs);
+				})
+				.Concat(headerFiles)
+				.Distinct()
+				.Except(unprocessedHeaderFiles)
+			);
+
+		if (headerFiles.Count() > 0)
+		{
+			Console::SetColor(true, false, false, true);
+			Console::WriteLine(L"Error: The following files are not categorized.");
+			FOREACH(FilePath, headerFile, headerFiles)
+			{
+				Console::WriteLine(headerFile.GetFullPath());
+			}
+			Console::SetColor(true, true, true, false);
+			CHECK_ERROR(true, L"All included files should be categorized");
 		}
 	}
 
