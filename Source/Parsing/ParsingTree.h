@@ -9,7 +9,7 @@ Classes:
 #ifndef VCZH_PARSING_PARSINGTREE
 #define VCZH_PARSING_PARSINGTREE
 
-#include "../../Import/VlppReflection.h"
+#include <VlppReflection.h>
 
 namespace vl
 {
