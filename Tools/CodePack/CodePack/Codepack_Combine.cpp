@@ -23,7 +23,7 @@ void CollectConditions(
 	Group<WString, WString>& categorizedConditions,
 	Group<FilePath, Tuple<WString, FilePath>>& conditions,
 	const FilePath& file,
-	const Dictionary<FilePath, WString>& reverseCategories
+	const Dictionary<FilePath, WString>& inputFileToOutputFiles
 )
 {
 	vint index = conditions.Keys().IndexOf(file);
@@ -33,10 +33,10 @@ void CollectConditions(
 		for (vint i = 0; i < tuples.Count(); i++)
 		{
 			auto condition = tuples[i].f0;
-			auto category = reverseCategories[tuples[i].f1];
-			if (!categorizedConditions.Contains(condition, category))
+			auto includeFile = inputFileToOutputFiles[tuples[i].f1];
+			if (!categorizedConditions.Contains(condition, includeFile))
 			{
-				categorizedConditions.Add(condition, category);
+				categorizedConditions.Add(condition, includeFile);
 			}
 		}
 	}
@@ -92,15 +92,16 @@ void CombineWriteHeader(
 }
 
 void Combine(
-	const Dictionary<FilePath, WString>& inputFileToOutputFiles,
-	Dictionary<FilePath, LazyList<FilePath>>& cachedFileToIncludes,
-	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
-	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs,
-	const List<FilePath>& files,
-	FilePath outputFilePath,
-	FilePath outputIncludeFilePath,
-	SortedList<WString>& systemIncludes,
-	LazyList<WString> externalIncludes
+	const Dictionary<FilePath, WString>& inputFileToOutputFiles,		// (in)
+	const Dictionary<WString, FilePath>& skippedImportFiles,			// (in)
+	Dictionary<FilePath, LazyList<FilePath>>& cachedFileToIncludes,		// (cache)
+	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,			// (out)
+	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs,			// (out)
+	const List<FilePath>& files,										// (in)
+	FilePath outputFilePath,											//
+	FilePath outputIncludeFilePath,										//
+	SortedList<WString>& systemIncludes,								//
+	LazyList<WString> externalIncludes									//
 )
 {
 	auto workingDir = outputFilePath.GetFolder();
@@ -111,7 +112,7 @@ void Combine(
 		Group<FilePath, FilePath> depGroup;
 		FOREACH(FilePath, file, files)
 		{
-			FOREACH(FilePath, dep, GetIncludedFiles(file, cachedFileToIncludes, conditionOns, conditionOffs))
+			FOREACH(FilePath, dep, GetIncludedFiles(file, skippedImportFiles, cachedFileToIncludes, conditionOns, conditionOffs))
 			{
 				if (files.Contains(dep))
 				{
@@ -179,6 +180,7 @@ void Combine(
 						if ((match = regexSystemInclude.MatchHead(line)))
 						{
 							auto systemFile = match->Groups()[L"path"][0].Value();
+							if (skippedImportFiles.Keys().Contains(systemFile)) continue;
 							if (systemIncludes.Contains(systemFile)) continue;
 							systemIncludes.Add(systemFile);
 							lines.Add(line);

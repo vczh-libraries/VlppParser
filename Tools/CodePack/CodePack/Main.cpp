@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
 		CopyFrom(items, From(unprocessedCppFiles).Concat(unprocessedHeaderFiles));
 		FOREACH(FilePath, filePath, items)
 		{
-			FOREACH(FilePath, includedFile, GetIncludedFiles(filePath, cachedFileToIncludes, conditionOns, conditionOffs))
+			FOREACH(FilePath, includedFile, GetIncludedFiles(filePath, skippedImportFiles, cachedFileToIncludes, conditionOns, conditionOffs))
 			{
 				depGroup.Add(filePath, includedFile);
 			}
@@ -208,6 +208,7 @@ int main(int argc, char* argv[])
 		{
 			Combine(
 				inputFileToOutputFiles,
+				skippedImportFiles,
 				cachedFileToIncludes,
 				conditionOns,
 				conditionOffs,
@@ -239,6 +240,7 @@ int main(int argc, char* argv[])
 			auto outputIncludeOnlyPath = outputIncludeOnlyFolder / (categorizedOutput[categoryName].f0 + L".cpp");
 			Combine(
 				inputFileToOutputFiles,
+				skippedImportFiles,
 				cachedFileToIncludes,
 				conditionOns,
 				conditionOffs,

@@ -5,10 +5,11 @@ Regex regexSystemInclude(LR"/(^\s*#include\s*<(<path>[^"]+)>\s*$)/");
 Regex regexInstruction(LR"/(^\s*\/\*\s*CodePack:(<name>\w+)\(((<param>[^,)]+)(,\s*(<param>[^,)]+))*)?\)\s*\*\/\s*$)/");
 
 LazyList<FilePath> GetIncludedFiles(
-	const FilePath& codeFile,
-	Dictionary<FilePath, LazyList<FilePath>>& cachedFileToIncludes,
-	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,
-	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs
+	const FilePath& codeFile,											// (in)
+	const Dictionary<WString, FilePath>& skippedImportFiles,			// (in)
+	Dictionary<FilePath, LazyList<FilePath>>& cachedFileToIncludes,		// (cache)
+	Group<FilePath, Tuple<WString, FilePath>>& conditionOns,			// (out)
+	Group<FilePath, Tuple<WString, FilePath>>& conditionOffs			// (out)
 )
 {
 	{
@@ -90,6 +91,22 @@ LazyList<FilePath> GetIncludedFiles(
 				}
 			}
 		}
+		else if ((match = regexSystemInclude.MatchHead(line)))
+		{
+			if (!skip)
+			{
+				auto systemFile = match->Groups()[L"path"][0].Value();
+				vint index = skippedImportFiles.Keys().IndexOf(systemFile);
+				if (index != -1)
+				{
+					auto path = skippedImportFiles.Values()[index];
+					if (!includes.Contains(path))
+					{
+						includes.Add(path);
+					}
+				}
+			}
+		}
 	}
 
 	auto result = MakePtr<List<FilePath>>();
@@ -98,7 +115,7 @@ LazyList<FilePath> GetIncludedFiles(
 		From(includes)
 			.Concat(From(includes).SelectMany([&](const FilePath& includedFile)
 			{
-				return GetIncludedFiles(includedFile, cachedFileToIncludes, conditionOns, conditionOffs);
+				return GetIncludedFiles(includedFile, skippedImportFiles, cachedFileToIncludes, conditionOns, conditionOffs);
 			}))
 			.Distinct()
 		);
