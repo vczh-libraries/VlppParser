@@ -84,35 +84,10 @@ int main(int argc, char* argv[])
 	Group<WString, FilePath> categorizedCppFiles;					// category -> cpp files
 	Group<WString, FilePath> categorizedHeaderFiles;				// category -> header files
 	Dictionary<FilePath, WString> inputFileToCategories;			// input file -> category
-	Dictionary<FilePath, WString> inputFileToOutputFiles;			// input file -> output file
-	Dictionary<WString, Tuple<WString, bool>> categorizedOutput;	// category -> {output file, generate?}
 	{
 		// categorize all *.cpp and *.h files
 		CategorizeCodeFiles(config, unprocessedCppFiles, categorizedCppFiles, inputFileToCategories);
 		CategorizeCodeFiles(config, unprocessedHeaderFiles, categorizedHeaderFiles, inputFileToCategories);
-
-		// get configuration for all categories
-		CopyFrom(
-			categorizedOutput,
-			XmlGetElements(XmlGetElement(config->rootElement, L"output"), L"codepair")
-				.Select([&](Ptr<XmlElement> e)->decltype(categorizedOutput)::ElementType
-				{
-					return {
-						XmlGetAttribute(e, L"category")->value.value,
-						{
-							XmlGetAttribute(e, L"filename")->value.value,
-							XmlGetAttribute(e, L"generate")->value.value == L"true"
-						}
-					};
-				})
-		);
-
-		for (vint i = 0; i < inputFileToCategories.Count(); i++)
-		{
-			auto key = inputFileToCategories.Keys()[i];
-			auto value = inputFileToCategories.Values()[i];
-			inputFileToOutputFiles.Add(key, categorizedOutput[value].f0);
-		}
 	}
 
 	// calculate category dependencies
@@ -163,9 +138,34 @@ int main(int argc, char* argv[])
 		CHECK_ERROR(!needExit, L"Cycle dependency is not allowed");
 	}
 
-	Dictionary<WString, Ptr<SortedList<WString>>> categorizedSystemIncludes;
+	Dictionary<FilePath, WString> inputFileToOutputFiles;			// input file -> output file
+	Dictionary<WString, Tuple<WString, bool>> categorizedOutput;	// category -> {output file, generate?}
+	{
+		// get configuration for all categories
+		CopyFrom(
+			categorizedOutput,
+			XmlGetElements(XmlGetElement(config->rootElement, L"output"), L"codepair")
+				.Select([&](Ptr<XmlElement> e)->decltype(categorizedOutput)::ElementType
+				{
+					return {
+						XmlGetAttribute(e, L"category")->value.value,
+						{
+							XmlGetAttribute(e, L"filename")->value.value,
+							XmlGetAttribute(e, L"generate")->value.value == L"true"
+						}
+					};
+				})
+		);
 
-	// generate code pair header files
+		for (vint i = 0; i < inputFileToCategories.Count(); i++)
+		{
+			auto key = inputFileToCategories.Keys()[i];
+			auto value = inputFileToCategories.Values()[i];
+			inputFileToOutputFiles.Add(key, categorizedOutput[value].f0);
+		}
+	}
+
+	// prepare output folder
 	auto outputFolder = workingDir / (XmlGetAttribute(XmlGetElement(config->rootElement, L"output"), L"path")->value.value);
 	auto outputIncludeOnlyFolder = outputFolder / L"IncludeOnly";
 	if (!Folder(outputIncludeOnlyFolder).Exists())
@@ -173,6 +173,8 @@ int main(int argc, char* argv[])
 		Folder(outputIncludeOnlyFolder).Create(true);
 	}
 
+	// generate code pair header files
+	Dictionary<WString, Ptr<SortedList<WString>>> categorizedSystemIncludes;
 	for (vint i = 0; i < popCategories.components.Count(); i++)
 	{
 		auto& component = popCategories.components[i];
