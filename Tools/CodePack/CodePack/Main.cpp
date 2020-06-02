@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
 				{
 					return GetIncludedFiles(includedFile, skippedImportFiles, cachedFileToIncludes, conditionOns, conditionOffs);
 				})
-				.Concat(headerFiles)
+				.Concat(unprocessedHeaderFiles)
 				.Distinct()
 				.Except(unprocessedHeaderFiles)
 			);
