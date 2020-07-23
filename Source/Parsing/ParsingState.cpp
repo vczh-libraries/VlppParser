@@ -1,3 +1,8 @@
+/***********************************************************************
+Author: Zihan Chen (vczh)
+Licensed under https://github.com/vczh-libraries/License
+***********************************************************************/
+
 #include "ParsingState.h"
 
 #if defined(VCZH_GCC) && defined(__clang__)
