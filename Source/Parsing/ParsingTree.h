@@ -177,7 +177,7 @@ General Syntax Tree
 		class ParsingTreeObject;
 		class ParsingTreeArray;
 
-		/// <summary>Abstract syntax tree.</summary>
+		/// <summary>Abstract syntax tree, usually created by a sub class of  <see cref="tabling::ParsingGeneralParser"/></summary>
 		class ParsingTreeNode : public Object, public reflection::Description<ParsingTreeNode>
 		{
 		public:
@@ -234,36 +234,36 @@ General Syntax Tree
 			ParsingTextRange					GetCodeRange();
 			void								SetCodeRange(const ParsingTextRange& range);
 
-			/// <summary>Precalculate for enhance searching performance for this node and all child nodes.</summary>
+			/// <summary>Cache necessary data to improve searching performance for this node and all child nodes.</summary>
 			void								InitializeQueryCache();
 			/// <summary>Clear all cache made by <see cref="InitializeQueryCache"/>.</summary>
 			void								ClearQueryCache();
-			/// <summary>Get the parent node. Using this function requires running <see cref="InitializeQueryCache"/> before.</summary>
+			/// <summary>Get the parent node. Using this function requires <see cref="InitializeQueryCache"/> to be called.</summary>
 			/// <returns>The parent node.</returns>
 			ParsingTreeNode*					GetParent();
-			/// <summary>Get the child nodes. Using this function requires running <see cref="InitializeQueryCache"/> before.</summary>
+			/// <summary>Get the child nodes. Using this function requires <see cref="InitializeQueryCache"/> to be called.</summary>
 			/// <returns>The child nodes.</returns>
 			const NodeList&						GetSubNodes();
 			
-			/// <summary>Find a direct child node at the position. Using this function requires running <see cref="InitializeQueryCache"/> before.</summary>
+			/// <summary>Find a direct child node at the position. Using this function requires <see cref="InitializeQueryCache"/> to be called.</summary>
 			/// <returns>The found node.</returns>
 			/// <param name="position">The position.</param>
 			ParsingTreeNode*					FindSubNode(const ParsingTextPos& position);
-			/// <summary>Find a direct child node at the range. Using this function requires running <see cref="InitializeQueryCache"/> before.</summary>
+			/// <summary>Find a direct child node at the range. Using this function requires <see cref="InitializeQueryCache"/> to be called.</summary>
 			/// <returns>The found node.</returns>
 			/// <param name="range">The range.</param>
 			ParsingTreeNode*					FindSubNode(const ParsingTextRange& range);
-			/// <summary>Find a most deepest indirect child node at the position. Using this function requires running <see cref="InitializeQueryCache"/> before.</summary>
+			/// <summary>Find a most deepest indirect child node at the position. Using this function requires <see cref="InitializeQueryCache"/> to be called.</summary>
 			/// <returns>The found node.</returns>
 			/// <param name="position">The position.</param>
 			ParsingTreeNode*					FindDeepestNode(const ParsingTextPos& position);
-			/// <summary>Find a most deepest indirect child node at the range. Using this function requires running <see cref="InitializeQueryCache"/> before.</summary>
+			/// <summary>Find a most deepest indirect child node at the range. Using this function requires <see cref="InitializeQueryCache"/> to be called.</summary>
 			/// <returns>The found node.</returns>
 			/// <param name="range">The range.</param>
 			ParsingTreeNode*					FindDeepestNode(const ParsingTextRange& range);
 		};
 
-		/// <summary>Representing a token node in a abstract syntax tree.</summary>
+		/// <summary>Representing a token node in an abstract syntax tree.</summary>
 		class ParsingTreeToken : public ParsingTreeNode, public reflection::Description<ParsingTreeToken>
 		{
 		protected:
@@ -285,7 +285,7 @@ General Syntax Tree
 			void								SetValue(const WString& _value);
 		};
 		
-		/// <summary>Representing an object node in a abstract syntax tree.</summary>
+		/// <summary>Representing an object node in an abstract syntax tree.</summary>
 		class ParsingTreeObject : public ParsingTreeNode, public reflection::Description<ParsingTreeObject>
 		{
 		protected:
@@ -325,7 +325,7 @@ General Syntax Tree
 			RuleList&							GetCreatorRules();
 		};
 		
-		/// <summary>Representing an array node in a abstract syntax tree.</summary>
+		/// <summary>Representing an array node in an abstract syntax tree.</summary>
 		class ParsingTreeArray : public ParsingTreeNode, public reflection::Description<ParsingTreeArray>
 		{
 		protected:
