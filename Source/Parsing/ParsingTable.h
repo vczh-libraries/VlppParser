@@ -94,6 +94,7 @@ Parsing Table
 			/// But the grammar text will always be in the generated C++ code regardless of the value of "serialization",
 			/// it can always be retrived using the "&lt;CLASS-PREFIX&gt;GetParserTextBuffer" function.
 			/// </li>
+			/// </ul>
 			/// </p>
 			/// <p>
 			/// <b>Character escaping in strings</b>
@@ -200,6 +201,7 @@ Parsing Table
 			///                 <p>A class name could also be<b>OuterClass.InnerClass</b>, referring to the "InnerClass" defined inside the "OuterClass".</p>
 			///             </li>
 			///         </ul>
+			///         </p>
 			///     </li>
 			/// </ul>
 			/// </p>
