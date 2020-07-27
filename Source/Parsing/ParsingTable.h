@@ -224,7 +224,7 @@ Parsing Table
 			///         = Grammar2
 			///         ...
 			///         ;
-			/// ]></code></program>
+			/// ]]></code></program>
 			/// <p>
 			/// It means rule "RuleName" is defined by those grammars,
 			/// and matching this rule will create an instance of "RuleType" or one of its sub classes.
