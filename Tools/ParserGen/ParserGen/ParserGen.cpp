@@ -31,17 +31,17 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		{
 			CopyFrom(codeNamespaces, From(match->Groups().Get(L"namespace"))
 				.Select([=](RegexString s)->WString
-			{
-				return s.Value();
-			}));
+				{
+					return s.Value();
+				}));
 		}
 		else if ((match = regexReflection.Match(line)) && match->Success())
 		{
 			CopyFrom(reflectionNamespaces, From(match->Groups().Get(L"namespace"))
 				.Select([=](RegexString s)->WString
-			{
-				return s.Value();
-			}));
+				{
+					return s.Value();
+				}));
 		}
 		else if ((match = regexFilePrefix.Match(line)) && match->Success())
 		{
