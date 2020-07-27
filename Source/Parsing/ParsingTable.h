@@ -210,7 +210,7 @@ Parsing Table
 			/// <program><code><![CDATA[
 			///     token TokenName = "regular expression" <attributes>;
 			///     discardtoken TokenName = "regular expression";
-			/// ]></code></program>
+			/// ]]></code></program>
 			/// "discardtoken" means that,
 			/// if such a token is identified,
 			/// it will not appear in the lexical analyzing result.
