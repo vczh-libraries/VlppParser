@@ -22,7 +22,7 @@ class Node								@Document("Base class of JSON nodes.")
 {
 }
 
-class Literal:Node						@Document("Literal value node that is not number or string.");
+class Literal:Node						@Document("Literal value node that is not number or string.")
 {
 	enum Value							@Document("Literal value.")
 	{
@@ -51,7 +51,7 @@ class Array:Node						@Document("Array node.")
 
 class ObjectField:Node					@Document("Object property node.")
 {
-	token name(JsonUnescapingString)	@Document("Property name".), @Color("AttName");
+	token name(JsonUnescapingString)	@Document("Property name."), @Color("AttName");
 	Node value							@Document("Property value.");
 }
 

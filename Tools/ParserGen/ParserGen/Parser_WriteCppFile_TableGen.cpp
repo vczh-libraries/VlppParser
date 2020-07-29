@@ -8,7 +8,7 @@ void WriteParserFunctions(ParsingSymbolManager* manager, const WString& prefix, 
 {
 	FOREACH(WString, name, config.parsers.Keys())
 	{
-		ParsingSymbol* rule=manager->GetGlobal()->GetSubSymbolByName(config.parsers[name]);
+		ParsingSymbol* rule=manager->GetGlobal()->GetSubSymbolByName(config.parsers[name].key);
 		if(rule)
 		{
 			{

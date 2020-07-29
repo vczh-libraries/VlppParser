@@ -27,23 +27,23 @@ Configuration
 class CodegenConfig
 {
 public:
-	List<WString>					includes;
-	List<WString>					codeNamespaces;
-	List<WString>					reflectionNamespaces;
-	WString							filePrefix;
-	WString							classPrefix;
-	WString							classRoot;
-	WString							guard;
-	Dictionary<WString, WString>	parsers;
-	Dictionary<WString, WString>	files;
-	WString							ambiguity;
-	WString							serialization;
+	List<WString>									includes;
+	List<WString>									codeNamespaces;
+	List<WString>									reflectionNamespaces;
+	WString											filePrefix;
+	WString											classPrefix;
+	WString											classRoot;
+	WString											guard;
+	Dictionary<WString, Pair<WString, WString>>		parsers;
+	Dictionary<WString, WString>					files;
+	WString											ambiguity;
+	WString											serialization;
 
 	CodegenConfig()
 	{
 	}
 
-	bool							ReadConfig(TextReader& reader);
+	bool											ReadConfig(TextReader& reader);
 };
 
 /***********************************************************************
@@ -98,7 +98,7 @@ File(Parser)
 ***********************************************************************/
 
 extern void							WriteMetaDefinition(const WString& prefix, const WString& codeClassPrefix, TextWriter& writer);
-extern void							WriteParserFunctions(ParsingSymbolManager* manager, const Dictionary<WString, WString>& parsers, const WString& prefix, const WString& codeClassPrefix, TextWriter& writer);
+extern void							WriteParserFunctions(ParsingSymbolManager* manager, const Dictionary<WString, Pair<WString, WString>>& parsers, const WString& prefix, const WString& codeClassPrefix, TextWriter& writer);
 
 extern void							WriteGetParserTextBuffer(ParsingSymbolManager* manager, const WString& prefix, const WString& codeClassPrefix, TextWriter& writer);
 extern void							WriteParserText(const WString& parserText, TextWriter& writer);

@@ -1,10 +1,10 @@
 #include "ParserGen.h"
 
-void WriteParserFunctions(ParsingSymbolManager* manager, const Dictionary<WString, WString>& parsers, const WString& prefix, const WString& codeClassPrefix, TextWriter& writer)
+void WriteParserFunctions(ParsingSymbolManager* manager, const Dictionary<WString, Pair<WString, WString>>& parsers, const WString& prefix, const WString& codeClassPrefix, TextWriter& writer)
 {
 	FOREACH(WString, name, parsers.Keys())
 	{
-		ParsingSymbol* rule=manager->GetGlobal()->GetSubSymbolByName(parsers[name]);
+		ParsingSymbol* rule=manager->GetGlobal()->GetSubSymbolByName(parsers[name].key);
 		if(rule)
 		{
 			writer.WriteLine(L"");

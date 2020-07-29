@@ -10,7 +10,7 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 	Regex regexClassPrefix(L"^classPrefix:(<prefix>/.+)$");
 	Regex regexClassRoot(L"^classRoot:(<name>/.+)$");
 	Regex regexGuard(L"^guard:(<guard>/.+)$");
-	Regex regexParser(L"^parser:(<name>/w+)/((<rule>/w+)/)$");
+	Regex regexParser(L"^parser:(<name>/w+)/((<rule>/w+)(,(<document>/.*))?/)$");
 	Regex regexFile(L"^file:(<name>/w+)/((<rule>/w+)/)$");
 	Regex regexAmbiguity(L"^ambiguity:(<value>enabled|disabled)$");
 	Regex regexSerialization(L"^serialization:(<value>enabled|disabled)$");
@@ -63,9 +63,14 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		{
 			WString name = match->Groups().Get(L"name").Get(0).Value();
 			WString rule = match->Groups().Get(L"rule").Get(0).Value();
+			WString document;
+			if (match->Groups().Contains(L"Document"))
+			{
+				document = match->Groups().Get(L"document").Get(0).Value();
+			}
 			if (!parsers.Keys().Contains(name))
 			{
-				parsers.Add(name, rule);
+				parsers.Add(name, { rule,document });
 			}
 		}
 		else if ((match = regexFile.Match(line)) && match->Success())
