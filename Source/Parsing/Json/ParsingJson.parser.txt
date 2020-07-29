@@ -6,7 +6,7 @@ reflection:system
 classPrefix:Json
 classRoot:Object
 guard:VCZH_PARSING_JSON_PARSINGJSON_PARSER
-parser:Parse(JRoot)
+parser:Parse(JRoot,Parse a JSON text, it could be an object or an array.)
 filePrefix:ParsingJson
 file:Ast(_Ast)
 file:Parser(_Parser)
@@ -18,46 +18,46 @@ grammar:
 // AST
 //////////////////////////////////////////////////////////////////
 
-class Node
+class Node								@Document("Base class of JSON nodes.")
 {
 }
 
-class Literal:Node
+class Literal:Node						@Document("Literal value node that is not number or string.");
 {
-	enum Value
+	enum Value							@Document("Literal value.")
 	{
-		True,
-		False,
-		Null,
+		True							@Document("A boolean literal: true."),
+		False							@Document("A boolean literal: false."),
+		Null							@Document("A null literal."),
 	}
 
-	Value value;
+	Value value							@Document("The literal value.");
 }
 
-class String:Node
+class String:Node						@Document("String literal value node.")
 {
-	token content(JsonUnescapingString)				@Color("String");
+	token content(JsonUnescapingString)	@Document("Content of the string literal."), @Color("String");
 }
 
-class Number:Node
+class Number:Node						@Document("Number literal value node.")
 {
-	token content;
+	token content						@Document("Content of the number literal.");
 }
 
-class Array:Node
+class Array:Node						@Document("Array node.")
 {
-	Node[] items;
+	Node[] items						@Document("Array elements.");
 }
 
-class ObjectField:Node
+class ObjectField:Node					@Document("Object property node.")
 {
-	token name(JsonUnescapingString)				@Color("AttName");
-	Node value;
+	token name(JsonUnescapingString)	@Document("Property name".), @Color("AttName");
+	Node value							@Document("Property value.");
 }
 
-class Object:Node
+class Object:Node						@Document("Object node.")
 {
-	ObjectField[] fields;
+	ObjectField[] fields				@Document("Object properties.");
 }
 
 //////////////////////////////////////////////////////////////////
