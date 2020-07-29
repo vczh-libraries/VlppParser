@@ -31,6 +31,8 @@ void WriteTokenDefinition(Ptr<ParsingTable> table, const WString& prefix, const 
 		if(info.regexTokenIndex!=-1)
 		{
 			writer.WriteString(prefix);
+			writer.WriteLine(L"\t/// <summary>Discardable token " + info.name + L": " + xml::XmlEscapeValue(info.regex) + L"</summary>");
+			writer.WriteString(prefix);
 			writer.WriteString(L"\t");
 			writer.WriteString(info.name);
 			writer.WriteString(L" = ");

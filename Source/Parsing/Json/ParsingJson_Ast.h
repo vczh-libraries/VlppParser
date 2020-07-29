@@ -42,6 +42,7 @@ namespace vl
 				NUMBER = 9,
 				/// <summary>Token STRING: &quot;([^\\&quot;]|\\[^u]|\\u\d{4})*&quot;</summary>
 				STRING = 10,
+				/// <summary>Discardable token SPACE: \s+</summary>
 				SPACE = 11,
 			};
 			class JsonNode;
@@ -56,26 +57,26 @@ namespace vl
 			class JsonNode abstract : public vl::parsing::ParsingTreeCustomBase, vl::reflection::Description<JsonNode>
 			{
 			public:
-				/// <summary>Visitor interface for <see cref="JsonNode">.</summary>
+				/// <summary>Visitor interface for <see cref="JsonNode"/>.</summary>
 				class IVisitor : public vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonLiteral">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonLiteral"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonLiteral* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonString">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonString"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonString* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonNumber">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonNumber"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonNumber* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonArray">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonArray"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonArray* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonObjectField">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonObjectField"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonObjectField* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonObject">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonObject"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonObject* node)=0;
 				};
@@ -226,6 +227,7 @@ namespace vl
 
 #endif
 			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+			/// <returns>Returns true if this operation succeeded.</returns>
 			extern bool JsonLoadTypes();
 		}
 	}

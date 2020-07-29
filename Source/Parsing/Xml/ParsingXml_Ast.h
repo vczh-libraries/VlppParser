@@ -44,6 +44,7 @@ namespace vl
 				CDATA = 10,
 				/// <summary>Token TEXT: ([^&lt;&gt;=&quot;&apos; /r/n/ta-zA-Z0-9:._/-])+|&quot;|&apos;</summary>
 				TEXT = 11,
+				/// <summary>Discardable token SPACE: /s+</summary>
 				SPACE = 12,
 			};
 			class XmlNode;
@@ -59,29 +60,29 @@ namespace vl
 			class XmlNode abstract : public vl::parsing::ParsingTreeCustomBase, vl::reflection::Description<XmlNode>
 			{
 			public:
-				/// <summary>Visitor interface for <see cref="XmlNode">.</summary>
+				/// <summary>Visitor interface for <see cref="XmlNode"/>.</summary>
 				class IVisitor : public vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlText">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlText"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(XmlText* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlCData">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlCData"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(XmlCData* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlAttribute">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlAttribute"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(XmlAttribute* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlComment">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlComment"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(XmlComment* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlElement">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlElement"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(XmlElement* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlInstruction">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlInstruction"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(XmlInstruction* node)=0;
-					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlDocument">.</summary>
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="XmlDocument"/>.</summary>
 					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(XmlDocument* node)=0;
 				};
@@ -248,6 +249,7 @@ namespace vl
 
 #endif
 			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
+			/// <returns>Returns true if this operation succeeded.</returns>
 			extern bool XmlLoadTypes();
 		}
 	}

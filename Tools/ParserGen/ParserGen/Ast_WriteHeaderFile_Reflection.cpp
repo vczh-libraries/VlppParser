@@ -79,6 +79,8 @@ void WriteTypeReflectionDeclaration(ParsingSymbolManager* manager, const WString
 
 	writer.WriteString(prefix);
 	writer.WriteLine(L"/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>");
+	writer.WriteString(prefix);
+	writer.WriteLine(L"/// <returns>Returns true if this operation succeeded.</returns>");
 
 	writer.WriteString(prefix);
 	writer.WriteString(L"extern bool ");

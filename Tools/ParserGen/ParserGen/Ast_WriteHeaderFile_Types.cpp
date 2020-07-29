@@ -104,7 +104,7 @@ public:
 			if (classDoc)
 			{
 				writer.WriteString(prefix);
-				writer.WriteLine(L"\t/// <summary>Visitor interface for <see cref=\"" + codeClassPrefix + node->name + L"\">.</summary>");
+				writer.WriteLine(L"\t/// <summary>Visitor interface for <see cref=\"" + codeClassPrefix + node->name + L"\"/>.</summary>");
 			}
 			writer.WriteString(prefix);
 			writer.WriteLine(L"\tclass IVisitor : public vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>");
@@ -118,7 +118,7 @@ public:
 				if (classDoc)
 				{
 					writer.WriteString(prefix);
-					writer.WriteLine(L"\t\t/// <summary>A callback that is called if the node accepting this visitor is <see cref=\"" + codeClassPrefix + child->GetName() + L"\">.</summary>");
+					writer.WriteLine(L"\t\t/// <summary>A callback that is called if the node accepting this visitor is <see cref=\"" + codeClassPrefix + child->GetName() + L"\"/>.</summary>");
 					writer.WriteString(prefix);
 					writer.WriteLine(L"\t\t/// <param name=\"node\">The strong-typed AST node in its real type.</param>");
 				}
