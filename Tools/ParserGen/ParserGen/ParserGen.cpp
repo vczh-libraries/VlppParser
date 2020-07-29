@@ -64,7 +64,7 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 			WString name = match->Groups().Get(L"name").Get(0).Value();
 			WString rule = match->Groups().Get(L"rule").Get(0).Value();
 			WString document;
-			if (match->Groups().Contains(L"Document"))
+			if (match->Groups().Contains(L"document"))
 			{
 				document = match->Groups().Get(L"document").Get(0).Value();
 			}

@@ -30,27 +30,27 @@ namespace vl
 			/// <returns>The created parser table.</returns>
 			extern vl::Ptr<vl::parsing::tabling::ParsingTable> JsonLoadTable();
 
-			/// <summary></summary>
+			/// <summary>Parse a JSON text, it could be an object or an array.</summary>
 			/// <returns>Returns the parsing result as a weak-typed AST node. Returns null if there is any unrecoverable error during parsing.</returns>
 			/// <param name="input">The input for parsing.</param>
 			/// <param name="table">The return value from <see cref="JsonLoadTable"/>.</param>
 			/// <param name="errors">All errors during parsing.</param>
 			/// <param name="codeIndex">(Optional): This argument will be copied to <see cref="vl::parsing::ParsingTextRange::codeIndex"/> in every AST nodes. The default value is -1.</param>
 			extern vl::Ptr<vl::parsing::ParsingTreeNode> JsonParseAsParsingTreeNode(const vl::WString& input, vl::Ptr<vl::parsing::tabling::ParsingTable> table, vl::collections::List<vl::Ptr<vl::parsing::ParsingError>>& errors, vl::vint codeIndex = -1);
-			/// <summary></summary>
+			/// <summary>Parse a JSON text, it could be an object or an array.</summary>
 			/// <returns>Returns the parsing result as a weak-typed AST node. Returns null if there is any unrecoverable error during parsing.</returns>
 			/// <param name="input">The input for parsing.</param>
 			/// <param name="table">The return value from <see cref="JsonLoadTable"/>.</param>
 			/// <param name="codeIndex">(Optional): This argument will be copied to <see cref="vl::parsing::ParsingTextRange::codeIndex"/> in every AST nodes. The default value is -1.</param>
 			extern vl::Ptr<vl::parsing::ParsingTreeNode> JsonParseAsParsingTreeNode(const vl::WString& input, vl::Ptr<vl::parsing::tabling::ParsingTable> table, vl::vint codeIndex = -1);
-			/// <summary></summary>
+			/// <summary>Parse a JSON text, it could be an object or an array.</summary>
 			/// <returns>Returns the parsing result as a strong-typed AST node. Returns null if there is any unrecoverable error during parsing.</returns>
 			/// <param name="input">The input for parsing.</param>
 			/// <param name="table">The return value from <see cref="JsonLoadTable"/>.</param>
 			/// <param name="errors">All errors during parsing.</param>
 			/// <param name="codeIndex">(Optional): This argument will be copied to <see cref="vl::parsing::ParsingTextRange::codeIndex"/> in every AST nodes. The default value is -1.</param>
 			extern vl::Ptr<JsonNode> JsonParse(const vl::WString& input, vl::Ptr<vl::parsing::tabling::ParsingTable> table, vl::collections::List<vl::Ptr<vl::parsing::ParsingError>>& errors, vl::vint codeIndex = -1);
-			/// <summary></summary>
+			/// <summary>Parse a JSON text, it could be an object or an array.</summary>
 			/// <returns>Returns the parsing result as a strong-typed AST node. Returns null if there is any unrecoverable error during parsing.</returns>
 			/// <param name="input">The input for parsing.</param>
 			/// <param name="table">The return value from <see cref="JsonLoadTable"/>.</param>
