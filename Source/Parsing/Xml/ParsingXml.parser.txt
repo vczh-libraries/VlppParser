@@ -35,8 +35,8 @@ class CData : Node								@Document("CData node.")
 
 class Attribute : Node							@Document("Attribute node.")
 {
-	token name									@Document(""Attribute name."), @Color("AttName");
-	token value (XmlUnescapeAttributeValue)		@Document(""Attribute value."), @Color("AttValue");
+	token name									@Document("Attribute name."), @Color("AttName");
+	token value (XmlUnescapeAttributeValue)		@Document("Attribute value."), @Color("AttValue");
 }
 
 class Comment : Node							@Document("Comment node.")
