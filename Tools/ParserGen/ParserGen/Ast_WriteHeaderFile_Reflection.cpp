@@ -76,6 +76,10 @@ void WriteTypeReflectionDeclaration(ParsingSymbolManager* manager, const WString
 	}
 	
 	writer.WriteLine(L"#endif");
+
+	writer.WriteString(prefix);
+	writer.WriteLine(L"/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>");
+
 	writer.WriteString(prefix);
 	writer.WriteString(L"extern bool ");
 	writer.WriteString(config.classPrefix);

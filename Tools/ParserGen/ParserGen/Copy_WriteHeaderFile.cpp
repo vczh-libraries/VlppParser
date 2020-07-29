@@ -100,6 +100,7 @@ void WriteCopyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition,
 				}
 				MergeToFullDependency(fullDependency, visitorTypes, type, dependency);
 
+				writer.WriteLine(prefix + L"/// <summary>A copy visitor, overriding all abstract methods with AST copying code.</summary>");
 				writer.WriteString(prefix + L"class " + type->GetName() + L"Visitor : public virtual VisitorBase, public ");
 				PrintType(type, config.classPrefix, writer);
 				writer.WriteLine(L"::IVisitor");
@@ -127,6 +128,7 @@ void WriteCopyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition,
 			SortedList<ParsingSymbol*> visitedTypes;
 			SearchDependencies(rootType, &manager, visitedTypes, fullDependency);
 
+			writer.WriteLine(prefix + L"/// <summary>A copy visitor for the root node, overriding all abstract methods with AST copying code.</summary>");
 			writer.WriteLine(prefix + L"class " + rootType->GetName() + L"Visitor");
 			FOREACH_INDEXER(ParsingSymbol*, visitorType, index, visitorTypes)
 			{

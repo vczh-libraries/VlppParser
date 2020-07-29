@@ -50,6 +50,7 @@ void WriteEmptyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition
 					SearchDependencies(subType, &manager, visitedTypes, dependency);
 				}
 
+				writer.WriteLine(prefix + L"/// <summary>An empty visitor, overriding all abstract methods with empty implementations.</summary>");
 				writer.WriteString(prefix + L"class " + type->GetName() + L"Visitor : public Object, public ");
 				PrintType(type, config.classPrefix, writer);
 				writer.WriteLine(L"::IVisitor");

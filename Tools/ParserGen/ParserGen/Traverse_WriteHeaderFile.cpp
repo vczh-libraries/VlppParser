@@ -87,6 +87,7 @@ void WriteTraverseHeaderFile(const WString& name, Ptr<ParsingDefinition> definit
 				}
 				MergeToFullDependency(fullDependency, visitorTypes, type, dependency);
 
+				writer.WriteLine(prefix + L"/// <summary>A copy visitor, overriding all abstract methods with AST traversing code that looks into child nodes.</summary>");
 				writer.WriteString(prefix + L"class " + type->GetName() + L"Visitor : public Object, public ");
 				PrintType(type, config.classPrefix, writer);
 				writer.WriteLine(L"::IVisitor");
@@ -114,6 +115,7 @@ void WriteTraverseHeaderFile(const WString& name, Ptr<ParsingDefinition> definit
 			SortedList<ParsingSymbol*> visitedTypes;
 			SearchDependencies(rootType, &manager, visitedTypes, fullDependency);
 
+			writer.WriteLine(prefix + L"/// <summary>A copy visitor for the root node, overriding all abstract methods with AST traversing code that looks into child nodes.</summary>");
 			writer.WriteLine(prefix + L"class " + rootType->GetName() + L"Visitor");
 			FOREACH_INDEXER(ParsingSymbol*, visitorType, index, visitorTypes)
 			{

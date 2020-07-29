@@ -17,18 +17,30 @@ namespace vl
 	{
 		namespace json
 		{
+			/// <summary>Token types. Values of enum items will be used in <see cref="vl::regex::RegexToken::token"/>.</summary>
 			enum class JsonParserTokenIndex
 			{
+				/// <summary>Token TRUEVALUE: true</summary>
 				TRUEVALUE = 0,
+				/// <summary>Token FALSEVALUE: false</summary>
 				FALSEVALUE = 1,
+				/// <summary>Token NULLVALUE: null</summary>
 				NULLVALUE = 2,
+				/// <summary>Token OBJOPEN: \{</summary>
 				OBJOPEN = 3,
+				/// <summary>Token OBJCLOSE: \}</summary>
 				OBJCLOSE = 4,
+				/// <summary>Token ARROPEN: \[</summary>
 				ARROPEN = 5,
+				/// <summary>Token ARRCLOSE: \]</summary>
 				ARRCLOSE = 6,
+				/// <summary>Token COMMA: ,</summary>
 				COMMA = 7,
+				/// <summary>Token COLON: :</summary>
 				COLON = 8,
+				/// <summary>Token NUMBER: [\-]?\d+(.\d+)?([eE][+\-]?\d+)?</summary>
 				NUMBER = 9,
+				/// <summary>Token STRING: &quot;([^\\&quot;]|\\[^u]|\\u\d{4})*&quot;</summary>
 				STRING = 10,
 				SPACE = 11,
 			};
@@ -180,6 +192,7 @@ namespace vl
 			END_INTERFACE_PROXY(vl::parsing::json::JsonNode::IVisitor)
 
 #endif
+			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
 			extern bool JsonLoadTypes();
 		}
 	}
