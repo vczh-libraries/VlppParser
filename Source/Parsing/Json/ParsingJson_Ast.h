@@ -52,34 +52,56 @@ namespace vl
 			class JsonObjectField;
 			class JsonObject;
 
+			/// <summary>Base class of JSON nodes.</summary>
 			class JsonNode abstract : public vl::parsing::ParsingTreeCustomBase, vl::reflection::Description<JsonNode>
 			{
 			public:
+				/// <summary>Visitor interface for <see cref="JsonNode">.</summary>
 				class IVisitor : public vl::reflection::IDescriptable, vl::reflection::Description<IVisitor>
 				{
 				public:
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonLiteral">.</summary>
+					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonLiteral* node)=0;
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonString">.</summary>
+					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonString* node)=0;
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonNumber">.</summary>
+					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonNumber* node)=0;
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonArray">.</summary>
+					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonArray* node)=0;
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonObjectField">.</summary>
+					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonObjectField* node)=0;
+					/// <summary>A callback that is called if the node accepting this visitor is <see cref="JsonObject">.</summary>
+					/// <param name="node">The strong-typed AST node in its real type.</param>
 					virtual void Visit(JsonObject* node)=0;
 				};
 
+				/// <summary>Accept a visitor to reveal its real type of this strong-typed AST node.</summary>
+				/// <param name="visitor">The visitor, one of its <b>Visit</b> method will be called according to the real type of this strong-typed AST node.</param>
 				virtual void Accept(JsonNode::IVisitor* visitor)=0;
 
 			};
 
+			/// <summary>Literal value node that is not number or string.</summary>
 			class JsonLiteral : public JsonNode, vl::reflection::Description<JsonLiteral>
 			{
 			public:
+				/// <summary>Literal value.</summary>
 				enum class JsonValue
 				{
+					/// <summary>A boolean literal: true.</summary>
 					True,
+					/// <summary>A boolean literal: false.</summary>
 					False,
+					/// <summary>A null literal.</summary>
 					Null,
 				};
 
+				/// <summary>The literal value.</summary>
 				JsonValue value;
 
 				void Accept(JsonNode::IVisitor* visitor)override;
@@ -87,9 +109,11 @@ namespace vl
 				static vl::Ptr<JsonLiteral> Convert(vl::Ptr<vl::parsing::ParsingTreeNode> node, const vl::collections::List<vl::regex::RegexToken>& tokens);
 			};
 
+			/// <summary>String literal value node.</summary>
 			class JsonString : public JsonNode, vl::reflection::Description<JsonString>
 			{
 			public:
+				/// <summary>Content of the string literal.</summary>
 				vl::parsing::ParsingToken content;
 
 				void Accept(JsonNode::IVisitor* visitor)override;
@@ -97,9 +121,11 @@ namespace vl
 				static vl::Ptr<JsonString> Convert(vl::Ptr<vl::parsing::ParsingTreeNode> node, const vl::collections::List<vl::regex::RegexToken>& tokens);
 			};
 
+			/// <summary>Number literal value node.</summary>
 			class JsonNumber : public JsonNode, vl::reflection::Description<JsonNumber>
 			{
 			public:
+				/// <summary>Content of the number literal.</summary>
 				vl::parsing::ParsingToken content;
 
 				void Accept(JsonNode::IVisitor* visitor)override;
@@ -107,9 +133,11 @@ namespace vl
 				static vl::Ptr<JsonNumber> Convert(vl::Ptr<vl::parsing::ParsingTreeNode> node, const vl::collections::List<vl::regex::RegexToken>& tokens);
 			};
 
+			/// <summary>Array node.</summary>
 			class JsonArray : public JsonNode, vl::reflection::Description<JsonArray>
 			{
 			public:
+				/// <summary>Array elements.</summary>
 				vl::collections::List<vl::Ptr<JsonNode>> items;
 
 				void Accept(JsonNode::IVisitor* visitor)override;
@@ -117,10 +145,13 @@ namespace vl
 				static vl::Ptr<JsonArray> Convert(vl::Ptr<vl::parsing::ParsingTreeNode> node, const vl::collections::List<vl::regex::RegexToken>& tokens);
 			};
 
+			/// <summary>Object property node.</summary>
 			class JsonObjectField : public JsonNode, vl::reflection::Description<JsonObjectField>
 			{
 			public:
+				/// <summary>Property name.</summary>
 				vl::parsing::ParsingToken name;
+				/// <summary>Property value.</summary>
 				vl::Ptr<JsonNode> value;
 
 				void Accept(JsonNode::IVisitor* visitor)override;
@@ -128,9 +159,11 @@ namespace vl
 				static vl::Ptr<JsonObjectField> Convert(vl::Ptr<vl::parsing::ParsingTreeNode> node, const vl::collections::List<vl::regex::RegexToken>& tokens);
 			};
 
+			/// <summary>Object node.</summary>
 			class JsonObject : public JsonNode, vl::reflection::Description<JsonObject>
 			{
 			public:
+				/// <summary>Object properties.</summary>
 				vl::collections::List<vl::Ptr<JsonObjectField>> fields;
 
 				void Accept(JsonNode::IVisitor* visitor)override;
