@@ -208,31 +208,59 @@ Metadata(Rules):
 
 Metadata(Classes):
     Attribute
+        @Document("Attribute node.")
+        @Document("Base class of XML nodes.")
     CData
+        @Document("CData node.")
+        @Document("Base class of XML nodes.")
     Comment
+        @Document("Comment node.")
+        @Document("Base class of XML nodes.")
     Document
+        @Document("XML document node.")
+        @Document("Base class of XML nodes.")
     Element
+        @Document("Element node.")
+        @Document("Base class of XML nodes.")
     Instruction
+        @Document("Instruction node.")
+        @Document("Base class of XML nodes.")
     Node
+        @Document("Base class of XML nodes.")
     Text
+        @Document("Text node.")
+        @Document("Base class of XML nodes.")
 
 Metadata(Class Members):
     Attribute.name
+        @Document("Attribute name.")
         @Color("AttName")
     Attribute.value
+        @Document("Attribute value.")
         @Color("AttValue")
     CData.content
+        @Document("Content of the cdata node")
     Comment.content
+        @Document("Content of the comment node.")
     Document.prologs
+        @Document("Prologue nodes, for instructions and comments.")
     Document.rootElement
+        @Document("Root element of the XML document.")
     Element.attributes
+        @Document("Attributes of the element.")
     Element.closingName
+        @Document("(Optional): Element name of the closing element node. The name is ignored when serializing XML to text.")
         @Color("TagName")
     Element.name
+        @Document("Element name of the open element node.")
         @Color("TagName")
     Element.subNodes
+        @Document("Sub nodes for element nodes, text nodes, cdata nodes and comment nodes.")
     Instruction.attributes
+        @Document("Attributes of the instruction.")
     Instruction.name
+        @Document("Name of the instruction.")
         @Color("TagName")
     Text.content
+        @Document("Content of the text node.")
 

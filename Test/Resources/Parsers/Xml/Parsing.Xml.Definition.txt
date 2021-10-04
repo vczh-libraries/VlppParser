@@ -1,49 +1,49 @@
 ﻿=============================================================
 Grammar Definition
 =============================================================
-class Node
+class Node @Document("Base class of XML nodes.")
 {
 }
 
-class Text : Node
+class Text : Node @Document("Text node.")
 {
-    token content;
+    token content @Document("Content of the text node.");
 }
 
-class CData : Node
+class CData : Node @Document("CData node.")
 {
-    token content (XmlUnescapeCData);
+    token content (XmlUnescapeCData) @Document("Content of the cdata node");
 }
 
-class Attribute : Node
+class Attribute : Node @Document("Attribute node.")
 {
-    token name @Color("AttName");
-    token value (XmlUnescapeAttributeValue) @Color("AttValue");
+    token name @Document("Attribute name."), @Color("AttName");
+    token value (XmlUnescapeAttributeValue) @Document("Attribute value."), @Color("AttValue");
 }
 
-class Comment : Node
+class Comment : Node @Document("Comment node.")
 {
-    token content (XmlUnescapeComment);
+    token content (XmlUnescapeComment) @Document("Content of the comment node.");
 }
 
-class Element : Node
+class Element : Node @Document("Element node.")
 {
-    token name @Color("TagName");
-    token closingName @Color("TagName");
-    Attribute[] attributes;
-    Node[] subNodes (XmlMergeTextFragment);
+    token name @Document("Element name of the open element node."), @Color("TagName");
+    token closingName @Document("(Optional): Element name of the closing element node. The name is ignored when serializing XML to text."), @Color("TagName");
+    Attribute[] attributes @Document("Attributes of the element.");
+    Node[] subNodes (XmlMergeTextFragment) @Document("Sub nodes for element nodes, text nodes, cdata nodes and comment nodes.");
 }
 
-class Instruction : Node
+class Instruction : Node @Document("Instruction node.")
 {
-    token name @Color("TagName");
-    Attribute[] attributes;
+    token name @Document("Name of the instruction."), @Color("TagName");
+    Attribute[] attributes @Document("Attributes of the instruction.");
 }
 
-class Document : Node
+class Document : Node @Document("XML document node.")
 {
-    Node[] prologs;
-    Element rootElement;
+    Node[] prologs @Document("Prologue nodes, for instructions and comments.");
+    Element rootElement @Document("Root element of the XML document.");
 }
 
 token INSTRUCTION_OPEN = "/</?" @Color("Boundary");

@@ -167,21 +167,41 @@ Metadata(Rules):
 
 Metadata(Classes):
     Array
+        @Document("Array node.")
+        @Document("Base class of JSON nodes.")
     Literal
+        @Document("Literal value node that is not number or string.")
+        @Document("Base class of JSON nodes.")
     Node
+        @Document("Base class of JSON nodes.")
     Number
+        @Document("Number literal value node.")
+        @Document("Base class of JSON nodes.")
     Object
+        @Document("Object node.")
+        @Document("Base class of JSON nodes.")
     ObjectField
+        @Document("Object property node.")
+        @Document("Base class of JSON nodes.")
     String
+        @Document("String literal value node.")
+        @Document("Base class of JSON nodes.")
 
 Metadata(Class Members):
     Array.items
+        @Document("Array elements.")
     Literal.value
+        @Document("The literal value.")
     Number.content
+        @Document("Content of the number literal.")
     Object.fields
+        @Document("Object properties.")
     ObjectField.name
+        @Document("Property name.")
         @Color("AttName")
     ObjectField.value
+        @Document("Property value.")
     String.content
+        @Document("Content of the string literal.")
         @Color("String")
 
