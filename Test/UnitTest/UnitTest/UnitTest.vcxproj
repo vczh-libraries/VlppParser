@@ -157,13 +157,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Common.cpp" />
-    <ClCompile Include="..\..\Source\TestJson.cpp" />
     <ClCompile Include="..\..\Source\TestParsing.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Source\TestWorkflow.cpp" />
-    <ClCompile Include="..\..\Source\TestXml.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
