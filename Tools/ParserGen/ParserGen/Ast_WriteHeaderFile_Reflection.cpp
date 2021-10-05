@@ -34,6 +34,8 @@ void WriteTypeReflectionDeclaration(ParsingSymbolManager* manager, const WString
 	}
 	
 	writer.WriteLine(L"");
+	writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
+	writer.WriteLine(L"");
 	FOREACH(ParsingSymbol*, type, types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
@@ -74,7 +76,8 @@ void WriteTypeReflectionDeclaration(ParsingSymbolManager* manager, const WString
 			}
 		}
 	}
-	
+
+	writer.WriteLine(L"#endif");
 	writer.WriteLine(L"#endif");
 
 	writer.WriteString(prefix);

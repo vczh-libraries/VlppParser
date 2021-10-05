@@ -209,6 +209,8 @@ namespace vl
 			DECL_TYPE_INFO(vl::parsing::xml::XmlDocument)
 			DECL_TYPE_INFO(vl::parsing::xml::XmlNode::IVisitor)
 
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
 			BEGIN_INTERFACE_PROXY_NOPARENT_SHAREDPTR(vl::parsing::xml::XmlNode::IVisitor)
 				void Visit(vl::parsing::xml::XmlText* node)override
 				{
@@ -247,6 +249,7 @@ namespace vl
 
 			END_INTERFACE_PROXY(vl::parsing::xml::XmlNode::IVisitor)
 
+#endif
 #endif
 			/// <summary>Load all reflectable AST types, only available when <b>VCZH_DEBUG_NO_REFLECTION</b> is off.</summary>
 			/// <returns>Returns true if this operation succeeded.</returns>
