@@ -941,6 +941,7 @@ namespace vl
 Type Declaration
 ***********************************************************************/
 
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 #define _ ,
 
 			BEGIN_STRUCT_MEMBER(ParsingTextPos)
@@ -1029,6 +1030,7 @@ Type Declaration
 				CLASS_MEMBER_FIELD(errorMessage)
 			END_CLASS_MEMBER(ParsingError)
 #undef _
+#endif
 		}
 	}
 }
@@ -1046,7 +1048,7 @@ namespace vl
 Type Loader
 ***********************************************************************/
 			
-#ifndef VCZH_DEBUG_NO_REFLECTION
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 			class ParsingTypeLoader : public Object, public ITypeLoader
 			{
 			public:
@@ -1063,7 +1065,7 @@ Type Loader
 
 			bool LoadParsingTypes()
 			{
-#ifndef VCZH_DEBUG_NO_REFLECTION
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				ITypeManager* manager=GetGlobalTypeManager();
 				if(manager)
 				{
