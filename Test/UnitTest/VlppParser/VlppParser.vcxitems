@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{4a6e8593-d893-4605-8df1-eeebd47c63e8}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Parsing.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAnalyzer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAutomaton.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAutomaton_Closure.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAutomaton_EPDA.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAutomaton_GenerateTable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAutomaton_JPDA.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAutomaton_MergeStates.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAutomaton_NPDA.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingDefinitions.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingDefinitions_CreateParserDefinition.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingLogging.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingState.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingTable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingTree.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Parsing.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAnalyzer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingAutomaton.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingDefinitions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingState.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingTable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\ParsingTree.h" />
+  </ItemGroup>
+</Project>

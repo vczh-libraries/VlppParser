@@ -74,6 +74,11 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
+  <ImportGroup Label="Shared">
+    <Import Project="..\VlppImport\VlppImport.vcxitems" Label="Shared" />
+    <Import Project="..\VlppParser\VlppParser.vcxitems" Label="Shared" />
+    <Import Project="..\VlppParser_Generated\VlppParser_Generated.vcxitems" Label="Shared" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -216,31 +221,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Import\Vlpp.cpp" />
-    <ClCompile Include="..\..\..\Import\VlppOS.cpp" />
-    <ClCompile Include="..\..\..\Import\VlppReflection.cpp" />
-    <ClCompile Include="..\..\..\Import\VlppRegex.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\Json\ParsingJson.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\Json\ParsingJson_Ast.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\Json\ParsingJson_Parser.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\Parsing.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingAnalyzer.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_Closure.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_EPDA.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_GenerateTable.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_JPDA.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_MergeStates.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingAutomaton_NPDA.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingDefinitions.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingDefinitions_CreateParserDefinition.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingLogging.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingState.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingTable.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\ParsingTree.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml_Ast.cpp" />
-    <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml_Parser.cpp" />
     <ClCompile Include="..\..\Source\Common.cpp" />
     <ClCompile Include="..\..\Source\TestJson.cpp" />
     <ClCompile Include="..\..\Source\TestParsing.cpp">
@@ -253,28 +233,7 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Import\Vlpp.h" />
-    <ClInclude Include="..\..\..\Import\VlppOS.h" />
-    <ClInclude Include="..\..\..\Import\VlppReflection.h" />
-    <ClInclude Include="..\..\..\Import\VlppRegex.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\Json\ParsingJson.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\Json\ParsingJson_Ast.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\Json\ParsingJson_Parser.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\Parsing.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\ParsingAnalyzer.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\ParsingAutomaton.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\ParsingDefinitions.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\ParsingState.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\ParsingTable.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\ParsingTree.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml_Ast.h" />
-    <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml_Parser.h" />
     <ClInclude Include="..\..\Source\Common.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\Source\Parsing\Json\ParsingJson.parser.txt" />
-    <Text Include="..\..\..\Source\Parsing\Xml\ParsingXml.parser.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

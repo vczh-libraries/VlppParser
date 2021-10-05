@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{7797f674-265a-4a2a-acdd-ccd91074c67a}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson_Ast.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson_Parser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml_Ast.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml_Parser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson_Ast.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson_Parser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml_Ast.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml_Parser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson.parser.txt" />
+    <Text Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml.parser.txt" />
+  </ItemGroup>
+</Project>

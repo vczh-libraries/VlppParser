@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{a0f12141-32d6-47d6-8633-61bfe909da3e}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\Vlpp.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppOS.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppReflection.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppRegex.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Import\Vlpp.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppOS.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppReflection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Import\VlppRegex.h" />
+  </ItemGroup>
+</Project>

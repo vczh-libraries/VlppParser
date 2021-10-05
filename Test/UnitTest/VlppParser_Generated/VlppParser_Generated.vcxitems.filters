@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Json">
+      <UniqueIdentifier>{130d7abd-2f52-4a59-abf4-7c93dbb01520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Xml">
+      <UniqueIdentifier>{7742b141-33cf-478e-82ca-281399213d39}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson_Ast.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson_Parser.cpp">
+      <Filter>Json</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml.cpp">
+      <Filter>Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml_Ast.cpp">
+      <Filter>Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml_Parser.cpp">
+      <Filter>Xml</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson_Ast.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson_Parser.h">
+      <Filter>Json</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml.h">
+      <Filter>Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml_Ast.h">
+      <Filter>Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml_Parser.h">
+      <Filter>Xml</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Json\ParsingJson.parser.txt">
+      <Filter>Json</Filter>
+    </Text>
+    <Text Include="$(MSBuildThisFileDirectory)..\..\..\Source\Parsing\Xml\ParsingXml.parser.txt">
+      <Filter>Xml</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
