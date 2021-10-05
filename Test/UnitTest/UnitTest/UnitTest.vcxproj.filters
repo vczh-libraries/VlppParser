@@ -111,6 +111,12 @@
     <ClCompile Include="..\..\..\Import\VlppOS.cpp">
       <Filter>Import</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\TestXml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\TestJson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Parsing\Parsing.h">

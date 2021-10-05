@@ -1,6 +1,4 @@
-#include <string.h>
-#include "../../Source/Parsing/ParsingAutomaton.h"
-#include "../../Source/Parsing/Parsing.h"
+#include "../../Source/Parsing/Xml/ParsingXml.h"
 
 using namespace vl;
 using namespace vl::stream;
@@ -10,6 +8,7 @@ using namespace vl::parsing;
 using namespace vl::parsing::definitions;
 using namespace vl::parsing::analyzing;
 using namespace vl::parsing::tabling;
+using namespace vl::parsing::xml;
 using namespace vl::filesystem;
 
 #if defined(VCZH_GCC) && defined(__clang__)
