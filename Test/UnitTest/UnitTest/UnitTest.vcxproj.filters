@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\Source\TestJson.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\Parsing\Parsing.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Import\VlppOS.h">
       <Filter>Import</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Common.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

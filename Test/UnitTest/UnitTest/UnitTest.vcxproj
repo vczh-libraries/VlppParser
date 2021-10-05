@@ -241,6 +241,7 @@
     <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml.cpp" />
     <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml_Ast.cpp" />
     <ClCompile Include="..\..\..\Source\Parsing\Xml\ParsingXml_Parser.cpp" />
+    <ClCompile Include="..\..\Source\Common.cpp" />
     <ClCompile Include="..\..\Source\TestJson.cpp" />
     <ClCompile Include="..\..\Source\TestParsing.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -268,6 +269,7 @@
     <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml.h" />
     <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml_Ast.h" />
     <ClInclude Include="..\..\..\Source\Parsing\Xml\ParsingXml_Parser.h" />
+    <ClInclude Include="..\..\Source\Common.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\Source\Parsing\Json\ParsingJson.parser.txt" />
