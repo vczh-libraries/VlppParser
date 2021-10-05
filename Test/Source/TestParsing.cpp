@@ -106,14 +106,6 @@ TEST_FILE
 		}
 	});
 
-#ifdef NDEBUG
-	TEST_CATEGORY(L"Workflow")
-	{
-		Ptr<ParsingDefinition> definition = LoadDefinition(L"Workflow");
-		Ptr<ParsingTable> table = CreateTable(definition, L"Workflow", true);
-	});
-#endif
-
 	TEST_CATEGORY(L"AmbiguousExpression")
 	{
 		Ptr<ParsingDefinition> definition = LoadDefinition(L"AmbiguousExpression");
