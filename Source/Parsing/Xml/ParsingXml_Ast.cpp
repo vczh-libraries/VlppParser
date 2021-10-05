@@ -81,6 +81,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::parsing::xml::XmlDocument, system::XmlDocument)
 			IMPL_TYPE_INFO_RENAME(vl::parsing::xml::XmlNode::IVisitor, system::XmlNode::IVisitor)
 
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
 			BEGIN_CLASS_MEMBER(XmlNode)
 				CLASS_MEMBER_METHOD_OVERLOAD(Accept, {L"visitor"}, void(XmlNode::*)(XmlNode::IVisitor* visitor))
 			END_CLASS_MEMBER(XmlNode)
@@ -157,6 +159,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(XmlNode::IVisitor::*)(XmlDocument* node))
 			END_INTERFACE_MEMBER(XmlNode)
 
+#endif
 #undef PARSING_TOKEN_FIELD
 
 			class XmlTypeLoader : public vl::Object, public ITypeLoader
@@ -164,6 +167,7 @@ namespace vl
 			public:
 				void Load(ITypeManager* manager)
 				{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 					ADD_TYPE_INFO(vl::parsing::xml::XmlNode)
 					ADD_TYPE_INFO(vl::parsing::xml::XmlText)
 					ADD_TYPE_INFO(vl::parsing::xml::XmlCData)
@@ -173,6 +177,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::parsing::xml::XmlInstruction)
 					ADD_TYPE_INFO(vl::parsing::xml::XmlDocument)
 					ADD_TYPE_INFO(vl::parsing::xml::XmlNode::IVisitor)
+#endif
 				}
 
 				void Unload(ITypeManager* manager)
@@ -183,7 +188,7 @@ namespace vl
 
 			bool XmlLoadTypes()
 			{
-#ifndef VCZH_DEBUG_NO_REFLECTION
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				ITypeManager* manager=GetGlobalTypeManager();
 				if(manager)
 				{

@@ -76,6 +76,8 @@ namespace vl
 			IMPL_TYPE_INFO_RENAME(vl::parsing::json::JsonObject, system::JsonObject)
 			IMPL_TYPE_INFO_RENAME(vl::parsing::json::JsonNode::IVisitor, system::JsonNode::IVisitor)
 
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
+
 			BEGIN_CLASS_MEMBER(JsonNode)
 				CLASS_MEMBER_METHOD_OVERLOAD(Accept, {L"visitor"}, void(JsonNode::*)(JsonNode::IVisitor* visitor))
 			END_CLASS_MEMBER(JsonNode)
@@ -145,6 +147,7 @@ namespace vl
 				CLASS_MEMBER_METHOD_OVERLOAD(Visit, {L"node"}, void(JsonNode::IVisitor::*)(JsonObject* node))
 			END_INTERFACE_MEMBER(JsonNode)
 
+#endif
 #undef PARSING_TOKEN_FIELD
 
 			class JsonTypeLoader : public vl::Object, public ITypeLoader
@@ -152,6 +155,7 @@ namespace vl
 			public:
 				void Load(ITypeManager* manager)
 				{
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 					ADD_TYPE_INFO(vl::parsing::json::JsonNode)
 					ADD_TYPE_INFO(vl::parsing::json::JsonLiteral)
 					ADD_TYPE_INFO(vl::parsing::json::JsonLiteral::JsonValue)
@@ -161,6 +165,7 @@ namespace vl
 					ADD_TYPE_INFO(vl::parsing::json::JsonObjectField)
 					ADD_TYPE_INFO(vl::parsing::json::JsonObject)
 					ADD_TYPE_INFO(vl::parsing::json::JsonNode::IVisitor)
+#endif
 				}
 
 				void Unload(ITypeManager* manager)
@@ -171,7 +176,7 @@ namespace vl
 
 			bool JsonLoadTypes()
 			{
-#ifndef VCZH_DEBUG_NO_REFLECTION
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 				ITypeManager* manager=GetGlobalTypeManager();
 				if(manager)
 				{

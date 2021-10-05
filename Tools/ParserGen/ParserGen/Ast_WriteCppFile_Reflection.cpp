@@ -57,6 +57,9 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 		}
 	}
 
+	writer.WriteLine(L"");
+	writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
+
 	FOREACH(ParsingSymbol*, type, types)
 	{
 		switch (type->GetType())
@@ -197,6 +200,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 	}
 
 	writer.WriteLine(L"");
+	writer.WriteLine(L"#endif");
 	writer.WriteLine(L"#undef PARSING_TOKEN_FIELD");
 
 	writer.WriteLine(L"");
@@ -214,6 +218,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 	writer.WriteString(prefix);
 	writer.WriteLine(L"\t{");
 
+	writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 	FOREACH(ParsingSymbol*, type, types)
 	{
 		writer.WriteString(prefix);
@@ -239,6 +244,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 			}
 		}
 	}
+	writer.WriteLine(L"#endif");
 
 	writer.WriteString(prefix);
 	writer.WriteLine(L"\t}");
@@ -263,7 +269,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 	writer.WriteLine(L"LoadTypes()");
 	writer.WriteString(prefix);
 	writer.WriteLine(L"{");
-	writer.WriteLine(L"#ifndef VCZH_DEBUG_NO_REFLECTION");
+	writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 
 	writer.WriteString(prefix);
 	writer.WriteLine(L"\tITypeManager* manager=GetGlobalTypeManager();");
