@@ -162,12 +162,12 @@ namespace vl
 #endif
 #undef PARSING_TOKEN_FIELD
 
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 			class XmlTypeLoader : public vl::Object, public ITypeLoader
 			{
 			public:
 				void Load(ITypeManager* manager)
 				{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 					ADD_TYPE_INFO(vl::parsing::xml::XmlNode)
 					ADD_TYPE_INFO(vl::parsing::xml::XmlText)
 					ADD_TYPE_INFO(vl::parsing::xml::XmlCData)
@@ -177,7 +177,6 @@ namespace vl
 					ADD_TYPE_INFO(vl::parsing::xml::XmlInstruction)
 					ADD_TYPE_INFO(vl::parsing::xml::XmlDocument)
 					ADD_TYPE_INFO(vl::parsing::xml::XmlNode::IVisitor)
-#endif
 				}
 
 				void Unload(ITypeManager* manager)
@@ -185,14 +184,15 @@ namespace vl
 				}
 			};
 #endif
+#endif
 
 			bool XmlLoadTypes()
 			{
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				ITypeManager* manager=GetGlobalTypeManager();
+				ITypeManager* manager = GetGlobalTypeManager();
 				if(manager)
 				{
-					Ptr<ITypeLoader> loader=new XmlTypeLoader;
+					Ptr<ITypeLoader> loader = new XmlTypeLoader;
 					return manager->AddTypeLoader(loader);
 				}
 #endif

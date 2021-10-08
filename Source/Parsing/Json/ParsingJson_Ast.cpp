@@ -150,12 +150,12 @@ namespace vl
 #endif
 #undef PARSING_TOKEN_FIELD
 
+#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 			class JsonTypeLoader : public vl::Object, public ITypeLoader
 			{
 			public:
 				void Load(ITypeManager* manager)
 				{
-#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
 					ADD_TYPE_INFO(vl::parsing::json::JsonNode)
 					ADD_TYPE_INFO(vl::parsing::json::JsonLiteral)
 					ADD_TYPE_INFO(vl::parsing::json::JsonLiteral::JsonValue)
@@ -165,7 +165,6 @@ namespace vl
 					ADD_TYPE_INFO(vl::parsing::json::JsonObjectField)
 					ADD_TYPE_INFO(vl::parsing::json::JsonObject)
 					ADD_TYPE_INFO(vl::parsing::json::JsonNode::IVisitor)
-#endif
 				}
 
 				void Unload(ITypeManager* manager)
@@ -173,14 +172,15 @@ namespace vl
 				}
 			};
 #endif
+#endif
 
 			bool JsonLoadTypes()
 			{
 #ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA
-				ITypeManager* manager=GetGlobalTypeManager();
+				ITypeManager* manager = GetGlobalTypeManager();
 				if(manager)
 				{
-					Ptr<ITypeLoader> loader=new JsonTypeLoader;
+					Ptr<ITypeLoader> loader = new JsonTypeLoader;
 					return manager->AddTypeLoader(loader);
 				}
 #endif
