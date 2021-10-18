@@ -1,18 +1,26 @@
-#include "../../Import/Vlpp.h"
+#include <VlppOS.h>
 
 using namespace vl;
+using namespace vl::filesystem;
 
 WString GetTestResourcePath()
 {
-	return L"../Resources/";
+	return L"../../Resources/";
 }
 
 WString GetTestOutputPath()
 {
-	return L"../Output/";
+	return L"../../Output/";
 }
 
-int main(int argc, char* argv[])
+TEST_FILE
 {
-	return unittest::UnitTest::RunAndDisposeTests(argc, argv);
+	TEST_CASE_ASSERT(Folder(GetTestOutputPath()).Exists());
+}
+
+int main(int argc, char_t* argv[])
+{
+	int result = unittest::UnitTest::RunAndDisposeTests(argc, argv);
+	FinalizeGlobalStorage();
+	return result;
 }

@@ -1,0 +1,15 @@
+<#
+CPP_TARGET=./Bin/UnitTest
+CPP_VCXPROJS=(
+    "../../UnitTest/VlppImport/VlppImport.vcxitems"
+    "../../UnitTest/VlppParser/VlppParser.vcxitems"
+    "../../UnitTest/VlppParser_Generated/VlppParser_Generated.vcxitems"
+    "../../UnitTest/UnitTest_Generated_Metaonly/UnitTest_Generated_Metaonly.vcxproj"
+    )
+CPP_REMOVES=("../../UnitTest/UnitTest/Main.cpp")
+CPP_ADDS=("../Main.cpp")
+FOLDERS=("../../Output")
+TARGETS=("${CPP_TARGET}")
+CPP_COMPILE_OPTIONS="-I ../../../Import -DVCZH_DEBUG_METAONLY_REFLECTION"
+#>
+<#@ include "${VCPROOT}/vl/vmake-cpp" #>
