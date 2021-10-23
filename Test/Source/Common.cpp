@@ -161,7 +161,7 @@ namespace test
 						{
 							tokenName = table->GetDiscardTokenInfo(table->GetTableDiscardTokenIndex(token.token)).name;
 						}
-						writer.WriteLine(tokenName + L": " + WString(token.reading, token.length));
+						writer.WriteLine(tokenName + L": " + WString::CopyFrom(token.reading, token.length));
 					}
 				}
 
@@ -220,7 +220,7 @@ namespace test
 									writer.WriteString(L"[");
 									if (result.token)
 									{
-										writer.WriteString(WString(result.token->reading, result.token->length));
+										writer.WriteString(WString::CopyFrom(result.token->reading, result.token->length));
 									}
 									writer.WriteString(L"] => ");
 								}

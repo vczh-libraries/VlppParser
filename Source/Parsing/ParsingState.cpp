@@ -888,7 +888,7 @@ ParsingTreeBuilder
 										}
 										else
 										{
-											value=new ParsingTreeToken(WString(result.token->reading, result.token->length), result.tokenIndexInStream);
+											value=new ParsingTreeToken(WString::CopyFrom(result.token->reading, result.token->length), result.tokenIndexInStream);
 											value->SetCodeRange(ParsingTextRange(result.token, result.token));
 										}
 										operationTarget->SetMember(ins.nameParameter, value);
@@ -919,7 +919,7 @@ ParsingTreeBuilder
 										}
 										else
 										{
-											value=new ParsingTreeToken(WString(result.token->reading, result.token->length), result.tokenIndexInStream);
+											value=new ParsingTreeToken(WString::CopyFrom(result.token->reading, result.token->length), result.tokenIndexInStream);
 											value->SetCodeRange(ParsingTextRange(result.token, result.token));
 											itemRange=value->GetCodeRange();
 										}
