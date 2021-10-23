@@ -9,7 +9,7 @@ FilePath GetCommonFolder(
 	{
 		if (From(paths).All([&](const FilePath& path)
 		{
-			return INVLOC.StartsWith(path.GetFullPath(), folder.GetFullPath() + WString(folder.Delimiter), Locale::IgnoreCase);
+			return INVLOC.StartsWith(path.GetFullPath(), folder.GetFullPath() + WString::FromChar(folder.Delimiter), Locale::IgnoreCase);
 		}))
 		{
 			return folder;
