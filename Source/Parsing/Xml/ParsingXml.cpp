@@ -63,7 +63,7 @@ Unescaping Function Foward Declarations
 						const RegexToken& endToken=tokens.Get(tokenEnd);
 						const wchar_t* textBegin=beginToken.reading;
 						const wchar_t* textEnd=endToken.reading+endToken.length;
-						WString text(textBegin, vint(textEnd-textBegin));
+						WString text=WString::CopyFrom(textBegin, vint(textEnd-textBegin));
 						ParsingTextRange range(&beginToken, &endToken);
 
 						Ptr<XmlText> xmlText=new XmlText;
@@ -208,7 +208,7 @@ API
 						result+=L"&quot;";
 						break;
 					default:
-						result+=c;
+						result+=WString::FromChar(c);
 					}
 				}
 				return result;
@@ -222,32 +222,32 @@ API
 				{
 					if(wcsncmp(reading, L"&lt;", 4)==0)
 					{
-						result+=L'<';
+						result+=WString::FromChar(L'<');
 						reading+=4;
 					}
 					else if(wcsncmp(reading, L"&gt;", 4)==0)
 					{
-						result+=L'>';
+						result+=WString::FromChar(L'>');
 						reading+=4;
 					}
 					else if(wcsncmp(reading, L"&amp;", 5)==0)
 					{
-						result+=L'&';
+						result+=WString::FromChar(L'&');
 						reading+=5;
 					}
 					else if(wcsncmp(reading, L"&apos;", 6)==0)
 					{
-						result+=L'\'';
+						result+=WString::FromChar(L'\'');
 						reading+=6;
 					}
 					else if(wcsncmp(reading, L"&quot;", 6)==0)
 					{
-						result+=L'\"';
+						result+=WString::FromChar(L'\"');
 						reading+=6;
 					}
 					else
 					{
-						result+=*reading++;
+						result+=WString::FromChar(*reading++);
 					}
 				}
 				return result;
