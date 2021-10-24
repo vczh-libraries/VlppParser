@@ -345,10 +345,10 @@ ParsingState
 				if(item->lookAheads.Count()>0 && lookAheadTokens)
 				{
 					passLookAheadTest=false;
-					FOREACH(Ptr<ParsingTable::LookAheadInfo>, info, item->lookAheads)
+					for (auto info : item->lookAheads)
 					{
 						vint index=0;
-						FOREACH(vint, token, *lookAheadTokens)
+						for (auto token : *lookAheadTokens)
 						{
 							if(info->tokens[index]!=token)
 							{
@@ -827,7 +827,7 @@ ParsingTreeBuilder
 						{
 							Ptr<ParsingTreeObject> ambiguousNode=new ParsingTreeObject(result.ambiguityNodeType, operationTarget->GetCodeRange());
 							Ptr<ParsingTreeArray> items=new ParsingTreeArray(L"", operationTarget->GetCodeRange());
-							FOREACH(Ptr<ParsingTreeObject>, node, ambiguityNodes)
+							for (auto node : ambiguityNodes)
 							{
 								items->AddItem(node);
 							}

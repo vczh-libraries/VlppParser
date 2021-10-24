@@ -233,7 +233,7 @@ ParsingAutoRecoverParser
 						processingFutureIndex++;
 						if(previous.future && previous.future->currentState==-1) continue;
 
-						FOREACH(vint, currentTableTokenIndex, prioritizedTokens)
+						for (auto currentTableTokenIndex : prioritizedTokens)
 						{
 							vint newInsertedTokenCount = previous.insertedTokenCount;
 							if (currentTableTokenIndex != ParsingTable::NormalReduce && currentTableTokenIndex != ParsingTable::LeftRecursiveReduce)
@@ -314,7 +314,7 @@ ParsingAutoRecoverParser
 
 			ParsingAutoRecoverParser::~ParsingAutoRecoverParser()
 			{
-				FOREACH(RecoverFuture, future, recoverFutures)
+				for (auto future : recoverFutures)
 				{
 					delete future.future;
 				}
@@ -720,7 +720,7 @@ ParsingAmbiguousParser
 					vint resolvableFutureLevels=SearchPathForOneStep(state, futures, resultBegin, resultEnd, errors);
 					BuildDecisions(state, futures, resultBegin, resultEnd, resolvableFutureLevels, errors);
 
-					FOREACH(ParsingState::Future*, future, futures)
+					for (auto future : futures)
 					{
 						delete future;
 					}
@@ -804,7 +804,7 @@ ParsingAutoRecoverAmbiguousParser
 					{
 						// try to see if the target token is reached
 						List<ParsingState::Future*> recoveryFutures;
-						FOREACH(ParsingState::Future*, future, consumedTokenFutures)
+						for (auto future : consumedTokenFutures)
 						{
 							if (future->selectedToken == currentTokenIndex)
 							{
@@ -818,7 +818,7 @@ ParsingAutoRecoverAmbiguousParser
 							// finally reached the expected currentTokenIndex
 							// move these previous futures to the end
 							// then the original parser algorith, will use these previous futures to reach the currentTokenIndex in the next step
-							FOREACH(ParsingState::Future*, future, recoveryFutures)
+							for (auto future : recoveryFutures)
 							{
 								futures.Remove(future);
 								futures.Add(future);
@@ -827,7 +827,7 @@ ParsingAutoRecoverAmbiguousParser
 							end = futures.Count();
 
 							// delete all futures in consumedTokenFutures
-							FOREACH(ParsingState::Future*, future, consumedTokenFutures)
+							for (auto future : consumedTokenFutures)
 							{
 								delete future;
 							}

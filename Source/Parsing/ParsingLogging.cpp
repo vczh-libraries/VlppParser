@@ -533,13 +533,13 @@ Logger (ParsingDefinitionGrammar)
 
 			void Log(Ptr<ParsingDefinition> definition, TextWriter& writer)
 			{
-				FOREACH(Ptr<ParsingDefinitionTypeDefinition>, type, definition->types)
+				for (auto type : definition->types)
 				{
 					Log(type.Obj(), L"", writer);
 					writer.WriteLine(L"");
 				}
 
-				FOREACH(Ptr<ParsingDefinitionTokenDefinition>, token, definition->tokens)
+				for (auto token : definition->tokens)
 				{
 					if(token->discard)
 					{
@@ -557,7 +557,7 @@ Logger (ParsingDefinitionGrammar)
 				}
 				writer.WriteLine(L"");
 
-				FOREACH(Ptr<ParsingDefinitionRuleDefinition>, rule, definition->rules)
+				for (auto rule : definition->rules)
 				{
 					writer.WriteString(L"rule ");
 					Log(rule->type.Obj(), writer);
@@ -566,7 +566,7 @@ Logger (ParsingDefinitionGrammar)
 					LogAttributeList(rule.Obj(), writer);
 					writer.WriteLine(L"");
 
-					FOREACH(Ptr<ParsingDefinitionGrammar>, grammar, rule->grammars)
+					for (auto grammar : rule->grammars)
 					{
 						writer.WriteString(L"        = ");
 						Log(grammar.Obj(), writer);
@@ -608,7 +608,7 @@ Logger (Automaton)
 
 			void Log(Ptr<Automaton> automaton, stream::TextWriter& writer)
 			{
-				FOREACH(Ptr<RuleInfo>, ruleInfo, automaton->ruleInfos)
+				for (auto ruleInfo : automaton->ruleInfos)
 				{
 					writer.WriteString(L"Root Rule Start: ");
 					writer.WriteLine(ruleInfo->rootRuleStartState->stateName);
@@ -619,7 +619,7 @@ Logger (Automaton)
 					writer.WriteString(L"Rule Start: ");
 					writer.WriteLine(ruleInfo->startState->stateName);
 
-					FOREACH(State*, endState, ruleInfo->endStates)
+					for (auto endState : ruleInfo->endStates)
 					{
 						writer.WriteString(L"Rule End: ");
 						writer.WriteLine(endState->stateName);
@@ -629,7 +629,7 @@ Logger (Automaton)
 				}
 
 				List<State*> states;
-				FOREACH(Ptr<RuleInfo>, ruleInfo, automaton->ruleInfos)
+				for (auto ruleInfo : automaton->ruleInfos)
 				{
 					vint currentState=states.Count();
 					states.Add(ruleInfo->rootRuleStartState);
@@ -648,7 +648,7 @@ Logger (Automaton)
 						}
 						writer.WriteLine(state->stateName);
 
-						FOREACH(Transition*, transition, state->transitions)
+						for (auto transition : state->transitions)
 						{
 							if(!states.Contains(transition->target))
 							{
@@ -695,7 +695,7 @@ Logger (Automaton)
 							}
 							writer.WriteLine(transition->target->stateName);
 
-							FOREACH(Ptr<Action>, action, transition->actions)
+							for (auto action : transition->actions)
 							{
 								switch(action->actionType)
 								{
@@ -761,7 +761,7 @@ Logger (ParsingTable)
 				if(attributeIndex!=-1)
 				{
 					Ptr<ParsingTable::AttributeInfoList> atts=table->GetAttributeInfo(attributeIndex);
-					FOREACH(Ptr<ParsingTable::AttributeInfo>, att, atts->attributes)
+					for (auto att : atts->attributes)
 					{
 						writer.WriteString(prefix);
 						writer.WriteString(L"@");
@@ -809,21 +809,21 @@ Logger (ParsingTable)
 						if(bag)
 						{
 							WString content;
-							FOREACH(Ptr<ParsingTable::TransitionItem>, item, bag->transitionItems)
+							for (auto item : bag->transitionItems)
 							{
 								if(content!=L"") content+=L"\r\n";
 								content+=itow(item->targetState);
-								FOREACH_INDEXER(vint, state, index, item->stackPattern)
+								for (auto [state, index] : indexed(item->stackPattern))
 								{
 									content+=(index==0?L" : ":L", ");
 									content+=itow(state);
 								}
 								content+=L"\r\n";
 
-								FOREACH(Ptr<ParsingTable::LookAheadInfo>, lookAhead, item->lookAheads)
+								for (auto lookAhead : item->lookAheads)
 								{
 									content+=L"  ";
-									FOREACH_INDEXER(vint, token, index, lookAhead->tokens)
+									for (auto [token, index] : indexed(lookAhead->tokens))
 									{
 										content+=(index==0?L"> ":L", ");
 										content+=itow(token);
@@ -832,7 +832,7 @@ Logger (ParsingTable)
 								}
 
 								content+=L"  ";
-								FOREACH(ParsingTable::Instruction, ins, item->instructions)
+								for (auto ins : item->instructions)
 								{
 									switch(ins.instructionType)
 									{

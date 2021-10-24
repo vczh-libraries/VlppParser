@@ -11,7 +11,7 @@ void WriteEmptyCppFile(const WString& name, const WString& parserCode, Ptr<Parsi
 	List<ParsingSymbol*> types;
 	EnumerateAllTypes(&manager, manager.GetGlobal(), types);
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -22,7 +22,7 @@ void WriteEmptyCppFile(const WString& name, const WString& parserCode, Ptr<Parsi
 				VisitorDependency dependency;
 				SortedList<ParsingSymbol*> visitedTypes;
 
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					SearchDependencies(subType, &manager, visitedTypes, dependency);
 				}
@@ -34,7 +34,7 @@ void WriteEmptyCppFile(const WString& name, const WString& parserCode, Ptr<Parsi
 
 				writer.WriteLine(L"");
 				writer.WriteLine(prefix + L"// Visitor Members -----------------------------------");
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"void " + type->GetName() + L"Visitor::Visit(" + config.classPrefix + subType->GetName() + L"* node)");

@@ -102,7 +102,7 @@ RearrangeState
 			{
 				if(!stateContentSorted.Contains(state))
 				{
-					FOREACH(Transition*, transition, state->transitions)
+					for (auto transition : state->transitions)
 					{
 						CopyFrom(transition->actions, From(transition->actions).OrderBy(&CompareActionForRearranging));
 					}
@@ -134,7 +134,7 @@ MoveActionsForMergingState
 				}
 
 				// copy all movable actions
-				FOREACH(Transition*, t, transition->source->inputs)
+				for (auto t : transition->source->inputs)
 				{
 					CopyFrom(t->actions, movableActions, true);
 				}
@@ -198,7 +198,7 @@ MergeState2ToState1Because(Transitions|Input)
 				{
 					Transition* t2=state2->inputs[i];
 					bool add=true;
-					FOREACH(Transition*, t1, state1->inputs)
+					for (auto t1 : state1->inputs)
 					{
 						if(Transition::IsEquivalent(t1, t2, false) && t1->source==t2->source)
 						{
@@ -227,7 +227,7 @@ MergeState2ToState1Because(Transitions|Input)
 				{
 					Transition* t2=state2->transitions[i];
 					bool add=true;
-					FOREACH(Transition*, t1, state1->transitions)
+					for (auto t1 : state1->transitions)
 					{
 						if(Transition::IsEquivalent(t1, t2, false) && t1->target==t2->target)
 						{

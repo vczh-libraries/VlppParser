@@ -66,7 +66,7 @@ JsonPrintVisitor
 				void Visit(JsonArray* node)
 				{
 					writer.WriteChar(L'[');
-					FOREACH_INDEXER(Ptr<JsonNode>, item, i, node->items)
+					for (auto [item, i] : indexed(node->items))
 					{
 						if(i>0) writer.WriteChar(L',');
 						item->Accept(this);
@@ -85,7 +85,7 @@ JsonPrintVisitor
 				void Visit(JsonObject* node)
 				{
 					writer.WriteChar(L'{');
-					FOREACH_INDEXER(Ptr<JsonObjectField>, field, i, node->fields)
+					for (auto [field, i] : indexed(node->fields))
 					{
 						if(i>0) writer.WriteChar(L',');
 						field->Accept(this);

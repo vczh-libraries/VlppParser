@@ -6,7 +6,7 @@ void WriteTraverseDependenciesDecl(const WString& prefix, const CodegenConfig& c
 	writer.WriteLine(prefix + L"\t// Traverse ------------------------------------------");
 	writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::parsing::ParsingToken& token);");
 	writer.WriteLine(prefix + L"\tvirtual void Traverse(vl::parsing::ParsingTreeCustomBase* node);");
-	FOREACH(ParsingSymbol*, targetType, dependency.fillDependencies)
+	for (auto targetType : dependency.fillDependencies)
 	{
 		writer.WriteString(prefix + L"\tvirtual void Traverse(");
 		PrintType(targetType, config.classPrefix, writer);
@@ -16,7 +16,7 @@ void WriteTraverseDependenciesDecl(const WString& prefix, const CodegenConfig& c
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"\t// VisitField ----------------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.createDependencies)
+		for (auto targetType : dependency.createDependencies)
 		{
 			writer.WriteString(prefix + L"\tvoid VisitField(");
 			PrintType(targetType, config.classPrefix, writer);
@@ -27,7 +27,7 @@ void WriteTraverseDependenciesDecl(const WString& prefix, const CodegenConfig& c
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"\t// VisitField (virtual) ------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.virtualDependencies)
+		for (auto targetType : dependency.virtualDependencies)
 		{
 			writer.WriteString(prefix + (abstractFunction ? L"\tvirtual " : L"\t"));
 			writer.WriteString(L"void VisitField(");
@@ -39,7 +39,7 @@ void WriteTraverseDependenciesDecl(const WString& prefix, const CodegenConfig& c
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"\t// Dispatch (virtual) --------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.subVisitorDependencies)
+		for (auto targetType : dependency.subVisitorDependencies)
 		{
 			writer.WriteString(prefix + (abstractFunction ? L"\tvirtual " : L"\t") + L"void Dispatch(");
 			PrintType(targetType, config.classPrefix, writer);
@@ -70,7 +70,7 @@ void WriteTraverseHeaderFile(const WString& name, Ptr<ParsingDefinition> definit
 	VisitorDependency fullDependency;
 	List<ParsingSymbol*> visitorTypes;
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -81,7 +81,7 @@ void WriteTraverseHeaderFile(const WString& name, Ptr<ParsingDefinition> definit
 				VisitorDependency dependency;
 				SortedList<ParsingSymbol*> visitedTypes;
 
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					SearchDependencies(subType, &manager, visitedTypes, dependency);
 				}
@@ -97,7 +97,7 @@ void WriteTraverseHeaderFile(const WString& name, Ptr<ParsingDefinition> definit
 
 				writer.WriteLine(L"");
 				writer.WriteLine(prefix + L"\t// Visitor Members -----------------------------------");
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					writer.WriteLine(prefix + L"\tvoid Visit(" + config.classPrefix + subType->GetName() + L"* node)override;");
 				}
@@ -117,7 +117,7 @@ void WriteTraverseHeaderFile(const WString& name, Ptr<ParsingDefinition> definit
 
 			writer.WriteLine(prefix + L"/// <summary>A copy visitor for the root node, overriding all abstract methods with AST traversing code that looks into child nodes.</summary>");
 			writer.WriteLine(prefix + L"class " + rootType->GetName() + L"Visitor");
-			FOREACH_INDEXER(ParsingSymbol*, visitorType, index, visitorTypes)
+			for (auto [visitorType, index] : indexed(visitorTypes))
 			{
 				writer.WriteLine(prefix + L"\t" + (index == 0 ? L": " : L", ") + L"public " + visitorType->GetName() + L"Visitor");
 			}

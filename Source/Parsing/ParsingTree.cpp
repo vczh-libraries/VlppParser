@@ -67,7 +67,7 @@ ParsingTreeNode::TraversalVisitor
 			{
 			case TraverseDirection::ByTextPosition:
 				{
-					FOREACH(Ptr<ParsingTreeNode>, node, node->GetSubNodes())
+					for (auto node : node->GetSubNodes())
 					{
 						node->Accept(this);
 					}
@@ -75,7 +75,7 @@ ParsingTreeNode::TraversalVisitor
 				break;
 			case TraverseDirection::ByStorePosition:
 				{
-					FOREACH(Ptr<ParsingTreeNode>, node, node->GetMembers().Values())
+					for (auto node : node->GetMembers().Values())
 					{
 						node->Accept(this);
 					}
@@ -92,7 +92,7 @@ ParsingTreeNode::TraversalVisitor
 			{
 			case TraverseDirection::ByTextPosition:
 				{
-					FOREACH(Ptr<ParsingTreeNode>, node, node->GetSubNodes())
+					for (auto node : node->GetSubNodes())
 					{
 						node->Accept(this);
 					}
@@ -100,7 +100,7 @@ ParsingTreeNode::TraversalVisitor
 				break;
 			case TraverseDirection::ByStorePosition:
 				{
-					FOREACH(Ptr<ParsingTreeNode>, node, node->GetItems())
+					for (auto node : node->GetItems())
 					{
 						node->Accept(this);
 					}
@@ -163,14 +163,14 @@ ParsingTreeNode
 			auto subNodesExists = &subNodes;
 			if(subNodesExists)
 			{
-				FOREACH(Ptr<ParsingTreeNode>, node, subNodes)
+				for (auto node : subNodes)
 				{
 					node->InitializeQueryCache();
 				}
 
 				//if (codeRange.start.IsInvalid() || codeRange.start.IsInvalid())
 				{
-					FOREACH(Ptr<ParsingTreeNode>, subNode, subNodes)
+					for (auto subNode : subNodes)
 					{
 						const auto& subRange = subNode->codeRange;
 						const auto& min = !subRange.start.IsInvalid() ? subRange.start : subRange.end;
@@ -552,11 +552,11 @@ ParsingTreeArray
 
 		bool ParsingTreeArray::Clear()
 		{
-			FOREACH(Ptr<ParsingTreeNode>, node, items)
+			for (auto node : items)
 			{
 				if(!BeforeRemoveChild(node)) return false;
 			}
-			FOREACH(Ptr<ParsingTreeNode>, node, items)
+			for (auto node : items)
 			{
 				AfterRemoveChild(node);
 			}
@@ -645,7 +645,7 @@ ParsingMultiplePrintNodeRecorder
 
 		void ParsingMultiplePrintNodeRecorder::Record(ParsingTreeCustomBase* node, const ParsingTextRange& range)
 		{
-			FOREACH(Ptr<IParsingPrintNodeRecorder>, recorder, recorders)
+			for (auto recorder : recorders)
 			{
 				recorder->Record(node, range);
 			}

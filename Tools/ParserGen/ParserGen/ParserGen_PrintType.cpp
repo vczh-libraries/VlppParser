@@ -153,7 +153,7 @@ void PrintTypeForValue(ParsingDefinitionType* _type, ParsingSymbol* _scope, Pars
 
 void PrintNamespaces(const List<WString>& namespaces, TextWriter& writer)
 {
-	FOREACH(WString, ns, namespaces)
+	for (auto ns : namespaces)
 	{
 		writer.WriteString(ns);
 		writer.WriteString(L"::");

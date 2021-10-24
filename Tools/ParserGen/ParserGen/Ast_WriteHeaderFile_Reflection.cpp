@@ -7,7 +7,7 @@ void WriteTypeReflectionDeclaration(ParsingSymbolManager* manager, const WString
 	EnumerateAllTypes(manager, manager->GetGlobal(), types);
 	EnumerateAllLeafClass(manager, manager->GetGlobal(), leafClasses);
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		writer.WriteString(prefix);
 		writer.WriteString(L"DECL_TYPE_INFO(");
@@ -16,7 +16,7 @@ void WriteTypeReflectionDeclaration(ParsingSymbolManager* manager, const WString
 		writer.WriteLine(L")");
 	}
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -36,7 +36,7 @@ void WriteTypeReflectionDeclaration(ParsingSymbolManager* manager, const WString
 	writer.WriteLine(L"");
 	writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 	writer.WriteLine(L"");
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -51,7 +51,7 @@ void WriteTypeReflectionDeclaration(ParsingSymbolManager* manager, const WString
 				writer.WriteLine(L"::IVisitor)");
 				List<ParsingSymbol*> children;
 				SearchChildClasses(type, manager->GetGlobal(), manager, children);
-				FOREACH(ParsingSymbol*, child, children)
+				for (auto child : children)
 				{
 					writer.WriteString(prefix);
 					writer.WriteString(L"\tvoid Visit(");

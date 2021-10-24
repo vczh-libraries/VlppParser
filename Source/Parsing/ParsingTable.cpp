@@ -147,7 +147,7 @@ ParsingTable::LookAheadInfo
 				{
 					if(Ptr<TransitionBag> bag=table->GetTransitionBag(state, i))
 					{
-						FOREACH(Ptr<TransitionItem>, item, bag->transitionItems)
+						for (auto item : bag->transitionItems)
 						{
 							if (i == ParsingTable::NormalReduce || i == ParsingTable::LeftRecursiveReduce)
 							{
@@ -192,7 +192,7 @@ ParsingTable::TransitionItem
 			{
 				bool hasReduce=false;
 				bool hasLrReduce=false;
-				FOREACH(ParsingTable::Instruction, ins, t->instructions)
+				for (auto ins : t->instructions)
 				{
 					switch(ins.instructionType)
 					{
@@ -480,11 +480,11 @@ ParsingTable
 			void ParsingTable::Initialize()
 			{
 				List<WString> tokens;
-				FOREACH(TokenInfo, info, From(tokenInfos).Skip(UserTokenStart))
+				for (auto info : From(tokenInfos).Skip(UserTokenStart))
 				{
 					tokens.Add(info.regex);
 				}
-				FOREACH(TokenInfo, info, discardTokenInfos)
+				for (auto info : discardTokenInfos)
 				{
 					tokens.Add(info.regex);
 				}
@@ -501,7 +501,7 @@ ParsingTable
 				lexer = new RegexLexer(tokens, {});
 
 				ruleMap.Clear();
-				FOREACH_INDEXER(RuleInfo, rule, index, ruleInfos)
+				for (auto [rule, index] : indexed(ruleInfos))
 				{
 					ruleMap.Add(rule.name, index);
 				}
@@ -512,13 +512,13 @@ ParsingTable
 				}
 
 				treeTypeInfoMap.Clear();
-				FOREACH_INDEXER(TreeTypeInfo, info, index, treeTypeInfos)
+				for (auto [info, index] : indexed(treeTypeInfos))
 				{
 					treeTypeInfoMap.Add(info.type, index);
 				}
 
 				treeFieldInfoMap.Clear();
-				FOREACH_INDEXER(TreeFieldInfo, info, index, treeFieldInfos)
+				for (auto [info, index] : indexed(treeFieldInfos))
 				{
 					Pair<WString, WString> key(info.type, info.field);
 					treeFieldInfoMap.Add(key, index);

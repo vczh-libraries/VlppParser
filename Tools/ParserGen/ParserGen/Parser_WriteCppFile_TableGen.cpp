@@ -6,7 +6,7 @@ Parser Function Generation
 
 void WriteParserFunctions(ParsingSymbolManager* manager, const WString& prefix, const CodegenConfig& config, TextWriter& writer)
 {
-	FOREACH(WString, name, config.parsers.Keys())
+	for (auto name : config.parsers.Keys())
 	{
 		ParsingSymbol* rule=manager->GetGlobal()->GetSubSymbolByName(config.parsers[name].key);
 		if(rule)

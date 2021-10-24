@@ -75,14 +75,14 @@ public:
 		writer.WriteLine(L" tree, vl::Ptr<vl::parsing::ParsingTreeObject> obj, const TokenList& tokens)");
 		writer.WriteString(prefix);
 		writer.WriteLine(L"{");
-		FOREACH(Ptr<ParsingDefinitionClassMemberDefinition>, member, node->members)
+		for (auto member : node->members)
 		{
 			LogInternal(node, member.Obj());
 		}
 		writer.WriteString(prefix);
 		writer.WriteLine(L"}");
 		writer.WriteLine(L"");
-		FOREACH(Ptr<ParsingDefinitionTypeDefinition>, type, node->subTypes)
+		for (auto type : node->subTypes)
 		{
 			LogInternal(node, type.Obj());
 		}
@@ -101,7 +101,7 @@ void WriteNodeConverterClassImplFragment(ParsingSymbolManager* manager, const WS
 {
 	List<ParsingSymbol*> leafClasses;
 	EnumerateAllLeafClass(manager, manager->GetGlobal(), leafClasses);
-	FOREACH(ParsingSymbol*, scope, leafClasses)
+	for (auto scope : leafClasses)
 	{
 		writer.WriteString(L"if(obj->GetType()==L\"");
 		writer.WriteString(GetTypeNameForCreateInstruction(scope));
@@ -218,7 +218,7 @@ void WriteNodeConverterClassImpl(Ptr<ParsingDefinition> definition, ParsingSymbo
 	WriteSetEnumMemberImpl(manager, manager->GetGlobal(), prefix+L"\t", codeClassPrefix, writer);
 	{
 		WriteFillFragmentVisitor visitor(0, manager, prefix+L"\t", codeClassPrefix, writer);
-		FOREACH(Ptr<ParsingDefinitionTypeDefinition>, type, definition->types)
+		for (auto type : definition->types)
 		{
 			type->Accept(&visitor);
 		}
@@ -270,7 +270,7 @@ void WriteConvertImpl(ParsingSymbolManager* manager, const WString& prefix, cons
 {
 	List<ParsingSymbol*> leafClasses;
 	EnumerateAllLeafClass(manager, manager->GetGlobal(), leafClasses);
-	FOREACH(ParsingSymbol*, scope, leafClasses)
+	for (auto scope : leafClasses)
 	{
 		writer.WriteString(prefix);
 		PrintTypeForValue(scope, codeClassPrefix, writer);

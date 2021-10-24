@@ -113,7 +113,7 @@ public:
 			writer.WriteString(prefix);
 			writer.WriteLine(L"\tpublic:");
 
-			FOREACH(ParsingSymbol*, child, children)
+			for (auto child : children)
 			{
 				if (classDoc)
 				{
@@ -273,7 +273,7 @@ WriteTypeForwardDefinitions
 void WriteTypeForwardDefinitions(List<Ptr<ParsingDefinitionTypeDefinition>>& types, const WString& prefix, ParsingSymbol* scope, ParsingSymbolManager* manager, const WString& codeClassPrefix, TextWriter& writer)
 {
 	PrintForwardTypeDefinitionVisitor visitor(prefix, codeClassPrefix, writer);
-	FOREACH(Ptr<ParsingDefinitionTypeDefinition>, type, types)
+	for (auto type : types)
 	{
 		type->Accept(&visitor);
 	}
@@ -289,7 +289,7 @@ WriteTypeDefinitions
 
 void WriteTypeDefinitions(List<Ptr<ParsingDefinitionTypeDefinition>>& types, const WString& prefix, ParsingSymbol* scope, ParsingSymbolManager* manager, const WString& codeClassPrefix, TextWriter& writer)
 {
-	FOREACH(Ptr<ParsingDefinitionTypeDefinition>, type, types)
+	for (auto type : types)
 	{
 		PrintTypeDefinitionVisitor visitor(scope, manager, prefix, codeClassPrefix, writer);
 		type->Accept(&visitor);

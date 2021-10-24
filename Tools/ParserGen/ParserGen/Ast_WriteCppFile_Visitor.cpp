@@ -8,7 +8,7 @@ void WriteVisitorImpl(ParsingSymbolManager* manager, const WString& prefix, cons
 {
 	List<ParsingSymbol*> types;
 	EnumerateAllTypes(manager, manager->GetGlobal(), types);
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{

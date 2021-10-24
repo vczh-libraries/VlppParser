@@ -2,7 +2,7 @@
 
 void WriteParserFunctions(ParsingSymbolManager* manager, const Dictionary<WString, Pair<WString, WString>>& parsers, const WString& prefix, const WString& codeClassPrefix, TextWriter& writer)
 {
-	FOREACH(WString, name, parsers.Keys())
+	for (auto name : parsers.Keys())
 	{
 		ParsingSymbol* rule=manager->GetGlobal()->GetSubSymbolByName(parsers[name].key);
 		if(rule)

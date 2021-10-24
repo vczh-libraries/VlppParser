@@ -119,9 +119,9 @@ CreateLookAhead
 
 					// check if there are non-stable look aheads in two transitions points to the same state
 					// in such situation means that the two transition cannot always be determined using look aheads
-					FOREACH(Ptr<ParsingTable::LookAheadInfo>, lai1, la1)
+					for (auto lai1 : la1)
 					{
-						FOREACH(Ptr<ParsingTable::LookAheadInfo>, lai2, la2)
+						for (auto lai2 : la2)
 						{
 							if (lai1->state == lai2->state)
 							{
@@ -169,7 +169,7 @@ CollectAttribute
 
 			void CollectAttributeInfo(Ptr<ParsingTable::AttributeInfoList> att, List<Ptr<definitions::ParsingDefinitionAttribute>>& atts)
 			{
-				FOREACH(Ptr<definitions::ParsingDefinitionAttribute>, datt, atts)
+				for (auto datt : atts)
 				{
 					Ptr<ParsingTable::AttributeInfo> tatt=new ParsingTable::AttributeInfo(datt->name);
 					CopyFrom(tatt->arguments, datt->arguments);
@@ -251,7 +251,7 @@ GenerateTable
 
 				// find all class types
 				CollectType(manager->GetGlobal(), types);
-				FOREACH(ParsingSymbol*, type, types)
+				for (auto type : types)
 				{
 					Ptr<ParsingTable::AttributeInfoList> typeAtt = new ParsingTable::AttributeInfoList;
 					ParsingSymbol* parent = type;
@@ -289,13 +289,13 @@ GenerateTable
 				}
 
 				// find all class fields
-				FOREACH(ParsingSymbol*, type, orderedChildTypeKeys)
+				for (auto type : orderedChildTypeKeys)
 				{
 					List<ParsingSymbol*>& children = *childTypeValues[type].Obj();
 					ParsingDefinitionClassDefinition* classDef = manager->CacheGetClassDefinition(type);
 					List<vint> fieldAtts;
 
-					FOREACH_INDEXER(Ptr<ParsingDefinitionClassMemberDefinition>, field, index, classDef->members)
+					for (auto [field, index] : indexed(classDef->members))
 					{
 						if (field->attributes.Count() > 0)
 						{
@@ -308,10 +308,10 @@ GenerateTable
 						}
 					}
 
-					FOREACH(ParsingSymbol*, child, children)
+					for (auto child : children)
 					{
 						WString type = GetTypeFullName(child);
-						FOREACH_INDEXER(Ptr<ParsingDefinitionClassMemberDefinition>, field, index, classDef->members)
+						for (auto [field, index] : indexed(classDef->members))
 						{
 							treeFieldAtts.Add(Pair<WString, WString>(type, field->name), fieldAtts[index]);
 						}
@@ -329,7 +329,7 @@ GenerateTable
 				Dictionary<WString, vint> tokenAtts;
 				Dictionary<WString, vint> ruleAtts;
 
-				FOREACH(Ptr<ParsingDefinitionTokenDefinition>, token, definition->tokens)
+				for (auto token : definition->tokens)
 				{
 					if (token->attributes.Count() > 0)
 					{
@@ -357,7 +357,7 @@ GenerateTable
 				/***********************************************************************
 				find all rules
 				***********************************************************************/
-				FOREACH(Ptr<ParsingDefinitionRuleDefinition>, rule, definition->rules)
+				for (auto rule : definition->rules)
 				{
 					if (rule->attributes.Count() > 0)
 					{
@@ -378,7 +378,7 @@ GenerateTable
 				{
 					vint currentState = 0;
 					List<State*> scanningStates;
-					FOREACH(Ptr<RuleInfo>, ruleInfo, jointPDA->ruleInfos)
+					for (auto ruleInfo : jointPDA->ruleInfos)
 					{
 						if (!scanningStates.Contains(ruleInfo->rootRuleStartState))
 						{
@@ -390,7 +390,7 @@ GenerateTable
 							State* state = scanningStates[currentState++];
 							stateIds.Add(state);
 
-							FOREACH(Transition*, transition, state->transitions)
+							for (auto transition : state->transitions)
 							{
 								if (!scanningStates.Contains(transition->target))
 								{
@@ -404,7 +404,7 @@ GenerateTable
 
 				// there will be some states that is used in shift and reduce but it is not a reachable state
 				// so the state table will record all state
-				FOREACH(Ptr<State>, state, jointPDA->states)
+				for (auto state : jointPDA->states)
 				{
 					if (!stateIds.Contains(state.Obj()))
 					{
@@ -418,7 +418,7 @@ GenerateTable
 				/***********************************************************************
 				fill attribute infos
 				***********************************************************************/
-				FOREACH_INDEXER(Ptr<ParsingTable::AttributeInfoList>, att, index, atts)
+				for (auto [att, index] : indexed(atts))
 				{
 					table->SetAttributeInfo(index, att);
 				}
@@ -427,7 +427,7 @@ GenerateTable
 				fill tree type infos
 				***********************************************************************/
 				typedef Pair<WString, vint> TreeTypeAttsPair;
-				FOREACH_INDEXER(TreeTypeAttsPair, type, index, typeAtts)
+				for (auto [type, index] : indexed(typeAtts))
 				{
 					table->SetTreeTypeInfo(index, ParsingTable::TreeTypeInfo(type.key, type.value));
 				}
@@ -436,7 +436,7 @@ GenerateTable
 				fill tree field infos
 				***********************************************************************/
 				typedef Pair<Pair<WString, WString>, vint> TreeFieldAttsPair;
-				FOREACH_INDEXER(TreeFieldAttsPair, field, index, treeFieldAtts)
+				for (auto [field, index] : indexed(treeFieldAtts))
 				{
 					table->SetTreeFieldInfo(index, ParsingTable::TreeFieldInfo(field.key.key, field.key.value, field.value));
 				}
@@ -444,7 +444,7 @@ GenerateTable
 				/***********************************************************************
 				fill token infos
 				***********************************************************************/
-				FOREACH(ParsingSymbol*, symbol, tokenIds.Keys())
+				for (auto symbol : tokenIds.Keys())
 				{
 					ParsingTable::TokenInfo info;
 					info.name = symbol->GetName();
@@ -455,7 +455,7 @@ GenerateTable
 					table->SetTokenInfo(id, info);
 				}
 
-				FOREACH_INDEXER(WString, name, i, discardTokens)
+				for (auto [name, i] : indexed(discardTokens))
 				{
 					ParsingSymbol* symbol = jointPDA->symbolManager->GetGlobal()->GetSubSymbolByName(name);
 
@@ -469,7 +469,7 @@ GenerateTable
 				/***********************************************************************
 				fill rule infos
 				***********************************************************************/
-				FOREACH_INDEXER(ParsingDefinitionRuleDefinition*, rule, i, jointPDA->orderedRulesDefs)
+				for (auto [rule, i] : indexed(jointPDA->orderedRulesDefs))
 				{
 					Ptr<RuleInfo> pdaRuleInfo = jointPDA->ruleDefToInfoMap[rule];
 					ParsingTable::RuleInfo info;
@@ -495,7 +495,7 @@ GenerateTable
 				/***********************************************************************
 				fill state infos
 				***********************************************************************/
-				FOREACH_INDEXER(State*, state, i, stateIds)
+				for (auto [state, i] : indexed(stateIds))
 				{
 					ParsingTable::StateInfo info;
 					info.ruleName = state->ownerRule->name;
@@ -507,12 +507,12 @@ GenerateTable
 				/***********************************************************************
 				fill transition table
 				***********************************************************************/
-				FOREACH_INDEXER(State*, state, stateIndex, stateIds)
+				for (auto [state, stateIndex] : indexed(stateIds))
 				{
 					// if this state is not necessary, stop building the table
 					if (stateIndex >= availableStateCount) break;
 
-					FOREACH(Transition*, transition, state->transitions)
+					for (auto transition : state->transitions)
 					{
 						vint tokenIndex = -1;
 						switch (transition->transitionType)
@@ -547,7 +547,7 @@ GenerateTable
 						item->targetState = stateIds.IndexOf(transition->target);
 						bag->transitionItems.Add(item);
 
-						FOREACH(Ptr<Action>, action, transition->actions)
+						for (auto action : transition->actions)
 						{
 							ParsingTable::Instruction ins;
 							switch (action->actionType)

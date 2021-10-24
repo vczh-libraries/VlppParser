@@ -17,7 +17,7 @@ void LogErrors(List<Ptr<ParsingError>>& errors, StreamWriter& writer)
 	writer.WriteLine(L"=============================================================");
 	writer.WriteLine(L"Errors");
 	writer.WriteLine(L"=============================================================");
-	FOREACH(Ptr<ParsingError>, error, errors)
+	for (auto error : errors)
 	{
 		writer.WriteLine(error->errorMessage);
 	}

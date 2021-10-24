@@ -6,7 +6,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 	if (config.codeNamespaces.Count() > 0)
 	{
 		writer.WriteString(prefix);
-		FOREACH_INDEXER(WString, ns, index, config.codeNamespaces)
+		for (auto [ns, index] : indexed(config.codeNamespaces))
 		{
 			writer.WriteString(index == 0 ? L"using namespace " : L"::");
 			writer.WriteString(ns);
@@ -25,7 +25,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 	EnumerateAllLeafClass(manager, manager->GetGlobal(), leafClasses);
 	
 	writer.WriteLine(L"");
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		writer.WriteString(prefix);
 		writer.WriteString(L"IMPL_TYPE_INFO_RENAME(");
@@ -37,7 +37,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 		writer.WriteLine(L")");
 	}
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -60,7 +60,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 	writer.WriteLine(L"");
 	writer.WriteLine(L"#ifdef VCZH_DESCRIPTABLEOBJECT_WITH_METADATA");
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		switch (type->GetType())
 		{
@@ -167,7 +167,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 		}
 	}
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -181,7 +181,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 				PrintType(type, config.classPrefix, writer);
 				writer.WriteLine(L"::IVisitor)");
 
-				FOREACH(ParsingSymbol*, child, children)
+				for (auto child : children)
 				{
 					writer.WriteString(prefix);
 					writer.WriteString(L"\tCLASS_MEMBER_METHOD_OVERLOAD(Visit, {L\"node\"}, void(");
@@ -219,7 +219,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 	writer.WriteString(prefix);
 	writer.WriteLine(L"\t{");
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		writer.WriteString(prefix);
 		writer.WriteString(L"\t\tADD_TYPE_INFO(");
@@ -228,7 +228,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 		writer.WriteLine(L")");
 	}
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{

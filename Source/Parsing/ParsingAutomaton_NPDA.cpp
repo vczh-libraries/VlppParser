@@ -22,7 +22,7 @@ CreateNondeterministicPDAFromEpsilonPDA
 			Ptr<Automaton> CreateNondeterministicPDAFromEpsilonPDA(Ptr<Automaton> epsilonPDA)
 			{
 				Ptr<Automaton> automaton=new Automaton(epsilonPDA->symbolManager);
-				FOREACH(ParsingDefinitionRuleDefinition*, rule, epsilonPDA->orderedRulesDefs)
+				for (auto rule : epsilonPDA->orderedRulesDefs)
 				{
 					// build new rule info
 					Ptr<RuleInfo> ruleInfo=epsilonPDA->ruleDefToInfoMap[rule];
@@ -61,7 +61,7 @@ CreateNondeterministicPDAFromEpsilonPDA
 					newRuleInfo->startState=newRuleInfo->rootRuleStartState->transitions[0]->target;
 
 					// record end states
-					FOREACH(State*, state, newStates)
+					for (auto state : newStates)
 					{
 						if(state->endState)
 						{

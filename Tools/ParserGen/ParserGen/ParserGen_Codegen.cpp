@@ -12,7 +12,7 @@ void WriteFileComment(const WString& name, StreamWriter& writer)
 
 WString WriteFileBegin(const CodegenConfig& config, const WString& includeFile, StreamWriter& writer)
 {
-	FOREACH(WString, include, config.includes)
+	for (auto include : config.includes)
 	{
 		writer.WriteLine(L"#include "+include);
 	}
@@ -22,7 +22,7 @@ WString WriteFileBegin(const CodegenConfig& config, const WString& includeFile, 
 	}
 	writer.WriteLine(L"");
 	WString prefix;
-	FOREACH(WString, ns, config.codeNamespaces)
+	for (auto ns : config.codeNamespaces)
 	{
 		writer.WriteLine(prefix+L"namespace "+ns);
 		writer.WriteLine(prefix+L"{");
@@ -34,7 +34,7 @@ WString WriteFileBegin(const CodegenConfig& config, const WString& includeFile, 
 void WriteFileEnd(const CodegenConfig& config, StreamWriter& writer)
 {
 	vint counter=config.codeNamespaces.Count();
-	FOREACH(WString, ns, config.codeNamespaces)
+	for (auto ns : config.codeNamespaces)
 	{
 		counter--;
 		for(vint i=0;i<counter;i++) writer.WriteChar(L'\t');

@@ -41,7 +41,7 @@ namespace test
 			writer.WriteLine(L"=============================================================");
 			writer.WriteLine(L"Errors");
 			writer.WriteLine(L"=============================================================");
-			FOREACH(Ptr<ParsingError>, error, errors)
+			for (auto error : errors)
 			{
 				writer.WriteLine(error->errorMessage);
 			}
@@ -149,7 +149,7 @@ namespace test
 				writer.WriteLine(L"Tokens");
 				writer.WriteLine(L"=============================================================");
 				{
-					FOREACH(RegexToken, token, state.GetTokens())
+					for (auto token : state.GetTokens())
 					{
 						WString tokenName;
 						TEST_ASSERT(token.token != -1);
@@ -227,14 +227,14 @@ namespace test
 								writer.WriteLine(itow(result.tableStateTarget) + L"[" + table->GetStateInfo(result.tableStateTarget).stateName + L"]");
 
 								writer.WriteString(L"    <STACK>:");
-								FOREACH(vint, state, state.GetStateStack())
+								for (auto state : state.GetStateStack())
 								{
 									writer.WriteString(L" " + itow(state));
 								}
 								writer.WriteLine(L"");
 
 								vint shiftReduceRangeIndex = 0;
-								FOREACH(ParsingTable::Instruction, ins, From(result.transition->instructions).Skip(result.instructionBegin).Take(result.instructionCount))
+								for (auto ins : From(result.transition->instructions).Skip(result.instructionBegin).Take(result.instructionCount))
 								{
 									switch (ins.instructionType)
 									{
@@ -404,7 +404,7 @@ namespace test
 			LogParsingData(table, Folder(GetTestOutputPath()), L"Parsing.AutoRecover[" + name + L"].Table.txt", L"Table");
 		});
 
-		FOREACH_INDEXER(WString, input, index, inputs)
+		for (auto [input, index] : indexed(inputs))
 		{
 			Parse(table, input, L"AutoRecover[" + name + L"]", rule, index, true, true);
 		}

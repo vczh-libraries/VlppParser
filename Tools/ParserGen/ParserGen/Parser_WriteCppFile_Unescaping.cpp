@@ -62,7 +62,7 @@ public:
 void WriteUnescapingFunctionForwardDeclarations(Ptr<ParsingDefinition> definition, ParsingSymbolManager* manager, const WString& prefix, const WString& codeClassPrefix, TextWriter& writer)
 {
 	CollectUnescapingFunctionVisitor visitor(0, manager);
-	FOREACH(Ptr<ParsingDefinitionTypeDefinition>, type, definition->types)
+	for (auto type : definition->types)
 	{
 		type->Accept(&visitor);
 	}

@@ -6,7 +6,7 @@ void WriteCopyDependenciesDecl(const WString& prefix, const CodegenConfig& confi
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"\t// CopyFields ----------------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.fillDependencies)
+		for (auto targetType : dependency.fillDependencies)
 		{
 			writer.WriteString(prefix + L"\tvoid CopyFields(");
 			PrintType(targetType, config.classPrefix, writer);
@@ -19,7 +19,7 @@ void WriteCopyDependenciesDecl(const WString& prefix, const CodegenConfig& confi
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"\t// CreateField ---------------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.createDependencies)
+		for (auto targetType : dependency.createDependencies)
 		{
 			writer.WriteString(prefix + L"\tvl::Ptr<");
 			PrintType(targetType, config.classPrefix, writer);
@@ -32,7 +32,7 @@ void WriteCopyDependenciesDecl(const WString& prefix, const CodegenConfig& confi
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"\t// CreateField (virtual) -----------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.virtualDependencies)
+		for (auto targetType : dependency.virtualDependencies)
 		{
 			writer.WriteString(prefix + (abstractFunction ? L"\tvirtual vl::Ptr<" : L"\tvl::Ptr<"));
 			PrintType(targetType, config.classPrefix, writer);
@@ -45,7 +45,7 @@ void WriteCopyDependenciesDecl(const WString& prefix, const CodegenConfig& confi
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"\t// Dispatch (virtual) --------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.subVisitorDependencies)
+		for (auto targetType : dependency.subVisitorDependencies)
 		{
 			writer.WriteString(prefix + (abstractFunction ? L"\tvirtual " : L"\t") + L"vl::Ptr<vl::parsing::ParsingTreeCustomBase> Dispatch(");
 			PrintType(targetType, config.classPrefix, writer);
@@ -83,7 +83,7 @@ void WriteCopyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition,
 	VisitorDependency fullDependency;
 	List<ParsingSymbol*> visitorTypes;
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -94,7 +94,7 @@ void WriteCopyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition,
 				VisitorDependency dependency;
 				SortedList<ParsingSymbol*> visitedTypes;
 
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					SearchDependencies(subType, &manager, visitedTypes, dependency);
 				}
@@ -110,7 +110,7 @@ void WriteCopyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition,
 
 				writer.WriteLine(L"");
 				writer.WriteLine(prefix + L"\t// Visitor Members -----------------------------------");
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					writer.WriteLine(prefix + L"\tvoid Visit(" + config.classPrefix + subType->GetName() + L"* node)override;");
 				}
@@ -130,7 +130,7 @@ void WriteCopyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition,
 
 			writer.WriteLine(prefix + L"/// <summary>A copy visitor for the root node, overriding all abstract methods with AST copying code.</summary>");
 			writer.WriteLine(prefix + L"class " + rootType->GetName() + L"Visitor");
-			FOREACH_INDEXER(ParsingSymbol*, visitorType, index, visitorTypes)
+			for (auto [visitorType, index] : indexed(visitorTypes))
 			{
 				writer.WriteLine(prefix + L"\t" + (index == 0 ? L": " : L", ") + L"public " + visitorType->GetName() + L"Visitor");
 			}

@@ -6,7 +6,7 @@ void WriteEmptyDependenciesDecl(const WString& prefix, const CodegenConfig& conf
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"\t// Dispatch (virtual) --------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.subVisitorDependencies)
+		for (auto targetType : dependency.subVisitorDependencies)
 		{
 			writer.WriteString(prefix + L"\tvirtual void Dispatch(");
 			PrintType(targetType, config.classPrefix, writer);
@@ -34,7 +34,7 @@ void WriteEmptyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition
 	List<ParsingSymbol*> types;
 	EnumerateAllTypes(&manager, manager.GetGlobal(), types);
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -45,7 +45,7 @@ void WriteEmptyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition
 				VisitorDependency dependency;
 				SortedList<ParsingSymbol*> visitedTypes;
 
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					SearchDependencies(subType, &manager, visitedTypes, dependency);
 				}
@@ -60,7 +60,7 @@ void WriteEmptyHeaderFile(const WString& name, Ptr<ParsingDefinition> definition
 
 				writer.WriteLine(L"");
 				writer.WriteLine(prefix + L"\t// Visitor Members -----------------------------------");
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					writer.WriteLine(prefix + L"\tvoid Visit(" + config.classPrefix + subType->GetName() + L"* node)override;");
 				}

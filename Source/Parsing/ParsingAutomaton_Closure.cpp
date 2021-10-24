@@ -31,7 +31,7 @@ CreateNondeterministicPDAFromEpsilonPDA::closure_searching
 			// closure searching function
 			void SearchClosureInternal(ClosureItem::SearchResult(*closurePredicate)(Transition*), List<Transition*>& transitionPath, Transition* transition, State* state, List<ClosureItem>& closure)
 			{
-				FOREACH(Transition*, singleTransitionPath, transitionPath)
+				for (auto singleTransitionPath : transitionPath)
 				{
 					if(singleTransitionPath->source==state && closurePredicate(singleTransitionPath)!=ClosureItem::Blocked)
 					{
@@ -47,7 +47,7 @@ CreateNondeterministicPDAFromEpsilonPDA::closure_searching
 				{
 				case ClosureItem::Continue:
 					{
-						FOREACH(Transition*, newTransition, state->transitions)
+						for (auto newTransition : state->transitions)
 						{
 							if(!transitionPath.Contains(newTransition))
 							{
@@ -113,7 +113,7 @@ RemoveEpsilonTransitions
 					// search for epsilon closure
 					List<ClosureItem> closure;
 					SearchClosure(&EpsilonClosure, currentOldState, closure);
-					FOREACH(ClosureItem, closureItem, closure)
+					for (auto closureItem : closure)
 					{
 						Transition* oldTransition=closureItem.transitions->Get(closureItem.transitions->Count()-1);
 						if(!closureItem.cycle || oldTransition->transitionType!=Transition::Epsilon)
@@ -124,7 +124,7 @@ RemoveEpsilonTransitions
 								// keep a epsilon transition that without the last "TokenFinish"
 								State* newEndState=GetMappedState(automaton, oldTransition->source, scanningStates, oldNewStateMap);
 								Transition* transition=automaton->Epsilon(currentNewState, newEndState);
-								FOREACH(Transition*, pathTransition, *closureItem.transitions.Obj())
+								for (auto pathTransition : *closureItem.transitions.Obj())
 								{
 									if(pathTransition==oldTransition) break;
 									CopyFrom(transition->actions, pathTransition->actions, true);
@@ -135,7 +135,7 @@ RemoveEpsilonTransitions
 								// build compacted non-epsilon transition to the target state of the path
 								State* newEndState=GetMappedState(automaton, oldTransition->target, scanningStates, oldNewStateMap);
 								Transition* transition=automaton->CopyTransition(currentNewState, newEndState, oldTransition);
-								FOREACH(Transition*, pathTransition, *closureItem.transitions.Obj())
+								for (auto pathTransition : *closureItem.transitions.Obj())
 								{
 									CopyFrom(transition->actions, pathTransition->actions, true);
 								}

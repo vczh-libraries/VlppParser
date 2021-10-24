@@ -6,7 +6,7 @@ void WriteCopyDependenciesImpl(const WString& prefix, ParsingSymbol* visitorType
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"// CopyFields ----------------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.fillDependencies)
+		for (auto targetType : dependency.fillDependencies)
 		{
 			writer.WriteLine(L"");
 			writer.WriteString(prefix + L"void " + visitorType->GetName() + L"Visitor::CopyFields(");
@@ -67,7 +67,7 @@ void WriteCopyDependenciesImpl(const WString& prefix, ParsingSymbol* visitorType
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"// CreateField ---------------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.createDependencies)
+		for (auto targetType : dependency.createDependencies)
 		{
 			writer.WriteLine(L"");
 			writer.WriteString(prefix + L"vl::Ptr<");
@@ -89,7 +89,7 @@ void WriteCopyDependenciesImpl(const WString& prefix, ParsingSymbol* visitorType
 		{
 			writer.WriteLine(L"");
 			writer.WriteLine(prefix + L"// CreateField (virtual) -----------------------------");
-			FOREACH(ParsingSymbol*, targetType, dependency.virtualDependencies)
+			for (auto targetType : dependency.virtualDependencies)
 			{
 				writer.WriteLine(L"");
 				writer.WriteString(prefix + L"vl::Ptr<");
@@ -108,7 +108,7 @@ void WriteCopyDependenciesImpl(const WString& prefix, ParsingSymbol* visitorType
 		{
 			writer.WriteLine(L"");
 			writer.WriteLine(prefix + L"// Dispatch (virtual) --------------------------------");
-			FOREACH(ParsingSymbol*, targetType, dependency.subVisitorDependencies)
+			for (auto targetType : dependency.subVisitorDependencies)
 			{
 				writer.WriteLine(L"");
 				writer.WriteString(prefix + L"vl::Ptr<vl::parsing::ParsingTreeCustomBase> " + visitorType->GetName() + L"Visitor::Dispatch(");
@@ -137,7 +137,7 @@ void WriteCopyCppFile(const WString& name, const WString& parserCode, Ptr<Parsin
 	VisitorDependency fullDependency;
 	List<ParsingSymbol*> visitorTypes;
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -148,7 +148,7 @@ void WriteCopyCppFile(const WString& name, const WString& parserCode, Ptr<Parsin
 				VisitorDependency dependency;
 				SortedList<ParsingSymbol*> visitedTypes;
 
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					SearchDependencies(subType, &manager, visitedTypes, dependency);
 				}
@@ -162,7 +162,7 @@ void WriteCopyCppFile(const WString& name, const WString& parserCode, Ptr<Parsin
 
 				writer.WriteLine(L"");
 				writer.WriteLine(prefix + L"// Visitor Members -----------------------------------");
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"void " + type->GetName() + L"Visitor::Visit(" + config.classPrefix + subType->GetName() + L"* node)");

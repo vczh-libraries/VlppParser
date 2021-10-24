@@ -66,7 +66,7 @@ void WriteTraverseDependenciesImpl(const WString& prefix, ParsingSymbol* visitor
 		writer.WriteLine(prefix + L"{");
 		writer.WriteLine(prefix + L"}");
 
-		FOREACH(ParsingSymbol*, targetType, dependency.fillDependencies)
+		for (auto targetType : dependency.fillDependencies)
 		{
 			writer.WriteLine(L"");
 			writer.WriteString(prefix + L"void " + visitorType->GetName() + L"Visitor::Traverse(");
@@ -80,7 +80,7 @@ void WriteTraverseDependenciesImpl(const WString& prefix, ParsingSymbol* visitor
 	{
 		writer.WriteLine(L"");
 		writer.WriteLine(prefix + L"// VisitField ----------------------------------------");
-		FOREACH(ParsingSymbol*, targetType, dependency.createDependencies)
+		for (auto targetType : dependency.createDependencies)
 		{
 			writer.WriteLine(L"");
 			writer.WriteString(prefix + L"void " + visitorType->GetName() + L"Visitor::VisitField(");
@@ -98,7 +98,7 @@ void WriteTraverseDependenciesImpl(const WString& prefix, ParsingSymbol* visitor
 		{
 			writer.WriteLine(L"");
 			writer.WriteLine(prefix + L"// VisitField (virtual) ------------------------------");
-			FOREACH(ParsingSymbol*, targetType, dependency.virtualDependencies)
+			for (auto targetType : dependency.virtualDependencies)
 			{
 				writer.WriteLine(L"");
 				writer.WriteString(prefix + L"void " + visitorType->GetName() + L"Visitor::VisitField(");
@@ -114,7 +114,7 @@ void WriteTraverseDependenciesImpl(const WString& prefix, ParsingSymbol* visitor
 		{
 			writer.WriteLine(L"");
 			writer.WriteLine(prefix + L"// Dispatch (virtual) --------------------------------");
-			FOREACH(ParsingSymbol*, targetType, dependency.subVisitorDependencies)
+			for (auto targetType : dependency.subVisitorDependencies)
 			{
 				writer.WriteLine(L"");
 				writer.WriteString(prefix + L"void " + visitorType->GetName() + L"Visitor::Dispatch(");
@@ -142,7 +142,7 @@ void WriteTraverseCppFile(const WString& name, const WString& parserCode, Ptr<Pa
 	VisitorDependency fullDependency;
 	List<ParsingSymbol*> visitorTypes;
 
-	FOREACH(ParsingSymbol*, type, types)
+	for (auto type : types)
 	{
 		if (type->GetType() == ParsingSymbol::ClassType)
 		{
@@ -153,7 +153,7 @@ void WriteTraverseCppFile(const WString& name, const WString& parserCode, Ptr<Pa
 				VisitorDependency dependency;
 				SortedList<ParsingSymbol*> visitedTypes;
 
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					SearchDependencies(subType, &manager, visitedTypes, dependency);
 				}
@@ -167,7 +167,7 @@ void WriteTraverseCppFile(const WString& name, const WString& parserCode, Ptr<Pa
 
 				writer.WriteLine(L"");
 				writer.WriteLine(prefix + L"// Visitor Members -----------------------------------");
-				FOREACH(ParsingSymbol*, subType, children)
+				for (auto subType : children)
 				{
 					writer.WriteLine(L"");
 					writer.WriteLine(prefix + L"void " + type->GetName() + L"Visitor::Visit(" + config.classPrefix + subType->GetName() + L"* node)");

@@ -25,7 +25,7 @@ CreateJointPDAFromNondeterministicPDA
 				// build rule info data
 				Dictionary<WString, ParsingDefinitionRuleDefinition*> ruleMap;
 				Dictionary<State*, State*> oldNewStateMap;
-				FOREACH(ParsingDefinitionRuleDefinition*, rule, nondeterministicPDA->orderedRulesDefs)
+				for (auto rule : nondeterministicPDA->orderedRulesDefs)
 				{
 					// build new rule info
 					Ptr<RuleInfo> ruleInfo=nondeterministicPDA->ruleDefToInfoMap[rule];
@@ -46,7 +46,7 @@ CreateJointPDAFromNondeterministicPDA
 					newRuleInfo->startState->stateExpression=ruleInfo->startState->stateExpression;
 				}
 
-				FOREACH(Ptr<State>, oldState, nondeterministicPDA->states)
+				for (auto oldState : nondeterministicPDA->states)
 				{
 					if((oldState->inputs.Count()>0 || oldState->transitions.Count()>0) && !oldNewStateMap.Keys().Contains(oldState.Obj()))
 					{
@@ -57,13 +57,13 @@ CreateJointPDAFromNondeterministicPDA
 				}
 
 				// create transitions
-				FOREACH(ParsingDefinitionRuleDefinition*, rule, nondeterministicPDA->orderedRulesDefs)
+				for (auto rule : nondeterministicPDA->orderedRulesDefs)
 				{
 					Ptr<RuleInfo> ruleInfo=nondeterministicPDA->ruleDefToInfoMap[rule];
 					Ptr<RuleInfo> newRuleInfo=automaton->ruleDefToInfoMap[rule];
 
 					// complete new rule info
-					FOREACH(State*, endState, ruleInfo->endStates)
+					for (auto endState : ruleInfo->endStates)
 					{
 						newRuleInfo->endStates.Add(oldNewStateMap[endState]);
 					}
@@ -77,7 +77,7 @@ CreateJointPDAFromNondeterministicPDA
 					{
 						State* currentOldState=scanningStates[currentStateIndex++];
 						State* currentNewState=oldNewStateMap[currentOldState];
-						FOREACH(Transition*, oldTransition, currentOldState->transitions)
+						for (auto oldTransition : currentOldState->transitions)
 						{
 							State* oldSource=oldTransition->source;
 							State* oldTarget=oldTransition->target;
@@ -105,7 +105,7 @@ CreateJointPDAFromNondeterministicPDA
 									shiftTransition->actions.Add(action);
 								}
 
-								FOREACH(State*, oldEndState, oldRuleInfo->endStates)
+								for (auto oldEndState : oldRuleInfo->endStates)
 								{
 									Transition* reduceTransition=automaton->NormalReduce(oldNewStateMap[oldEndState], newTarget);
 									Ptr<Action> action=new Action;
@@ -144,7 +144,7 @@ CompactJointPDA
 
 			void CompactJointPDA(Ptr<Automaton> jointPDA)
 			{
-				FOREACH(Ptr<State>, state, jointPDA->states)
+				for (auto state : jointPDA->states)
 				{
 					State* currentState=state.Obj();
 
@@ -152,7 +152,7 @@ CompactJointPDA
 					List<ClosureItem> closure;
 					SearchClosure(&ShiftReduceCompactClosure, currentState, closure);
 
-					FOREACH(ClosureItem, closureItem, closure)
+					for (auto closureItem : closure)
 					{
 						Transition* lastTransition=closureItem.transitions->Get(closureItem.transitions->Count()-1);
 						Transition::StackOperationType stackOperationType=Transition::None;
@@ -162,9 +162,9 @@ CompactJointPDA
 						{
 							bool containsShift=false;
 							bool containsReduce=false;
-							FOREACH(Transition*, pathTransition, *closureItem.transitions.Obj())
+							for (auto pathTransition : *closureItem.transitions.Obj())
 							{
-								FOREACH(Ptr<Action>, action, pathTransition->actions)
+								for (auto action : pathTransition->actions)
 								{
 									if(action->actionType==Action::Shift) containsShift=true;
 									if(action->actionType==Action::Reduce) containsReduce=true;
@@ -212,7 +212,7 @@ CompactJointPDA
 							// there will be <shift* token>, <reduce* token> or <reduce* shift* token>
 							// but there will not be something like <reduce* shift* reduce* token>
 							// so we can append stackPattern safely
-							FOREACH(Transition*, pathTransition, *closureItem.transitions.Obj())
+							for (auto pathTransition : *closureItem.transitions.Obj())
 							{
 								CopyFrom(transition->actions, pathTransition->actions, true);
 							}
@@ -240,7 +240,7 @@ MarkLeftRecursiveInJointPDA
 				vint errorCount=errors.Count();
 				// record all left recursive shifts and delete all left recursive epsilon transition
 				SortedList<Pair<State*, State*>> leftRecursiveShifts;
-				FOREACH(Ptr<State>, state, jointPDA->states)
+				for (auto state : jointPDA->states)
 				{
 					for(vint i=state->transitions.Count()-1;i>=0;i--)
 					{
@@ -248,7 +248,7 @@ MarkLeftRecursiveInJointPDA
 						if(transition->stackOperationType==Transition::LeftRecursive)
 						{
 							Ptr<Action> shiftAction;
-							FOREACH(Ptr<Action>, action, transition->actions)
+							for (auto action : transition->actions)
 							{
 								if(action->actionType==Action::Shift)
 								{
@@ -280,9 +280,9 @@ MarkLeftRecursiveInJointPDA
 				// change all reduce actions whose (shiftReduceSource, shiftReduceTarget) is recorded in leftRecursiveShifts to left-recursive-reduce
 				// when a reduce is converted to a left-recursive-reduce, the corresponding state in stackPattern should be removed
 				// so this will keep count(Reduce) == count(stackPattern)
-				FOREACH(Ptr<State>, state, jointPDA->states)
+				for (auto state : jointPDA->states)
 				{
-					FOREACH(Transition*, transition, state->transitions)
+					for (auto transition : state->transitions)
 					{
 						for(vint i=transition->actions.Count()-1;i>=0;i--)
 						{
@@ -318,13 +318,13 @@ MarkLeftRecursiveInJointPDA
 				}
 
 				// delete complicated transitions
-				FOREACH(Ptr<State>, state, jointPDA->states)
+				for (auto state : jointPDA->states)
 				{
 					while(true)
 					{
 						bool deleted=false;
-						FOREACH(Transition*, t1, state->transitions)
-						FOREACH(Transition*, t2, state->transitions)
+						for (auto t1 : state->transitions)
+						for (auto t2 : state->transitions)
 						if(t1!=t2)
 						{
 							if(Transition::IsEquivalent(t1, t2, true))

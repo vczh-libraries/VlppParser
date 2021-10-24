@@ -136,7 +136,7 @@ XmlPrintVisitor
 				{
 					writer.WriteChar(L'<');
 					writer.WriteString(node->name.value);
-					FOREACH(Ptr<XmlAttribute>, att, node->attributes)
+					for (auto att : node->attributes)
 					{
 						writer.WriteChar(L' ');
 						att->Accept(this);
@@ -148,7 +148,7 @@ XmlPrintVisitor
 					else
 					{
 						writer.WriteChar(L'>');
-						FOREACH(Ptr<XmlNode>, subNode, node->subNodes)
+						for (auto subNode : node->subNodes)
 						{
 							subNode->Accept(this);
 						}
@@ -162,7 +162,7 @@ XmlPrintVisitor
 				{
 					writer.WriteString(L"<?");
 					writer.WriteString(node->name.value);
-					FOREACH(Ptr<XmlAttribute>, att, node->attributes)
+					for (auto att : node->attributes)
 					{
 						writer.WriteChar(L' ');
 						att->Accept(this);
@@ -172,7 +172,7 @@ XmlPrintVisitor
 
 				void Visit(XmlDocument* node)
 				{
-					FOREACH(Ptr<XmlNode>, prolog, node->prologs)
+					for (auto prolog : node->prologs)
 					{
 						prolog->Accept(this);
 					}
@@ -282,7 +282,7 @@ API
 			void XmlPrintContent(Ptr<XmlElement> element, stream::TextWriter& writer)
 			{
 				XmlPrintVisitor visitor(writer);
-				FOREACH(Ptr<XmlNode>, node, element->subNodes)
+				for (auto node : element->subNodes)
 				{
 					node->Accept(&visitor);
 				}
@@ -327,7 +327,7 @@ Linq To Xml
 
 			Ptr<XmlAttribute> XmlGetAttribute(XmlElement* element, const WString& name)
 			{
-				FOREACH(Ptr<XmlAttribute>, att, element->attributes)
+				for (auto att : element->attributes)
 				{
 					if(att->name.value==name)
 					{
@@ -339,7 +339,7 @@ Linq To Xml
 
 			Ptr<XmlElement> XmlGetElement(XmlElement* element, const WString& name)
 			{
-				FOREACH(Ptr<XmlNode>, node, element->subNodes)
+				for (auto node : element->subNodes)
 				{
 					Ptr<XmlElement> subElement=node.Cast<XmlElement>();
 					if(subElement && subElement->name.value==name)
@@ -366,7 +366,7 @@ Linq To Xml
 			WString XmlGetValue(XmlElement* element)
 			{
 				WString result;
-				FOREACH(Ptr<XmlNode>, node, element->subNodes)
+				for (auto node : element->subNodes)
 				{
 					if(Ptr<XmlText> text=node.Cast<XmlText>())
 					{
