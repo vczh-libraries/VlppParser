@@ -7,7 +7,7 @@ void CategorizeCodeFiles(
 	Dictionary<FilePath, WString>& inputFileToCategories
 )
 {
-	FOREACH(Ptr<XmlElement>, e, XmlGetElements(XmlGetElement(config->rootElement, L"categories"), L"category"))
+	for (auto e : XmlGetElements(XmlGetElement(config->rootElement, L"categories"), L"category"))
 	{
 		auto name = XmlGetAttribute(e, L"name")->value.value;
 		auto pattern = wupper(XmlGetAttribute(e, L"pattern")->value.value);
@@ -36,7 +36,7 @@ void CategorizeCodeFiles(
 				})
 			);
 
-		FOREACH(FilePath, file, filterFiles)
+		for (auto file : filterFiles)
 		{
 			if (!categorizedFiles.Contains(name, file))
 			{
@@ -46,9 +46,9 @@ void CategorizeCodeFiles(
 		}
 	}
 
-	FOREACH(WString, a, categorizedFiles.Keys())
+	for (auto a : categorizedFiles.Keys())
 	{
-		FOREACH(WString, b, categorizedFiles.Keys())
+		for (auto b : categorizedFiles.Keys())
 		{
 			if (a != b)
 			{

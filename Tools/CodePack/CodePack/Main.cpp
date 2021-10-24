@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
 		if (!categorizedOutput.Values()[i].f1)
 		{
 			auto category = categorizedOutput.Keys()[i];
-			FOREACH(FilePath, skippedImportFile, categorizedHeaderFiles[category])
+			for (auto skippedImportFile : categorizedHeaderFiles[category])
 			{
 				skippedImportFiles.Add(skippedImportFile.GetName(), skippedImportFile);
 			}
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
 		{
 			Console::SetColor(true, false, false, true);
 			Console::WriteLine(L"Error: The following files are not categorized.");
-			FOREACH(FilePath, headerFile, headerFiles)
+			for (auto headerFile : headerFiles)
 			{
 				Console::WriteLine(headerFile.GetFullPath());
 			}
@@ -147,9 +147,9 @@ int main(int argc, char* argv[])
 		Group<FilePath, FilePath> depGroup;
 
 		CopyFrom(items, From(unprocessedCppFiles).Concat(unprocessedHeaderFiles));
-		FOREACH(FilePath, filePath, items)
+		for (auto filePath : items)
 		{
-			FOREACH(FilePath, includedFile, GetIncludedFiles(filePath, skippedImportFiles, cachedFileToIncludes, conditionOns, conditionOffs))
+			for (auto includedFile : GetIncludedFiles(filePath, skippedImportFiles, cachedFileToIncludes, conditionOns, conditionOffs))
 			{
 				depGroup.Add(filePath, includedFile);
 			}
