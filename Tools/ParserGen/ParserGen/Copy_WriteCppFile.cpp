@@ -29,9 +29,7 @@ void WriteCopyDependenciesImpl(const WString& prefix, ParsingSymbol* visitorType
 						writer.WriteLine(prefix + L"\tto->" + field->GetName() + L" = CreateField(from->" + field->GetName() + L");");
 						break;
 					case ParsingSymbol::ArrayType:
-						writer.WriteString(prefix + L"\tFOREACH(vl::Ptr<");
-						PrintType(fieldType->GetDescriptorSymbol(), config.classPrefix, writer);
-						writer.WriteLine(L">, listItem, from->" + field->GetName() + L")");
+						writer.WriteString(prefix + L"\tfor (auto listItem : from->" + field->GetName() + L")");
 						writer.WriteLine(prefix + L"\t{");
 						writer.WriteLine(prefix + L"\t\tto->" + field->GetName() + L".Add(CreateField(listItem));");
 						writer.WriteLine(prefix + L"\t}");

@@ -30,9 +30,7 @@ void WriteVisitField(const WString& prefix, ParsingSymbol* visitorType, ParsingS
 						writer.WriteLine(prefix + L"\tVisitField(node->" + field->GetName() + L".Obj());");
 						break;
 					case ParsingSymbol::ArrayType:
-						writer.WriteString(prefix + L"\tFOREACH(vl::Ptr<");
-						PrintType(fieldType->GetDescriptorSymbol(), config.classPrefix, writer);
-						writer.WriteLine(L">, listItem, node->" + field->GetName() + L")");
+						writer.WriteString(prefix + L"\tfor (auto listItem : node->" + field->GetName() + L")");
 						writer.WriteLine(prefix + L"\t{");
 						writer.WriteLine(prefix + L"\t\tVisitField(listItem.Obj());");
 						writer.WriteLine(prefix + L"\t}");
