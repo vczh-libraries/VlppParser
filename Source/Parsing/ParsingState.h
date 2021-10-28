@@ -49,7 +49,6 @@ Syntax Analyzer
 				public:
 					TokenLookAhead(const ParsingTokenWalker* _talker);
 
-					collections::CollectionEntity			GetCollectionEntity() const override;
 					collections::IEnumerator<vint>*			CreateEnumerator()const override;
 				};
 
@@ -60,7 +59,6 @@ Syntax Analyzer
 				public:
 					ReduceLookAhead(const ParsingTokenWalker* _walker);
 
-					collections::CollectionEntity			GetCollectionEntity() const override;
 					collections::IEnumerator<vint>*			CreateEnumerator()const override;
 				};
 
