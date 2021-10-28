@@ -82,6 +82,11 @@ ParsingTokenWalker::TokenLookAhead
 			{
 			}
 
+			collections::CollectionEntity ParsingTokenWalker::TokenLookAhead::GetCollectionEntity() const
+			{
+				return CollectionEntity::Unknown;
+			}
+
 			collections::IEnumerator<vint>* ParsingTokenWalker::TokenLookAhead::CreateEnumerator()const
 			{
 				return new LookAheadEnumerator(walker, walker->currentToken);
@@ -94,6 +99,11 @@ ParsingTokenWalker::ReduceLookAhead
 			ParsingTokenWalker::ReduceLookAhead::ReduceLookAhead(const ParsingTokenWalker* _walker)
 				:walker(_walker)
 			{
+			}
+
+			collections::CollectionEntity ParsingTokenWalker::ReduceLookAhead::GetCollectionEntity() const
+			{
+				return CollectionEntity::Unknown;
 			}
 
 			collections::IEnumerator<vint>* ParsingTokenWalker::ReduceLookAhead::CreateEnumerator()const
