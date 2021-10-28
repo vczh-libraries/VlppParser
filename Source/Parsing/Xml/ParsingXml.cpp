@@ -360,7 +360,7 @@ Linq To Xml
 			{
 				return From(element->subNodes)
 					.FindType<XmlElement>()
-					.Where([name](Ptr<XmlElement> e){return e->name.value==name;});
+					.Where([name](auto&& e){return e->name.value==name;});
 			}
 
 			WString XmlGetValue(XmlElement* element)

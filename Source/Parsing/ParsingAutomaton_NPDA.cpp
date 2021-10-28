@@ -50,8 +50,8 @@ CreateNondeterministicPDAFromEpsilonPDA
 					CopyFrom(
 						newStates,
 						From(epsilonPDA->states)
-							.Where([&](Ptr<State> s) {return oldNewStateMap.Keys().Contains(s.Obj()); })
-							.Select([&](Ptr<State> s) { return oldNewStateMap[s.Obj()]; })
+							.Where([&](auto&& s) {return oldNewStateMap.Keys().Contains(s.Obj()); })
+							.Select([&](auto&& s) { return oldNewStateMap[s.Obj()]; })
 						);
 					DeleteUnnecessaryStates(automaton, newRuleInfo, newStates);
 					MergeStates(automaton, newRuleInfo, newStates);

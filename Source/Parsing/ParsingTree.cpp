@@ -190,7 +190,7 @@ ParsingTreeNode
 				CopyFrom(
 					cachedOrderedSubNodes,
 					From(subNodes)
-						.Where([=](Ptr<ParsingTreeNode> node)
+						.Where([=](auto&& node)
 						{
 							const auto& range = node->GetCodeRange();
 							return !range.start.IsInvalid() && !range.end.IsInvalid();
