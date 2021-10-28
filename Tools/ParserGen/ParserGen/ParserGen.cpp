@@ -30,7 +30,7 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		else if ((match = regexNamespace.Match(line)) && match->Success())
 		{
 			CopyFrom(codeNamespaces, From(match->Groups().Get(L"namespace"))
-				.Select([=](RegexString s)->WString
+				.Select([=](RegexString s)
 				{
 					return s.Value();
 				}));
@@ -38,7 +38,7 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		else if ((match = regexReflection.Match(line)) && match->Success())
 		{
 			CopyFrom(reflectionNamespaces, From(match->Groups().Get(L"namespace"))
-				.Select([=](RegexString s)->WString
+				.Select([=](RegexString s)
 				{
 					return s.Value();
 				}));

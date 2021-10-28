@@ -41,7 +41,7 @@ public:
 	Ptr<ParsingDefinitionAttribute> GetDocument(ParsingDefinitionBase* node)
 	{
 		auto attr = From(node->attributes)
-			.Where([](Ptr<ParsingDefinitionAttribute> attr)
+			.Where([](auto&& attr)
 			{
 				return attr->name == L"Document";
 			})
