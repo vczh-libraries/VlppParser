@@ -4,6 +4,11 @@ Regex regexInclude(LR"/(^\s*#include\s*"(<path>[^"]+)"\s*$)/");
 Regex regexSystemInclude(LR"/(^\s*#include\s*<(<path>[^"]+)>\s*$)/");
 Regex regexInstruction(LR"/(^\s*\/\*\s*CodePack:(<name>\w+)\(((<param>[^,)]+)(,\s*(<param>[^,)]+))*)?\)\s*\*\/\s*$)/");
 
+const vint include_path = regexInclude.CaptureNames().IndexOf(L"path");
+const vint systemInclude_path = regexSystemInclude.CaptureNames().IndexOf(L"path");
+const vint instruction_name = regexInstruction.CaptureNames().IndexOf(L"name");
+const vint instruction_param = regexInstruction.CaptureNames().IndexOf(L"instruction_param");
+
 LazyList<FilePath> GetIncludedFiles(
 	const FilePath& codeFile,											// (in)
 	const Dictionary<WString, FilePath>& skippedImportFiles,			// (in)
@@ -34,10 +39,10 @@ LazyList<FilePath> GetIncludedFiles(
 		Ptr<RegexMatch> match;
 		if ((match = regexInstruction.MatchHead(line)))
 		{
-			auto name = match->Groups()[L"name"][0].Value();
+			auto name = match->Groups()[instruction_name][0].Value();
 			const List<RegexString>* params = nullptr;
 			{
-				vint index = match->Groups().Keys().IndexOf(L"param");
+				vint index = match->Groups().Keys().IndexOf(instruction_param);
 				if (index != -1)
 				{
 					params = &match->Groups().GetByIndex(index);
@@ -84,7 +89,7 @@ LazyList<FilePath> GetIncludedFiles(
 		{
 			if (!skip)
 			{
-				auto path = codeFile.GetFolder() / match->Groups()[L"path"][0].Value();
+				auto path = codeFile.GetFolder() / match->Groups()[include_path][0].Value();
 				if (!includes.Contains(path))
 				{
 					includes.Add(path);
@@ -95,7 +100,7 @@ LazyList<FilePath> GetIncludedFiles(
 		{
 			if (!skip)
 			{
-				auto systemFile = match->Groups()[L"path"][0].Value();
+				auto systemFile = match->Groups()[systemInclude_path][0].Value();
 				vint index = skippedImportFiles.Keys().IndexOf(systemFile);
 				if (index != -1)
 				{

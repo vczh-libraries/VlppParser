@@ -165,7 +165,7 @@ void Combine(
 					Ptr<RegexMatch> match;
 					if ((match = regexInstruction.MatchHead(line)))
 					{
-						auto name = match->Groups()[L"name"][0].Value();
+						auto name = match->Groups()[instruction_name][0].Value();
 						if (name == L"BeginIgnore")
 						{
 							skip = true;
@@ -179,7 +179,7 @@ void Combine(
 					{
 						if ((match = regexSystemInclude.MatchHead(line)))
 						{
-							auto systemFile = match->Groups()[L"path"][0].Value();
+							auto systemFile = match->Groups()[systemInclude_path][0].Value();
 							if (skippedImportFiles.Keys().Contains(systemFile)) continue;
 							if (systemIncludes.Contains(systemFile)) continue;
 							systemIncludes.Add(systemFile);

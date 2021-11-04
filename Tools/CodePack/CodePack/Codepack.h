@@ -13,6 +13,11 @@ extern Regex regexInclude;
 extern Regex regexSystemInclude;
 extern Regex regexInstruction;
 
+extern const vint include_path;
+extern const vint systemInclude_path;
+extern const vint instruction_name;
+extern const vint instruction_param;
+
 inline WString ReadFile(const FilePath& path)
 {
 	WString text;

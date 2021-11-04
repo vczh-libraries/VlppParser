@@ -1,6 +1,5 @@
 #include "ParserGen.h"
 
-
 bool CodegenConfig::ReadConfig(TextReader& reader)
 {
 	Regex regexInclude(L"^include:(<path>/.+)$");
@@ -15,6 +14,36 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 	Regex regexAmbiguity(L"^ambiguity:(<value>enabled|disabled)$");
 	Regex regexSerialization(L"^serialization:(<value>enabled|disabled)$");
 
+	vint include_path = regexInclude.CaptureNames().IndexOf(L"path");
+	vint namespace_namespace = regexNamespace.CaptureNames().IndexOf(L"namespace");
+	vint reflection_namespace = regexReflection.CaptureNames().IndexOf(L"namespace");
+	vint file_prefix = regexFilePrefix.CaptureNames().IndexOf(L"prefix");
+	vint class_prefix = regexClassPrefix.CaptureNames().IndexOf(L"prefix");
+	vint classRoot_name = regexClassRoot.CaptureNames().IndexOf(L"name");
+	vint guard_name = regexClassRoot.CaptureNames().IndexOf(L"guard");
+	vint parser_name = regexParser.CaptureNames().IndexOf(L"name");
+	vint parser_rule = regexParser.CaptureNames().IndexOf(L"rule");
+	vint parser_document = regexParser.CaptureNames().IndexOf(L"document");
+	vint file_name = regexFile.CaptureNames().IndexOf(L"name");
+	vint file_rule = regexFile.CaptureNames().IndexOf(L"rule");
+	vint ambiguity_value = regexAmbiguity.CaptureNames().IndexOf(L"value");
+	vint serialization_value = regexSerialization.CaptureNames().IndexOf(L"value");
+
+	CHECK_ERROR(include_path == 0, L"Capture name incorrect.");
+	CHECK_ERROR(namespace_namespace == 0, L"Capture name incorrect.");
+	CHECK_ERROR(reflection_namespace == 0, L"Capture name incorrect.");
+	CHECK_ERROR(file_prefix == 0, L"Capture name incorrect.");
+	CHECK_ERROR(class_prefix == 0, L"Capture name incorrect.");
+	CHECK_ERROR(classRoot_name == 0, L"Capture name incorrect.");
+	CHECK_ERROR(guard_name == 0, L"Capture name incorrect.");
+	CHECK_ERROR(parser_name == 0, L"Capture name incorrect.");
+	CHECK_ERROR(parser_rule == 1, L"Capture name incorrect.");
+	CHECK_ERROR(parser_document == 2, L"Capture name incorrect.");
+	CHECK_ERROR(file_name == 0, L"Capture name incorrect.");
+	CHECK_ERROR(file_rule == 1, L"Capture name incorrect.");
+	CHECK_ERROR(ambiguity_value == 0, L"Capture name incorrect.");
+	CHECK_ERROR(serialization_value == 0, L"Capture name incorrect.");
+
 	while (!reader.IsEnd())
 	{
 		WString line = reader.ReadLine();
@@ -25,11 +54,11 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		}
 		else if ((match = regexInclude.Match(line)) && match->Success())
 		{
-			includes.Add(match->Groups().Get(L"path").Get(0).Value());
+			includes.Add(match->Groups().Get(include_path).Get(0).Value());
 		}
 		else if ((match = regexNamespace.Match(line)) && match->Success())
 		{
-			CopyFrom(codeNamespaces, From(match->Groups().Get(L"namespace"))
+			CopyFrom(codeNamespaces, From(match->Groups().Get(namespace_namespace))
 				.Select([=](RegexString s)
 				{
 					return s.Value();
@@ -37,7 +66,7 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		}
 		else if ((match = regexReflection.Match(line)) && match->Success())
 		{
-			CopyFrom(reflectionNamespaces, From(match->Groups().Get(L"namespace"))
+			CopyFrom(reflectionNamespaces, From(match->Groups().Get(reflection_namespace))
 				.Select([=](RegexString s)
 				{
 					return s.Value();
@@ -45,28 +74,28 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		}
 		else if ((match = regexFilePrefix.Match(line)) && match->Success())
 		{
-			filePrefix = match->Groups().Get(L"prefix").Get(0).Value();
+			filePrefix = match->Groups().Get(file_prefix).Get(0).Value();
 		}
 		else if ((match = regexClassPrefix.Match(line)) && match->Success())
 		{
-			classPrefix = match->Groups().Get(L"prefix").Get(0).Value();
+			classPrefix = match->Groups().Get(class_prefix).Get(0).Value();
 		}
 		else if ((match = regexClassRoot.Match(line)) && match->Success())
 		{
-			classRoot = match->Groups().Get(L"name").Get(0).Value();
+			classRoot = match->Groups().Get(classRoot_name).Get(0).Value();
 		}
 		else if ((match = regexGuard.Match(line)) && match->Success())
 		{
-			guard = match->Groups().Get(L"guard").Get(0).Value();
+			guard = match->Groups().Get(guard_name).Get(0).Value();
 		}
 		else if ((match = regexParser.Match(line)) && match->Success())
 		{
-			WString name = match->Groups().Get(L"name").Get(0).Value();
-			WString rule = match->Groups().Get(L"rule").Get(0).Value();
+			WString name = match->Groups().Get(parser_name).Get(0).Value();
+			WString rule = match->Groups().Get(parser_rule).Get(0).Value();
 			WString document;
-			if (match->Groups().Contains(L"document"))
+			if (match->Groups().Contains(parser_document))
 			{
-				document = match->Groups().Get(L"document").Get(0).Value();
+				document = match->Groups().Get(parser_document).Get(0).Value();
 			}
 			if (!parsers.Keys().Contains(name))
 			{
@@ -75,8 +104,8 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		}
 		else if ((match = regexFile.Match(line)) && match->Success())
 		{
-			WString name = match->Groups().Get(L"name").Get(0).Value();
-			WString rule = match->Groups().Get(L"rule").Get(0).Value();
+			WString name = match->Groups().Get(file_name).Get(0).Value();
+			WString rule = match->Groups().Get(file_rule).Get(0).Value();
 			if (!files.Keys().Contains(name))
 			{
 				files.Add(name, rule);
@@ -84,12 +113,12 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 		}
 		else if ((match = regexAmbiguity.Match(line)) && match->Success())
 		{
-			WString value = match->Groups().Get(L"value").Get(0).Value();
+			WString value = match->Groups().Get(ambiguity_value).Get(0).Value();
 			ambiguity = value;
 		}
 		else if ((match = regexSerialization.Match(line)) && match->Success())
 		{
-			WString value = match->Groups().Get(L"value").Get(0).Value();
+			WString value = match->Groups().Get(serialization_value).Get(0).Value();
 			serialization = value;
 		}
 		else

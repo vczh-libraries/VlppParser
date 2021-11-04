@@ -585,16 +585,16 @@ Logger (Automaton)
 
 			void LogTransitionSymbol(ParsingSymbol* symbol, stream::TextWriter& writer)
 			{
-				if(symbol->GetType()==ParsingSymbol::TokenDef)
+				if (symbol->GetType() == ParsingSymbol::TokenDef)
 				{
 					writer.WriteString(L"[");
 					writer.WriteString(symbol->GetName());
 
-					WString regex=symbol->GetDescriptorString();
-					if(regex_internal::IsRegexEscapedLiteralString(regex))
+					U32String regex = wtou32(symbol->GetDescriptorString());
+					if (regex_internal::IsRegexEscapedLiteralString(regex))
 					{
 						writer.WriteString(L" ");
-						definitions::LogString(regex_internal::UnescapeTextForRegex(regex), writer);
+						definitions::LogString(u32tow(regex_internal::UnescapeTextForRegex(regex)), writer);
 					}
 					writer.WriteString(L"]");
 				}

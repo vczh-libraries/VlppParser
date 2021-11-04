@@ -665,7 +665,7 @@ PrepareSymbols
 						{
 							regex_internal::ParseRegexExpression(wtou32(token->regex));
 						}
-						catch(const ParsingException& ex)
+						catch(const regex_internal::RegexException& ex)
 						{
 							errors.Add(new ParsingError(token.Obj(), L"Wrong token definition for \""+token->name+L"\": "+ex.Message()));
 						}
