@@ -20,7 +20,7 @@ bool CodegenConfig::ReadConfig(TextReader& reader)
 	vint file_prefix = regexFilePrefix.CaptureNames().IndexOf(L"prefix");
 	vint class_prefix = regexClassPrefix.CaptureNames().IndexOf(L"prefix");
 	vint classRoot_name = regexClassRoot.CaptureNames().IndexOf(L"name");
-	vint guard_name = regexClassRoot.CaptureNames().IndexOf(L"guard");
+	vint guard_name = regexGuard.CaptureNames().IndexOf(L"guard");
 	vint parser_name = regexParser.CaptureNames().IndexOf(L"name");
 	vint parser_rule = regexParser.CaptureNames().IndexOf(L"rule");
 	vint parser_document = regexParser.CaptureNames().IndexOf(L"document");
