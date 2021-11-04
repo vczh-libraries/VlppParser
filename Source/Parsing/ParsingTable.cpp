@@ -498,7 +498,7 @@ ParsingTable
 				{
 					discardTokenInfos[i].regexTokenIndex = regexTokenIndex++;
 				}
-				lexer = new RegexLexer(tokens, {});
+				lexer = new RegexLexer(tokens);
 
 				ruleMap.Clear();
 				for (auto [rule, index] : indexed(ruleInfos))

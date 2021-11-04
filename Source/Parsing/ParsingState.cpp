@@ -249,7 +249,7 @@ ParsingState
 				,table(_table)
 				,parsingRuleStartState(-1)
 			{
-				CopyFrom(tokens, table->GetLexer().Parse(input, codeIndex));
+				CopyFrom(tokens, table->GetLexer().Parse(input, {}, codeIndex));
 				walker=new ParsingTokenWalker(tokens, table);
 			}
 

@@ -663,7 +663,7 @@ PrepareSymbols
 						manager->AddTokenDefinition(token->name, token->regex);
 						try
 						{
-							regex_internal::ParseRegexExpression(token->regex);
+							regex_internal::ParseRegexExpression(wtou32(token->regex));
 						}
 						catch(const ParsingException& ex)
 						{
@@ -776,14 +776,14 @@ ValidateRuleStructure
 
 				void Visit(ParsingDefinitionTextGrammar* node)override
 				{
-					WString regex=regex_internal::EscapeTextForRegex(node->text);
-					for(vint i=0;i<manager->GetGlobal()->GetSubSymbolCount();i++)
+					auto regex = regex_internal::EscapeTextForRegex(wtou32(node->text));
+					for (vint i = 0; i < manager->GetGlobal()->GetSubSymbolCount(); i++)
 					{
-						ParsingSymbol* symbol=manager->GetGlobal()->GetSubSymbol(i);
-						if(symbol->GetType()==ParsingSymbol::TokenDef)
+						ParsingSymbol* symbol = manager->GetGlobal()->GetSubSymbol(i);
+						if (symbol->GetType() == ParsingSymbol::TokenDef)
 						{
-							WString normalizedRegex=regex_internal::NormalizeEscapedTextForRegex(symbol->GetDescriptorString());
-							if(normalizedRegex==regex)
+							auto normalizedRegex = regex_internal::NormalizeEscapedTextForRegex(wtou32(symbol->GetDescriptorString()));
+							if (normalizedRegex == regex)
 							{
 								manager->CacheSetSymbol(node, symbol);
 								manager->CacheSetType(node, manager->GetTokenType());
@@ -791,7 +791,7 @@ ValidateRuleStructure
 							}
 						}
 					}
-					errors.Add(new ParsingError(node, L"Cannot find a token whose definition is exactly \""+regex+L"\"."));
+					errors.Add(new ParsingError(node, L"Cannot find a token whose definition is exactly \"" + u32tow(regex) + L"\"."));
 				}
 
 				void Visit(ParsingDefinitionSequenceGrammar* node)override
