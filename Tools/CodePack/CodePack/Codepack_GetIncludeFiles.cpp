@@ -7,7 +7,7 @@ Regex regexInstruction(LR"/(^\s*\/\*\s*CodePack:(<name>\w+)\(((<param>[^,)]+)(,\
 const vint include_path = regexInclude.CaptureNames().IndexOf(L"path");
 const vint systemInclude_path = regexSystemInclude.CaptureNames().IndexOf(L"path");
 const vint instruction_name = regexInstruction.CaptureNames().IndexOf(L"name");
-const vint instruction_param = regexInstruction.CaptureNames().IndexOf(L"instruction_param");
+const vint instruction_param = regexInstruction.CaptureNames().IndexOf(L"param");
 
 LazyList<FilePath> GetIncludedFiles(
 	const FilePath& codeFile,											// (in)
