@@ -18,13 +18,19 @@ clean:
 
 all:pre-build ./Bin/UnitTest
 
-./Bin/UnitTest:./Obj/Vlpp.o ./Obj/VlppOS.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/Parsing.o ./Obj/ParsingAnalyzer.o ./Obj/ParsingAutomaton.o ./Obj/ParsingAutomaton_Closure.o ./Obj/ParsingAutomaton_EPDA.o ./Obj/ParsingAutomaton_GenerateTable.o ./Obj/ParsingAutomaton_JPDA.o ./Obj/ParsingAutomaton_MergeStates.o ./Obj/ParsingAutomaton_NPDA.o ./Obj/ParsingDefinitions.o ./Obj/ParsingDefinitions_CreateParserDefinition.o ./Obj/ParsingLogging.o ./Obj/ParsingState.o ./Obj/ParsingTable.o ./Obj/ParsingTree.o ./Obj/ParsingJson.o ./Obj/ParsingJson_Ast.o ./Obj/ParsingJson_Parser.o ./Obj/ParsingXml.o ./Obj/ParsingXml_Ast.o ./Obj/ParsingXml_Parser.o ./Obj/Common.o ./Obj/TestJson.o ./Obj/TestXml.o ./Obj/Main.o
+./Bin/UnitTest:./Obj/Vlpp.o ./Obj/Vlpp.Linux.o ./Obj/VlppOS.o ./Obj/VlppOS.Linux.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/Parsing.o ./Obj/ParsingAnalyzer.o ./Obj/ParsingAutomaton.o ./Obj/ParsingAutomaton_Closure.o ./Obj/ParsingAutomaton_EPDA.o ./Obj/ParsingAutomaton_GenerateTable.o ./Obj/ParsingAutomaton_JPDA.o ./Obj/ParsingAutomaton_MergeStates.o ./Obj/ParsingAutomaton_NPDA.o ./Obj/ParsingDefinitions.o ./Obj/ParsingDefinitions_CreateParserDefinition.o ./Obj/ParsingLogging.o ./Obj/ParsingState.o ./Obj/ParsingTable.o ./Obj/ParsingTree.o ./Obj/ParsingJson.o ./Obj/ParsingJson_Ast.o ./Obj/ParsingJson_Parser.o ./Obj/ParsingXml.o ./Obj/ParsingXml_Ast.o ./Obj/ParsingXml_Parser.o ./Obj/Common.o ./Obj/TestJson.o ./Obj/TestXml.o ./Obj/Main.o
 	$(CPP_LINK)
 
 ./Obj/Vlpp.o: ../../../Import/Vlpp.cpp ../../../Import/Vlpp.h
 	$(CPP_COMPILE)
 
+./Obj/Vlpp.Linux.o: ../../../Import/Vlpp.Linux.cpp ../../../Import/Vlpp.h
+	$(CPP_COMPILE)
+
 ./Obj/VlppOS.o: ../../../Import/VlppOS.cpp ../../../Import/VlppOS.h ../../../Import/Vlpp.h
+	$(CPP_COMPILE)
+
+./Obj/VlppOS.Linux.o: ../../../Import/VlppOS.Linux.cpp ../../../Import/VlppOS.h ../../../Import/Vlpp.h
 	$(CPP_COMPILE)
 
 ./Obj/VlppReflection.o: ../../../Import/VlppReflection.cpp ../../../Import/VlppReflection.h ../../../Import/VlppOS.h ../../../Import/Vlpp.h ../../../Import/VlppRegex.h
