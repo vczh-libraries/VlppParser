@@ -2,7 +2,6 @@
 
 int main(int argc, char* argv[])
 {
-
 	Console::SetTitle(L"Vczh CodePack for C++");
 	if (argc != 2)
 	{
@@ -219,13 +218,15 @@ int main(int argc, char* argv[])
 
 		if (categorizedOutput[categoryName].f1)
 		{
+			vint headerIndex = categorizedHeaderFiles.Keys().IndexOf(categoryName);
+			if (headerIndex == -1) continue;
 			Combine(
 				inputFileToOutputFiles,
 				skippedImportFiles,
 				cachedFileToIncludes,
 				conditionOns,
 				conditionOffs,
-				categorizedHeaderFiles[categoryName],
+				categorizedHeaderFiles.GetByIndex(headerIndex),
 				outputPath,
 				outputIncludeOnlyPath,
 				*systemIncludes.Obj(),
