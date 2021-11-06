@@ -204,11 +204,30 @@ int main(int argc, char* argv[])
 		Folder(outputIncludeOnlyFolder).Create(true);
 	}
 
+	// generate categorized header dependencies
+	Dictionary<WString, LazyList<WString>> categorizedHeaderIncludes;
+	for (vint i = 0; i < popCategories.components.Count(); i++)
+	{
+		auto& component = popCategories.components[i];
+		auto categoryName = componentToCategoryNames[i][0];
+		categorizedHeaderIncludes.Add(
+			categoryName,
+			From(*popCategories.nodes[component.firstNode[0]].ins)
+				.Where([&](vint nodeIndex)
+				{
+					return nodeIndex != component.firstNode[0];
+				})
+				.Select([&](vint nodeIndex)
+				{
+					return categorizedOutput[componentToCategoryNames[popCategories.nodes[nodeIndex].component][0]].f0 + L".h";
+				})
+			);
+	}
+
 	// generate code pair header files
 	Dictionary<WString, Ptr<SortedList<WString>>> categorizedSystemIncludes;
 	for (vint i = 0; i < popCategories.components.Count(); i++)
 	{
-		auto& component = popCategories.components[i];
 		auto categoryName = componentToCategoryNames[i][0];
 		auto outputPath = outputFolder / (categorizedOutput[categoryName].f0 + L".h");
 		auto outputIncludeOnlyPath = outputIncludeOnlyFolder / (categorizedOutput[categoryName].f0 + L".h");
@@ -230,15 +249,7 @@ int main(int argc, char* argv[])
 				outputPath,
 				outputIncludeOnlyPath,
 				*systemIncludes.Obj(),
-				From(*popCategories.nodes[component.firstNode[0]].ins)
-					.Where([&](vint nodeIndex)
-					{
-						return nodeIndex != component.firstNode[0];
-					})
-					.Select([&](vint nodeIndex)
-					{
-						return categorizedOutput[componentToCategoryNames[popCategories.nodes[nodeIndex].component][0]].f0 + L".h";
-					})
+				categorizedHeaderIncludes[categoryName]
 				);
 		}
 	}
@@ -250,6 +261,8 @@ int main(int argc, char* argv[])
 		if (categorizedOutput[categoryName].f1)
 		{
 			WString outputHeader[] = { categorizedOutput[categoryName].f0 + L".h" };
+			vint headerIndex = categorizedHeaderFiles.Keys().IndexOf(categoryName);
+
 			auto outputPath = outputFolder / (categorizedOutput[categoryName].f0 + L".cpp");
 			auto outputIncludeOnlyPath = outputIncludeOnlyFolder / (categorizedOutput[categoryName].f0 + L".cpp");
 			Combine(
@@ -262,7 +275,7 @@ int main(int argc, char* argv[])
 				outputPath,
 				outputIncludeOnlyPath,
 				*categorizedSystemIncludes[categoryName].Obj(),
-				From(outputHeader)
+				(headerIndex == -1 ? categorizedHeaderIncludes[categoryName] : From(outputHeader))
 				);
 		}
 	}
