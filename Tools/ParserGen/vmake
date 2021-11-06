@@ -1,7 +1,11 @@
 <#
 CPP_TARGET=./Bin/ParserGen
 CPP_VCXPROJ=./ParserGen/ParserGen.vcxproj
-CPP_REMOVES=("ParserGen/Test*.cpp")
+CPP_REMOVES=(
+    "../../Import/Vlpp.Windows.cpp"
+    "../../Import/VlppOS.Windows.cpp"
+    )
 TARGETS=("${CPP_TARGET}")
+CPP_COMPILE_OPTIONS="-I ../../Import -I ../../Release"
 #>
 <#@ include "${VCPROOT}/vl/vmake-cpp" #>

@@ -1,6 +1,7 @@
 .PHONY: all clean pre-build
 .DEFAULT_GOAL := all
 
+CPP_COMPILE_OPTIONS=-I ../../Import -I ../../Release
 include $(VCPROOT)/vl/makefile-cpp
 
 pre-build:
@@ -15,89 +16,107 @@ clean:
 
 all:pre-build ./Bin/ParserGen
 
-./Bin/ParserGen:./Obj/Vlpp.o ./Obj/Ast_WriteCppFile.o ./Obj/Ast_WriteHeaderFile.o ./Obj/Copy_WriteCppFile.o ./Obj/Copy_WriteHeaderFile.o ./Obj/Empty_WriteCppFile.o ./Obj/Empty_WriteHeaderFile.o ./Obj/Main.o ./Obj/ParserGen.o ./Obj/ParserGen_Codegen.o ./Obj/ParserGen_CreateTable.o ./Obj/ParserGen_PrintType.o ./Obj/ParserGen_VisitorDependency.o ./Obj/Parser_WriteCppFile.o ./Obj/Parser_WriteCppFile_ParserText.o ./Obj/Ast_WriteCppFile_Reflection.o ./Obj/Parser_WriteCppFile_TableGen.o ./Obj/Parser_WriteCppFile_TreeBuilder.o ./Obj/Parser_WriteCppFile_Unescaping.o ./Obj/Ast_WriteCppFile_Visitor.o ./Obj/Parser_WriteHeaderFile.o ./Obj/Parser_WriteHeaderFile_ParserFunctions.o ./Obj/Ast_WriteHeaderFile_Reflection.o ./Obj/Ast_WriteHeaderFile_TableGen.o ./Obj/Ast_WriteHeaderFile_Tokens.o ./Obj/Ast_WriteHeaderFile_Types.o ./Obj/Traverse_WriteCppFile.o ./Obj/Traverse_WriteHeaderFile.o
+./Bin/ParserGen:./Obj/Vlpp.o ./Obj/Vlpp.Linux.o ./Obj/VlppOS.o ./Obj/VlppOS.Linux.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/VlppParser.o ./Obj/Ast_WriteCppFile.o ./Obj/Ast_WriteHeaderFile.o ./Obj/Copy_WriteCppFile.o ./Obj/Copy_WriteHeaderFile.o ./Obj/Empty_WriteCppFile.o ./Obj/Empty_WriteHeaderFile.o ./Obj/Main.o ./Obj/ParserGen.o ./Obj/ParserGen_Codegen.o ./Obj/ParserGen_CreateTable.o ./Obj/ParserGen_PrintType.o ./Obj/ParserGen_VisitorDependency.o ./Obj/Parser_WriteCppFile.o ./Obj/Parser_WriteCppFile_ParserText.o ./Obj/Ast_WriteCppFile_Reflection.o ./Obj/Parser_WriteCppFile_TableGen.o ./Obj/Parser_WriteCppFile_TreeBuilder.o ./Obj/Parser_WriteCppFile_Unescaping.o ./Obj/Ast_WriteCppFile_Visitor.o ./Obj/Parser_WriteHeaderFile.o ./Obj/Parser_WriteHeaderFile_ParserFunctions.o ./Obj/Ast_WriteHeaderFile_Reflection.o ./Obj/Ast_WriteHeaderFile_TableGen.o ./Obj/Ast_WriteHeaderFile_Tokens.o ./Obj/Ast_WriteHeaderFile_Types.o ./Obj/Traverse_WriteCppFile.o ./Obj/Traverse_WriteHeaderFile.o
 	$(CPP_LINK)
 
-./Obj/Vlpp.o: ../../Release/Vlpp.cpp ../../Release/Vlpp.h
+./Obj/Vlpp.o: ../../Import/Vlpp.cpp ../../Import/Vlpp.h
 	$(CPP_COMPILE)
 
-./Obj/Ast_WriteCppFile.o: ParserGen/Ast_WriteCppFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Vlpp.Linux.o: ../../Import/Vlpp.Linux.cpp ../../Import/Vlpp.h
 	$(CPP_COMPILE)
 
-./Obj/Ast_WriteHeaderFile.o: ParserGen/Ast_WriteHeaderFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/VlppOS.o: ../../Import/VlppOS.cpp ../../Import/VlppOS.h ../../Import/Vlpp.h
 	$(CPP_COMPILE)
 
-./Obj/Copy_WriteCppFile.o: ParserGen/Copy_WriteCppFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/VlppOS.Linux.o: ../../Import/VlppOS.Linux.cpp ../../Import/VlppOS.h ../../Import/Vlpp.h
 	$(CPP_COMPILE)
 
-./Obj/Copy_WriteHeaderFile.o: ParserGen/Copy_WriteHeaderFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/VlppReflection.o: ../../Import/VlppReflection.cpp ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Empty_WriteCppFile.o: ParserGen/Empty_WriteCppFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/VlppRegex.o: ../../Import/VlppRegex.cpp ../../Import/VlppRegex.h ../../Import/Vlpp.h
 	$(CPP_COMPILE)
 
-./Obj/Empty_WriteHeaderFile.o: ParserGen/Empty_WriteHeaderFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/VlppParser.o: ../../Release/VlppParser.cpp ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Main.o: ParserGen/Main.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Ast_WriteCppFile.o: ParserGen/Ast_WriteCppFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/ParserGen.o: ParserGen/ParserGen.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Ast_WriteHeaderFile.o: ParserGen/Ast_WriteHeaderFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/ParserGen_Codegen.o: ParserGen/ParserGen_Codegen.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Copy_WriteCppFile.o: ParserGen/Copy_WriteCppFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/ParserGen_CreateTable.o: ParserGen/ParserGen_CreateTable.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Copy_WriteHeaderFile.o: ParserGen/Copy_WriteHeaderFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/ParserGen_PrintType.o: ParserGen/ParserGen_PrintType.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Empty_WriteCppFile.o: ParserGen/Empty_WriteCppFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/ParserGen_VisitorDependency.o: ParserGen/ParserGen_VisitorDependency.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Empty_WriteHeaderFile.o: ParserGen/Empty_WriteHeaderFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Parser_WriteCppFile.o: ParserGen/Parser_WriteCppFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Main.o: ParserGen/Main.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Parser_WriteCppFile_ParserText.o: ParserGen/Parser_WriteCppFile_ParserText.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/ParserGen.o: ParserGen/ParserGen.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Ast_WriteCppFile_Reflection.o: ParserGen/Ast_WriteCppFile_Reflection.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/ParserGen_Codegen.o: ParserGen/ParserGen_Codegen.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Parser_WriteCppFile_TableGen.o: ParserGen/Parser_WriteCppFile_TableGen.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/ParserGen_CreateTable.o: ParserGen/ParserGen_CreateTable.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Parser_WriteCppFile_TreeBuilder.o: ParserGen/Parser_WriteCppFile_TreeBuilder.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/ParserGen_PrintType.o: ParserGen/ParserGen_PrintType.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Parser_WriteCppFile_Unescaping.o: ParserGen/Parser_WriteCppFile_Unescaping.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/ParserGen_VisitorDependency.o: ParserGen/ParserGen_VisitorDependency.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Ast_WriteCppFile_Visitor.o: ParserGen/Ast_WriteCppFile_Visitor.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Parser_WriteCppFile.o: ParserGen/Parser_WriteCppFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Parser_WriteHeaderFile.o: ParserGen/Parser_WriteHeaderFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Parser_WriteCppFile_ParserText.o: ParserGen/Parser_WriteCppFile_ParserText.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Parser_WriteHeaderFile_ParserFunctions.o: ParserGen/Parser_WriteHeaderFile_ParserFunctions.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Ast_WriteCppFile_Reflection.o: ParserGen/Ast_WriteCppFile_Reflection.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Ast_WriteHeaderFile_Reflection.o: ParserGen/Ast_WriteHeaderFile_Reflection.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Parser_WriteCppFile_TableGen.o: ParserGen/Parser_WriteCppFile_TableGen.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Ast_WriteHeaderFile_TableGen.o: ParserGen/Ast_WriteHeaderFile_TableGen.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Parser_WriteCppFile_TreeBuilder.o: ParserGen/Parser_WriteCppFile_TreeBuilder.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Ast_WriteHeaderFile_Tokens.o: ParserGen/Ast_WriteHeaderFile_Tokens.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Parser_WriteCppFile_Unescaping.o: ParserGen/Parser_WriteCppFile_Unescaping.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Ast_WriteHeaderFile_Types.o: ParserGen/Ast_WriteHeaderFile_Types.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Ast_WriteCppFile_Visitor.o: ParserGen/Ast_WriteCppFile_Visitor.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Traverse_WriteCppFile.o: ParserGen/Traverse_WriteCppFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Parser_WriteHeaderFile.o: ParserGen/Parser_WriteHeaderFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/Traverse_WriteHeaderFile.o: ParserGen/Traverse_WriteHeaderFile.cpp ParserGen/ParserGen.h ParserGen/../../../Release/Vlpp.h
+./Obj/Parser_WriteHeaderFile_ParserFunctions.o: ParserGen/Parser_WriteHeaderFile_ParserFunctions.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
+	$(CPP_COMPILE)
+
+./Obj/Ast_WriteHeaderFile_Reflection.o: ParserGen/Ast_WriteHeaderFile_Reflection.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
+	$(CPP_COMPILE)
+
+./Obj/Ast_WriteHeaderFile_TableGen.o: ParserGen/Ast_WriteHeaderFile_TableGen.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
+	$(CPP_COMPILE)
+
+./Obj/Ast_WriteHeaderFile_Tokens.o: ParserGen/Ast_WriteHeaderFile_Tokens.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
+	$(CPP_COMPILE)
+
+./Obj/Ast_WriteHeaderFile_Types.o: ParserGen/Ast_WriteHeaderFile_Types.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
+	$(CPP_COMPILE)
+
+./Obj/Traverse_WriteCppFile.o: ParserGen/Traverse_WriteCppFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
+	$(CPP_COMPILE)
+
+./Obj/Traverse_WriteHeaderFile.o: ParserGen/Traverse_WriteHeaderFile.cpp ParserGen/ParserGen.h ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
