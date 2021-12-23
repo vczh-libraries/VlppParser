@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 		CopyFrom(
 			categorizedOutput,
 			XmlGetElements(XmlGetElement(config->rootElement, L"output"), L"codepair")
-				.Select([&](Ptr<XmlElement> e)->decltype(categorizedOutput)::ElementType
+				.Select([&](Ptr<XmlElement> e)->Pair<WString, Tuple<WString, bool>>
 				{
 					return {
 						XmlGetAttribute(e, L"category")->value.value,
