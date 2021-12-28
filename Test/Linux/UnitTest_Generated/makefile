@@ -36,7 +36,7 @@ all:pre-build ./Bin/UnitTest
 ./Obj/VlppReflection.o: ../../../Import/VlppReflection.cpp ../../../Import/VlppReflection.h ../../../Import/VlppOS.h ../../../Import/Vlpp.h ../../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/VlppRegex.o: ../../../Import/VlppRegex.cpp ../../../Import/VlppRegex.h ../../../Import/Vlpp.h
+./Obj/VlppRegex.o: ../../../Import/VlppRegex.cpp ../../../Import/VlppRegex.h ../../../Import/Vlpp.h ../../../Import/VlppOS.h
 	$(CPP_COMPILE)
 
 ./Obj/Parsing.o: ../../../Source/Parsing/Parsing.cpp ../../../Source/Parsing/Parsing.h ../../../Source/Parsing/ParsingState.h ../../../Source/Parsing/ParsingTable.h ../../../Source/Parsing/ParsingTree.h ../../../Import/VlppReflection.h ../../../Import/VlppOS.h ../../../Import/Vlpp.h ../../../Import/VlppRegex.h ../../../Source/Parsing/ParsingAutomaton.h ../../../Source/Parsing/ParsingAnalyzer.h ../../../Source/Parsing/ParsingDefinitions.h
