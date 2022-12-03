@@ -238,7 +238,7 @@ Parsing Tree Conversion Driver Implementation
 				{
 					if(obj->GetType()==L"Text")
 					{
-						vl::Ptr<XmlText> tree = new XmlText;
+						auto tree = vl::Ptr(new XmlText);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
 						Fill(tree, obj, tokens);
 						Fill(tree.Cast<XmlNode>(), obj, tokens);
@@ -246,7 +246,7 @@ Parsing Tree Conversion Driver Implementation
 					}
 					else if(obj->GetType()==L"CData")
 					{
-						vl::Ptr<XmlCData> tree = new XmlCData;
+						auto tree = vl::Ptr(new XmlCData);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
 						Fill(tree, obj, tokens);
 						Fill(tree.Cast<XmlNode>(), obj, tokens);
@@ -254,7 +254,7 @@ Parsing Tree Conversion Driver Implementation
 					}
 					else if(obj->GetType()==L"Attribute")
 					{
-						vl::Ptr<XmlAttribute> tree = new XmlAttribute;
+						auto tree = vl::Ptr(new XmlAttribute);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
 						Fill(tree, obj, tokens);
 						Fill(tree.Cast<XmlNode>(), obj, tokens);
@@ -262,7 +262,7 @@ Parsing Tree Conversion Driver Implementation
 					}
 					else if(obj->GetType()==L"Comment")
 					{
-						vl::Ptr<XmlComment> tree = new XmlComment;
+						auto tree = vl::Ptr(new XmlComment);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
 						Fill(tree, obj, tokens);
 						Fill(tree.Cast<XmlNode>(), obj, tokens);
@@ -270,7 +270,7 @@ Parsing Tree Conversion Driver Implementation
 					}
 					else if(obj->GetType()==L"Element")
 					{
-						vl::Ptr<XmlElement> tree = new XmlElement;
+						auto tree = vl::Ptr(new XmlElement);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
 						Fill(tree, obj, tokens);
 						Fill(tree.Cast<XmlNode>(), obj, tokens);
@@ -278,7 +278,7 @@ Parsing Tree Conversion Driver Implementation
 					}
 					else if(obj->GetType()==L"Instruction")
 					{
-						vl::Ptr<XmlInstruction> tree = new XmlInstruction;
+						auto tree = vl::Ptr(new XmlInstruction);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
 						Fill(tree, obj, tokens);
 						Fill(tree.Cast<XmlNode>(), obj, tokens);
@@ -286,7 +286,7 @@ Parsing Tree Conversion Driver Implementation
 					}
 					else if(obj->GetType()==L"Document")
 					{
-						vl::Ptr<XmlDocument> tree = new XmlDocument;
+						auto tree = vl::Ptr(new XmlDocument);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
 						Fill(tree, obj, tokens);
 						Fill(tree.Cast<XmlNode>(), obj, tokens);
@@ -424,7 +424,7 @@ Table Generation
 			{
 				vl::stream::MemoryStream stream;
 				XmlGetParserBuffer(stream);
-				vl::Ptr<vl::parsing::tabling::ParsingTable> table=new vl::parsing::tabling::ParsingTable(stream);
+				auto table = Ptr(new vl::parsing::tabling::ParsingTable(stream));
 				table->Initialize();
 				return table;
 			}

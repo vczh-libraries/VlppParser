@@ -192,7 +192,7 @@ namespace vl
 				ITypeManager* manager = GetGlobalTypeManager();
 				if(manager)
 				{
-					Ptr<ITypeLoader> loader = new XmlTypeLoader;
+					auto loader = Ptr(new XmlTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif

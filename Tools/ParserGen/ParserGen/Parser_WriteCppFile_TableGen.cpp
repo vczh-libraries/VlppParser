@@ -141,7 +141,7 @@ void WriteTable(const WString& parserCode, bool enableAmbiguity, bool enableSeri
 	{
 		writer.WriteLine(prefix + L"\tvl::stream::MemoryStream stream;");
 		writer.WriteLine(prefix + L"\t" + codeClassPrefix + L"GetParserBuffer(stream);");
-		writer.WriteLine(prefix + L"\tvl::Ptr<vl::parsing::tabling::ParsingTable> table=new vl::parsing::tabling::ParsingTable(stream);");
+		writer.WriteLine(prefix + L"\tauto table = vl::Ptr(new vl::parsing::tabling::ParsingTable(stream));");
 		writer.WriteLine(prefix + L"\ttable->Initialize();");
 		writer.WriteLine(prefix + L"\treturn table;");
 	}

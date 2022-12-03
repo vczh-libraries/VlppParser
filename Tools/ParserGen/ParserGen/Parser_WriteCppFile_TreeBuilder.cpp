@@ -103,18 +103,16 @@ void WriteNodeConverterClassImplFragment(ParsingSymbolManager* manager, const WS
 	EnumerateAllLeafClass(manager, manager->GetGlobal(), leafClasses);
 	for (auto scope : leafClasses)
 	{
-		writer.WriteString(L"if(obj->GetType()==L\"");
+		writer.WriteString(L"if(obj->GetType() == L\"");
 		writer.WriteString(GetTypeNameForCreateInstruction(scope));
 		writer.WriteLine(L"\")");
 		writer.WriteString(prefix);
 		writer.WriteLine(L"{");
 
 		writer.WriteString(prefix);
-		writer.WriteString(L"\t");
-		PrintTypeForValue(scope, codeClassPrefix, writer);
-		writer.WriteString(L" tree = new ");
+		writer.WriteString(L"\tauto tree = new vl::Ptr(");
 		PrintType(scope, codeClassPrefix, writer);
-		writer.WriteLine(L";");
+		writer.WriteLine(L");");
 		writer.WriteString(prefix);
 		writer.WriteString(L"\t");
 		writer.WriteLine(L"vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());");
