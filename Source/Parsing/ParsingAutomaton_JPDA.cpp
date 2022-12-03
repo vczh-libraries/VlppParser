@@ -20,7 +20,7 @@ CreateJointPDAFromNondeterministicPDA
 
 			Ptr<Automaton> CreateJointPDAFromNondeterministicPDA(Ptr<Automaton> nondeterministicPDA)
 			{
-				Ptr<Automaton> automaton=new Automaton(nondeterministicPDA->symbolManager);
+				auto automaton = Ptr(new Automaton(nondeterministicPDA->symbolManager));
 
 				// build rule info data
 				Dictionary<WString, ParsingDefinitionRuleDefinition*> ruleMap;
@@ -28,8 +28,8 @@ CreateJointPDAFromNondeterministicPDA
 				for (auto rule : nondeterministicPDA->orderedRulesDefs)
 				{
 					// build new rule info
-					Ptr<RuleInfo> ruleInfo=nondeterministicPDA->ruleDefToInfoMap[rule];
-					Ptr<RuleInfo> newRuleInfo=new RuleInfo;
+					auto ruleInfo = nondeterministicPDA->ruleDefToInfoMap[rule];
+					auto newRuleInfo = Ptr(new RuleInfo);
 					automaton->AddRuleInfo(rule, newRuleInfo);
 					ruleMap.Add(rule->name, rule);
 
@@ -97,7 +97,7 @@ CreateJointPDAFromNondeterministicPDA
 
 								{
 									Transition* shiftTransition=automaton->Epsilon(newSource, oldNewStateMap[oldRuleInfo->startState]);
-									Ptr<Action> action=new Action;
+									auto action = Ptr(new Action);
 									action->actionType=Action::Shift;
 									action->shiftReduceSource=newSource;
 									action->shiftReduceTarget=newTarget;
@@ -108,7 +108,7 @@ CreateJointPDAFromNondeterministicPDA
 								for (auto oldEndState : oldRuleInfo->endStates)
 								{
 									Transition* reduceTransition=automaton->NormalReduce(oldNewStateMap[oldEndState], newTarget);
-									Ptr<Action> action=new Action;
+									auto action = Ptr(new Action);
 									action->actionType=Action::Reduce;
 									action->shiftReduceSource=newSource;
 									action->shiftReduceTarget=newTarget;
@@ -254,7 +254,7 @@ MarkLeftRecursiveInJointPDA
 								{
 									if(shiftAction)
 									{
-										errors.Add(new ParsingError(state->ownerRule, L"Indirect left recursive transition in rule \""+state->ownerRule->name+L"\" is not allowed."));
+										errors.Add(Ptr(new ParsingError(state->ownerRule, L"Indirect left recursive transition in rule \"" + state->ownerRule->name + L"\" is not allowed.")));
 										goto FOUND_INDIRECT_LEFT_RECURSIVE_TRANSITION;
 									}
 									else
@@ -297,7 +297,7 @@ MarkLeftRecursiveInJointPDA
 									{
 										transition->transitionType = Transition::LeftRecursiveReduce;
 										// need to create a new action because in the previous phrases, these action object are shared and treated as read only
-										Ptr<Action> newAction=new Action;
+										auto newAction = Ptr(new Action);
 										newAction->actionType=Action::LeftRecursiveReduce;
 										newAction->actionSource=action->actionSource;
 										newAction->actionTarget=action->actionTarget;
@@ -309,7 +309,7 @@ MarkLeftRecursiveInJointPDA
 									}
 									else
 									{
-										errors.Add(new ParsingError(state->ownerRule, L"Left recursive reduce action in non-normal-reduce found in rule \""+state->ownerRule->name+L"\" is not allowed."));
+										errors.Add(Ptr(new ParsingError(state->ownerRule, L"Left recursive reduce action in non-normal-reduce found in rule \"" + state->ownerRule->name + L"\" is not allowed.")));
 									}
 								}
 							}

@@ -250,7 +250,7 @@ ParsingState
 				,parsingRuleStartState(-1)
 			{
 				CopyFrom(tokens, table->GetLexer().Parse(input, {}, codeIndex));
-				walker=new ParsingTokenWalker(tokens, table);
+				walker = Ptr(new ParsingTokenWalker(tokens, table));
 			}
 
 			ParsingState::~ParsingState()
@@ -294,7 +294,7 @@ ParsingState
 				{
 					walker->Reset();
 					walker->Move();
-					stateGroup=new StateGroup(info);
+					stateGroup = Ptr(new StateGroup(info));
 					parsingRule=rule;
 					parsingRuleStartState=info.rootStartState;
 					return stateGroup->currentState;
@@ -724,12 +724,12 @@ ParsingState
 
 			Ptr<ParsingState::StateGroup> ParsingState::TakeSnapshot()
 			{
-				return new StateGroup(*stateGroup.Obj());
+				return Ptr(new StateGroup(*stateGroup.Obj()));
 			}
 
 			void ParsingState::RestoreSnapshot(Ptr<StateGroup> group)
 			{
-				stateGroup=new StateGroup(*group.Obj());
+				stateGroup = Ptr(new StateGroup(*group.Obj()));
 			}
 
 /***********************************************************************
@@ -749,7 +749,7 @@ ParsingTreeBuilder
 			void ParsingTreeBuilder::Reset()
 			{
 				createdObject=0;
-				operationTarget=new ParsingTreeObject();
+				operationTarget = Ptr(new ParsingTreeObject());
 				nodeStack.Clear();
 
 				processingAmbiguityBranch=false;
@@ -825,8 +825,8 @@ ParsingTreeBuilder
 						ambiguityBranchNodeStack.Clear();
 
 						{
-							Ptr<ParsingTreeObject> ambiguousNode=new ParsingTreeObject(result.ambiguityNodeType, operationTarget->GetCodeRange());
-							Ptr<ParsingTreeArray> items=new ParsingTreeArray(L"", operationTarget->GetCodeRange());
+							auto ambiguousNode = Ptr(new ParsingTreeObject(result.ambiguityNodeType, operationTarget->GetCodeRange()));
+							auto items = Ptr(new ParsingTreeArray(L"", operationTarget->GetCodeRange()));
 							for (auto node : ambiguityNodes)
 							{
 								items->AddItem(node);
@@ -884,11 +884,11 @@ ParsingTreeBuilder
 										Ptr<ParsingTreeToken> value;
 										if(result.token==0)
 										{
-											value=new ParsingTreeToken(L"", result.tokenIndexInStream);
+											value = Ptr(new ParsingTreeToken(L"", result.tokenIndexInStream));
 										}
 										else
 										{
-											value=new ParsingTreeToken(WString::CopyFrom(result.token->reading, result.token->length), result.tokenIndexInStream);
+											value = Ptr(new ParsingTreeToken(WString::CopyFrom(result.token->reading, result.token->length), result.tokenIndexInStream));
 											value->SetCodeRange(ParsingTextRange(result.token, result.token));
 										}
 										operationTarget->SetMember(ins.nameParameter, value);
@@ -902,10 +902,10 @@ ParsingTreeBuilder
 								break;
 							case ParsingTable::Instruction::Item:
 								{
-									Ptr<ParsingTreeArray> arr=operationTarget->GetMember(ins.nameParameter).Cast<ParsingTreeArray>();;
+									auto arr=operationTarget->GetMember(ins.nameParameter).Cast<ParsingTreeArray>();
 									if(!arr)
 									{
-										arr=new ParsingTreeArray();
+										arr = Ptr(new ParsingTreeArray());
 										operationTarget->SetMember(ins.nameParameter, arr);
 									}
 									ParsingTextRange arrRange=arr->GetCodeRange();
@@ -915,11 +915,11 @@ ParsingTreeBuilder
 										Ptr<ParsingTreeToken> value;
 										if(result.token==0)
 										{
-											value=new ParsingTreeToken(L"", result.tokenIndexInStream);
+											value = Ptr(new ParsingTreeToken(L"", result.tokenIndexInStream));
 										}
 										else
 										{
-											value=new ParsingTreeToken(WString::CopyFrom(result.token->reading, result.token->length), result.tokenIndexInStream);
+											value = Ptr(new ParsingTreeToken(WString::CopyFrom(result.token->reading, result.token->length), result.tokenIndexInStream));
 											value->SetCodeRange(ParsingTextRange(result.token, result.token));
 											itemRange=value->GetCodeRange();
 										}
@@ -945,14 +945,14 @@ ParsingTreeBuilder
 								break;
 							case ParsingTable::Instruction::Setter:
 								{
-									Ptr<ParsingTreeToken> value=new ParsingTreeToken(ins.value, -1);
+								auto value = Ptr(new ParsingTreeToken(ins.value, -1));
 									operationTarget->SetMember(ins.nameParameter, value);
 								}
 								break;
 							case ParsingTable::Instruction::Shift:
 								{
 									nodeStack.Add(operationTarget);
-									operationTarget=new ParsingTreeObject();
+									operationTarget = Ptr(new ParsingTreeObject());
 									createdObject=0;
 								}
 								break;
@@ -980,7 +980,7 @@ ParsingTreeBuilder
 							case ParsingTable::Instruction::LeftRecursiveReduce:
 								{
 									createdObject=operationTarget;
-									operationTarget=new ParsingTreeObject();
+									operationTarget = Ptr(new ParsingTreeObject());
 
 									if(result.shiftReduceRanges)
 									{

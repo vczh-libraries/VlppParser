@@ -122,7 +122,7 @@ ParsingDefinitionTypeWriter
 
 			ParsingDefinitionAttributeWriter::ParsingDefinitionAttributeWriter(const WString& name)
 			{
-				attribute=new ParsingDefinitionAttribute;
+				attribute = Ptr(new ParsingDefinitionAttribute);
 				attribute->name=name;
 			}
 
@@ -163,14 +163,14 @@ ParsingDefinitionTypeWriter
 
 			ParsingDefinitionTypeWriter::ParsingDefinitionTypeWriter(const WString& name)
 			{
-				Ptr<ParsingDefinitionPrimitiveType> primitiveType=new ParsingDefinitionPrimitiveType;
+				auto primitiveType = Ptr(new ParsingDefinitionPrimitiveType);
 				primitiveType->name=name;
 				type=primitiveType;
 			}
 
 			ParsingDefinitionTypeWriter ParsingDefinitionTypeWriter::Sub(const WString& subTypeName)const
 			{
-				Ptr<ParsingDefinitionSubType> subType=new ParsingDefinitionSubType;
+				auto subType = Ptr(new ParsingDefinitionSubType);
 				subType->parentType=type;
 				subType->subTypeName=subTypeName;
 				return ParsingDefinitionTypeWriter(subType);
@@ -178,7 +178,7 @@ ParsingDefinitionTypeWriter
 
 			ParsingDefinitionTypeWriter ParsingDefinitionTypeWriter::Array()const
 			{
-				Ptr<ParsingDefinitionArrayType> arrayType=new ParsingDefinitionArrayType;
+				auto arrayType = Ptr(new ParsingDefinitionArrayType);
 				arrayType->elementType=type;
 				return ParsingDefinitionTypeWriter(arrayType);
 			}
@@ -195,7 +195,7 @@ ParsingDefinitionTypeWriter
 
 			ParsingDefinitionTypeWriter TokenType()
 			{
-				Ptr<ParsingDefinitionTokenType> type=new ParsingDefinitionTokenType;
+				auto type = Ptr(new ParsingDefinitionTokenType);
 				return ParsingDefinitionTypeWriter(type);
 			}
 
@@ -205,14 +205,14 @@ ParsingDefinitionClassDefinitionWriter
 
 			ParsingDefinitionClassDefinitionWriter::ParsingDefinitionClassDefinitionWriter(const WString& name)
 			{
-				definition=new ParsingDefinitionClassDefinition;
+				definition = Ptr(new ParsingDefinitionClassDefinition);
 				definition->name=name;
 				currentDefinition=definition;
 			}
 
 			ParsingDefinitionClassDefinitionWriter::ParsingDefinitionClassDefinitionWriter(const WString& name, const ParsingDefinitionTypeWriter& parentType)
 			{
-				definition=new ParsingDefinitionClassDefinition;
+				definition = Ptr(new ParsingDefinitionClassDefinition);
 				definition->name=name;
 				definition->parentType=parentType.Type();
 				currentDefinition=definition;
@@ -226,7 +226,7 @@ ParsingDefinitionClassDefinitionWriter
 
 			ParsingDefinitionClassDefinitionWriter& ParsingDefinitionClassDefinitionWriter::Member(const WString& name, const ParsingDefinitionTypeWriter& type, const WString& unescapingFunction)
 			{
-				Ptr<ParsingDefinitionClassMemberDefinition> member=new ParsingDefinitionClassMemberDefinition;
+				auto member = Ptr(new ParsingDefinitionClassMemberDefinition);
 				member->name=name;
 				member->type=type.Type();
 				member->unescapingFunction=unescapingFunction;
@@ -268,14 +268,14 @@ ParsingDefinitionEnumDefinitionWriter
 
 			ParsingDefinitionEnumDefinitionWriter::ParsingDefinitionEnumDefinitionWriter(const WString& name)
 			{
-				definition=new ParsingDefinitionEnumDefinition;
+				definition = Ptr(new ParsingDefinitionEnumDefinition);
 				definition->name=name;
 				currentDefinition=definition;
 			}
 
 			ParsingDefinitionEnumDefinitionWriter& ParsingDefinitionEnumDefinitionWriter::Member(const WString& name)
 			{
-				Ptr<ParsingDefinitionEnumMemberDefinition> member=new ParsingDefinitionEnumMemberDefinition;
+				auto member = Ptr(new ParsingDefinitionEnumMemberDefinition);
 				member->name=name;
 				definition->members.Add(member);
 				currentDefinition=member;
@@ -314,7 +314,7 @@ ParsingDefinitionGrammarWriter
 
 			ParsingDefinitionGrammarWriter ParsingDefinitionGrammarWriter::operator+(const ParsingDefinitionGrammarWriter& next)const
 			{
-				Ptr<ParsingDefinitionSequenceGrammar> sequence=new ParsingDefinitionSequenceGrammar;
+				auto sequence = Ptr(new ParsingDefinitionSequenceGrammar);
 				sequence->first=grammar;
 				sequence->second=next.Grammar();
 				return ParsingDefinitionGrammarWriter(sequence);
@@ -322,7 +322,7 @@ ParsingDefinitionGrammarWriter
 
 			ParsingDefinitionGrammarWriter ParsingDefinitionGrammarWriter::operator|(const ParsingDefinitionGrammarWriter& next)const
 			{
-				Ptr<ParsingDefinitionAlternativeGrammar> alternative=new ParsingDefinitionAlternativeGrammar;
+				auto alternative = Ptr(new ParsingDefinitionAlternativeGrammar);
 				alternative->first=grammar;
 				alternative->second=next.Grammar();
 				return ParsingDefinitionGrammarWriter(alternative);
@@ -330,14 +330,14 @@ ParsingDefinitionGrammarWriter
 
 			ParsingDefinitionGrammarWriter ParsingDefinitionGrammarWriter::operator*()const
 			{
-				Ptr<ParsingDefinitionLoopGrammar> loop=new ParsingDefinitionLoopGrammar;
+				auto loop = Ptr(new ParsingDefinitionLoopGrammar);
 				loop->grammar=grammar;
 				return ParsingDefinitionGrammarWriter(loop);
 			}
 
 			ParsingDefinitionGrammarWriter ParsingDefinitionGrammarWriter::As(const ParsingDefinitionTypeWriter& type)const
 			{
-				Ptr<ParsingDefinitionCreateGrammar> create=new ParsingDefinitionCreateGrammar;
+				auto create = Ptr(new ParsingDefinitionCreateGrammar);
 				create->grammar=grammar;
 				create->type=type.Type();
 				return ParsingDefinitionGrammarWriter(create);
@@ -345,7 +345,7 @@ ParsingDefinitionGrammarWriter
 
 			ParsingDefinitionGrammarWriter ParsingDefinitionGrammarWriter::operator[](const WString& memberName)const
 			{
-				Ptr<ParsingDefinitionAssignGrammar> assign=new ParsingDefinitionAssignGrammar;
+				auto assign = Ptr(new ParsingDefinitionAssignGrammar);
 				assign->grammar=grammar;
 				assign->memberName=memberName;
 				return ParsingDefinitionGrammarWriter(assign);
@@ -353,14 +353,14 @@ ParsingDefinitionGrammarWriter
 
 			ParsingDefinitionGrammarWriter ParsingDefinitionGrammarWriter::operator!()const
 			{
-				Ptr<ParsingDefinitionUseGrammar> use=new ParsingDefinitionUseGrammar;
+				auto use = Ptr(new ParsingDefinitionUseGrammar);
 				use->grammar=grammar;
 				return ParsingDefinitionGrammarWriter(use);
 			}
 
 			ParsingDefinitionGrammarWriter ParsingDefinitionGrammarWriter::Set(const WString& memberName, const WString& value)const
 			{
-				Ptr<ParsingDefinitionSetterGrammar> setter=new ParsingDefinitionSetterGrammar;
+				auto setter = Ptr(new ParsingDefinitionSetterGrammar);
 				setter->grammar=grammar;
 				setter->memberName=memberName;
 				setter->value=value;
@@ -374,21 +374,21 @@ ParsingDefinitionGrammarWriter
 
 			ParsingDefinitionGrammarWriter Rule(const WString& name)
 			{
-				Ptr<ParsingDefinitionPrimitiveGrammar> grammar=new ParsingDefinitionPrimitiveGrammar;
+				auto grammar = Ptr(new ParsingDefinitionPrimitiveGrammar);
 				grammar->name=name;
 				return ParsingDefinitionGrammarWriter(grammar);
 			}
 
 			ParsingDefinitionGrammarWriter Text(const WString& text)
 			{
-				Ptr<ParsingDefinitionTextGrammar> grammar=new ParsingDefinitionTextGrammar;
+				auto grammar = Ptr(new ParsingDefinitionTextGrammar);
 				grammar->text=text;
 				return ParsingDefinitionGrammarWriter(grammar);
 			}
 
 			ParsingDefinitionGrammarWriter Opt(const ParsingDefinitionGrammarWriter& writer)
 			{
-				Ptr<ParsingDefinitionOptionalGrammar> grammar=new ParsingDefinitionOptionalGrammar;
+				auto grammar = Ptr(new ParsingDefinitionOptionalGrammar);
 				grammar->grammar=writer.Grammar();
 				return ParsingDefinitionGrammarWriter(grammar);
 			}
@@ -447,7 +447,7 @@ ParsingDefinitionWriter
 
 			ParsingDefinitionWriter::ParsingDefinitionWriter()
 			{
-				definition=new ParsingDefinition;
+				definition = Ptr(new ParsingDefinition);
 			}
 
 			ParsingDefinitionWriter& ParsingDefinitionWriter::Type(const ParsingDefinitionTypeDefinitionWriter& type)
@@ -463,7 +463,7 @@ ParsingDefinitionWriter
 
 			ParsingDefinitionTokenDefinitionWriter ParsingDefinitionWriter::TokenAtt(const WString& name, const WString& regex)
 			{
-				Ptr<ParsingDefinitionTokenDefinition> token=new ParsingDefinitionTokenDefinition;
+				auto token = Ptr(new ParsingDefinitionTokenDefinition);
 				token->name=name;
 				token->regex=regex;
 				token->discard=false;
@@ -473,7 +473,7 @@ ParsingDefinitionWriter
 
 			ParsingDefinitionWriter& ParsingDefinitionWriter::Discard(const WString& name, const WString& regex)
 			{
-				Ptr<ParsingDefinitionTokenDefinition> token=new ParsingDefinitionTokenDefinition;
+				auto token = Ptr(new ParsingDefinitionTokenDefinition);
 				token->name=name;
 				token->regex=regex;
 				token->discard=true;
@@ -483,7 +483,7 @@ ParsingDefinitionWriter
 
 			ParsingDefinitionRuleDefinitionWriter ParsingDefinitionWriter::Rule(const WString& name, const ParsingDefinitionTypeWriter& type)
 			{
-				Ptr<ParsingDefinitionRuleDefinition> rule=new ParsingDefinitionRuleDefinition;
+				auto rule = Ptr(new ParsingDefinitionRuleDefinition);
 				rule->name=name;
 				rule->type=type.Type();
 				definition->rules.Add(rule);

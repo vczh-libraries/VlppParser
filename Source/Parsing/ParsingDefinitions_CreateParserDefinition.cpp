@@ -536,7 +536,7 @@ Bootstrap
 				}
 				else if(node->GetType()==L"AttributeDef")
 				{
-					Ptr<ParsingDefinitionAttribute> target=new ParsingDefinitionAttribute;
+					auto target = Ptr(new ParsingDefinitionAttribute);
 					SetName(target->name, node->GetMember(L"name"));
 					SetArray(target->arguments, node->GetMember(L"arguments"));
 					for(vint i=0;i<target->arguments.Count();i++)
@@ -547,31 +547,31 @@ Bootstrap
 				}
 				else if(node->GetType()==L"PrimitiveTypeObj")
 				{
-					Ptr<ParsingDefinitionPrimitiveType> target=new ParsingDefinitionPrimitiveType;
+					auto target = Ptr(new ParsingDefinitionPrimitiveType);
 					SetName(target->name, node->GetMember(L"name"));
 					return target;
 				}
 				else if(node->GetType()==L"TokenTypeObj")
 				{
-					Ptr<ParsingDefinitionTokenType> target=new ParsingDefinitionTokenType;
+					auto target = Ptr(new ParsingDefinitionTokenType);
 					return target;
 				}
 				else if(node->GetType()==L"SubTypeObj")
 				{
-					Ptr<ParsingDefinitionSubType> target=new ParsingDefinitionSubType;
+					auto target = Ptr(new ParsingDefinitionSubType);
 					SetMember(target->parentType, node->GetMember(L"parentType"));
 					SetName(target->subTypeName, node->GetMember(L"name"));
 					return target;
 				}
 				else if(node->GetType()==L"ArrayTypeObj")
 				{
-					Ptr<ParsingDefinitionArrayType> target=new ParsingDefinitionArrayType;
+					auto target = Ptr(new ParsingDefinitionArrayType);
 					SetMember(target->elementType, node->GetMember(L"elementType"));
 					return target;
 				}
 				else if(node->GetType()==L"ClassMemberDef")
 				{
-					Ptr<ParsingDefinitionClassMemberDefinition> target=new ParsingDefinitionClassMemberDefinition;
+					auto target = Ptr(new ParsingDefinitionClassMemberDefinition);
 					SetArray(target->attributes, node->GetMember(L"attributes"));
 					SetMember(target->type, node->GetMember(L"type"));
 					SetName(target->name, node->GetMember(L"name"));
@@ -580,7 +580,7 @@ Bootstrap
 				}
 				else if(node->GetType()==L"ClassTypeDef")
 				{
-					Ptr<ParsingDefinitionClassDefinition> target=new ParsingDefinitionClassDefinition;
+					auto target = Ptr(new ParsingDefinitionClassDefinition);
 					SetArray(target->attributes, node->GetMember(L"attributes"));
 					SetMember(target->ambiguousType, node->GetMember(L"ambiguousType"));
 					SetMember(target->parentType, node->GetMember(L"parentType"));
@@ -591,14 +591,14 @@ Bootstrap
 				}
 				else if(node->GetType()==L"EnumMemberDef")
 				{
-					Ptr<ParsingDefinitionEnumMemberDefinition> target=new ParsingDefinitionEnumMemberDefinition;
+					auto target = Ptr(new ParsingDefinitionEnumMemberDefinition);
 					SetArray(target->attributes, node->GetMember(L"attributes"));
 					SetName(target->name, node->GetMember(L"name"));
 					return target;
 				}
 				else if(node->GetType()==L"EnumTypeDef")
 				{
-					Ptr<ParsingDefinitionEnumDefinition> target=new ParsingDefinitionEnumDefinition;
+					auto target = Ptr(new ParsingDefinitionEnumDefinition);
 					SetArray(target->attributes, node->GetMember(L"attributes"));
 					SetName(target->name, node->GetMember(L"name"));
 					SetArray(target->members, node->GetMember(L"members"));
@@ -606,65 +606,65 @@ Bootstrap
 				}
 				else if(node->GetType()==L"PrimitiveGrammarDef")
 				{
-					Ptr<ParsingDefinitionPrimitiveGrammar> target=new ParsingDefinitionPrimitiveGrammar;
+					auto target = Ptr(new ParsingDefinitionPrimitiveGrammar);
 					SetName(target->name, node->GetMember(L"name"));
 					return target;
 				}
 				else if(node->GetType()==L"TextGrammarDef")
 				{
-					Ptr<ParsingDefinitionTextGrammar> target=new ParsingDefinitionTextGrammar;
+					auto target = Ptr(new ParsingDefinitionTextGrammar);
 					SetText(target->text, node->GetMember(L"text"));
 					return target;
 				}
 				else if(node->GetType()==L"SequenceGrammarDef")
 				{
-					Ptr<ParsingDefinitionSequenceGrammar> target=new ParsingDefinitionSequenceGrammar;
+					auto target = Ptr(new ParsingDefinitionSequenceGrammar);
 					SetMember(target->first, node->GetMember(L"first"));
 					SetMember(target->second, node->GetMember(L"second"));
 					return target;
 				}
 				else if(node->GetType()==L"AlternativeGrammarDef")
 				{
-					Ptr<ParsingDefinitionAlternativeGrammar> target=new ParsingDefinitionAlternativeGrammar;
+					auto target = Ptr(new ParsingDefinitionAlternativeGrammar);
 					SetMember(target->first, node->GetMember(L"first"));
 					SetMember(target->second, node->GetMember(L"second"));
 					return target;
 				}
 				else if(node->GetType()==L"LoopGrammarDef")
 				{
-					Ptr<ParsingDefinitionLoopGrammar> target=new ParsingDefinitionLoopGrammar;
+					auto target = Ptr(new ParsingDefinitionLoopGrammar);
 					SetMember(target->grammar, node->GetMember(L"grammar"));
 					return target;
 				}
 				else if(node->GetType()==L"OptionalGrammarDef")
 				{
-					Ptr<ParsingDefinitionOptionalGrammar> target=new ParsingDefinitionOptionalGrammar;
+					auto target = Ptr(new ParsingDefinitionOptionalGrammar);
 					SetMember(target->grammar, node->GetMember(L"grammar"));
 					return target;
 				}
 				else if(node->GetType()==L"CreateGrammarDef")
 				{
-					Ptr<ParsingDefinitionCreateGrammar> target=new ParsingDefinitionCreateGrammar;
+					auto target = Ptr(new ParsingDefinitionCreateGrammar);
 					SetMember(target->grammar, node->GetMember(L"grammar"));
 					SetMember(target->type, node->GetMember(L"type"));
 					return target;
 				}
 				else if(node->GetType()==L"AssignGrammarDef")
 				{
-					Ptr<ParsingDefinitionAssignGrammar> target=new ParsingDefinitionAssignGrammar;
+					auto target = Ptr(new ParsingDefinitionAssignGrammar);
 					SetMember(target->grammar, node->GetMember(L"grammar"));
 					SetName(target->memberName, node->GetMember(L"memberName"));
 					return target;
 				}
 				else if(node->GetType()==L"UseGrammarDef")
 				{
-					Ptr<ParsingDefinitionUseGrammar> target=new ParsingDefinitionUseGrammar;
+					auto target = Ptr(new ParsingDefinitionUseGrammar);
 					SetMember(target->grammar, node->GetMember(L"grammar"));
 					return target;
 				}
 				else if(node->GetType()==L"SetterGrammarDef")
 				{
-					Ptr<ParsingDefinitionSetterGrammar> target=new ParsingDefinitionSetterGrammar;
+					auto target = Ptr(new ParsingDefinitionSetterGrammar);
 					SetMember(target->grammar, node->GetMember(L"grammar"));
 					SetName(target->memberName, node->GetMember(L"memberName"));
 					SetText(target->value, node->GetMember(L"value"));
@@ -672,7 +672,7 @@ Bootstrap
 				}
 				else if(node->GetType()==L"TokenDef")
 				{
-					Ptr<ParsingDefinitionTokenDefinition> target=new ParsingDefinitionTokenDefinition;
+					auto target = Ptr(new ParsingDefinitionTokenDefinition);
 					SetArray(target->attributes, node->GetMember(L"attributes"));
 					SetName(target->name, node->GetMember(L"name"));
 					SetText(target->regex, node->GetMember(L"regex"));
@@ -683,7 +683,7 @@ Bootstrap
 				}
 				else if(node->GetType()==L"RuleDef")
 				{
-					Ptr<ParsingDefinitionRuleDefinition> target=new ParsingDefinitionRuleDefinition;
+					auto target = Ptr(new ParsingDefinitionRuleDefinition);
 					SetArray(target->attributes, node->GetMember(L"attributes"));
 					SetName(target->name, node->GetMember(L"name"));
 					SetMember(target->type, node->GetMember(L"type"));
@@ -692,7 +692,7 @@ Bootstrap
 				}
 				else if(node->GetType()==L"ParserDef")
 				{
-					Ptr<ParsingDefinition> target=new ParsingDefinition;
+					auto target = Ptr(new ParsingDefinition);
 					Ptr<ParsingTreeArray> defs=node->GetMember(L"definitions").Cast<ParsingTreeArray>();
 					if(defs)
 					{

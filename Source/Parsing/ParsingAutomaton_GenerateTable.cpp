@@ -171,7 +171,7 @@ CollectAttribute
 			{
 				for (auto datt : atts)
 				{
-					Ptr<ParsingTable::AttributeInfo> tatt=new ParsingTable::AttributeInfo(datt->name);
+					auto tatt = Ptr(new ParsingTable::AttributeInfo(datt->name));
 					CopyFrom(tatt->arguments, datt->arguments);
 					att->attributes.Add(tatt);
 				}
@@ -179,7 +179,7 @@ CollectAttribute
 
 			Ptr<ParsingTable::AttributeInfoList> CreateAttributeInfo(List<Ptr<definitions::ParsingDefinitionAttribute>>& atts)
 			{
-				Ptr<ParsingTable::AttributeInfoList> att=new ParsingTable::AttributeInfoList;
+				auto att = Ptr(new ParsingTable::AttributeInfoList);
 				CollectAttributeInfo(att, atts);
 				return att;
 			}
@@ -221,13 +221,13 @@ GenerateTable
 						switch (t1->token)
 						{
 						case ParsingTable::NormalReduce:
-							errors.Add(new ParsingError(stateIds[state]->ownerRule, L"Conflict happened with normal reduce in transition of \""+tokenName+L"\" of state \""+stateName+L"\"."));
+							errors.Add(Ptr(new ParsingError(stateIds[state]->ownerRule, L"Conflict happened with normal reduce in transition of \"" + tokenName + L"\" of state \"" + stateName + L"\".")));
 							break;
 						case ParsingTable::LeftRecursiveReduce:
-							errors.Add(new ParsingError(stateIds[state]->ownerRule, L"Conflict happened with left recursive reduce in transition of \""+tokenName+L"\" of state \""+stateName+L"\"."));
+							errors.Add(Ptr(new ParsingError(stateIds[state]->ownerRule, L"Conflict happened with left recursive reduce in transition of \"" + tokenName + L"\" of state \"" + stateName + L"\".")));
 							break;
 						default:
-							errors.Add(new ParsingError(stateIds[state]->ownerRule, L"Conflict happened in transition of \""+tokenName+L"\" of state \""+stateName+L"\"."));
+							errors.Add(Ptr(new ParsingError(stateIds[state]->ownerRule, L"Conflict happened in transition of \"" + tokenName + L"\" of state \"" + stateName + L"\".")));
 							break;
 						}
 					}
@@ -253,7 +253,7 @@ GenerateTable
 				CollectType(manager->GetGlobal(), types);
 				for (auto type : types)
 				{
-					Ptr<ParsingTable::AttributeInfoList> typeAtt = new ParsingTable::AttributeInfoList;
+					auto typeAtt = Ptr(new ParsingTable::AttributeInfoList);
 					ParsingSymbol* parent = type;
 					while (parent)
 					{
@@ -264,7 +264,7 @@ GenerateTable
 						vint index = childTypeValues.Keys().IndexOf(parent);
 						if (index == -1)
 						{
-							children = new List<ParsingSymbol*>;
+							children = Ptr(new List<ParsingSymbol*>);
 							orderedChildTypeKeys.Add(parent);
 							childTypeValues.Add(parent, children);
 						}
@@ -413,7 +413,7 @@ GenerateTable
 				}
 				vint stateCount = stateIds.Count();
 
-				Ptr<ParsingTable> table = new ParsingTable(atts.Count(), typeAtts.Count(), treeFieldAtts.Count(), tokenCount, discardTokenCount, stateCount, definition->rules.Count());
+				auto table = Ptr(new ParsingTable(atts.Count(), typeAtts.Count(), treeFieldAtts.Count(), tokenCount, discardTokenCount, stateCount, definition->rules.Count()));
 
 				/***********************************************************************
 				fill attribute infos
@@ -538,11 +538,11 @@ GenerateTable
 						Ptr<ParsingTable::TransitionBag> bag = table->GetTransitionBag(stateIndex, tokenIndex);
 						if (!bag)
 						{
-							bag = new ParsingTable::TransitionBag;
+							bag = Ptr(new ParsingTable::TransitionBag);
 							table->SetTransitionBag(stateIndex, tokenIndex, bag);
 						}
 
-						Ptr<ParsingTable::TransitionItem> item = new ParsingTable::TransitionItem;
+						auto item = Ptr(new ParsingTable::TransitionItem);
 						item->token = tokenIndex;
 						item->targetState = stateIds.IndexOf(transition->target);
 						bag->transitionItems.Add(item);

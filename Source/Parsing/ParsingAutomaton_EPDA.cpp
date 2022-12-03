@@ -94,7 +94,7 @@ CreateEpsilonPDAVisitor
 					Create(node->grammar.Obj(), startState, middleState);
 					Transition* transition=automaton->Epsilon(middleState, endState);
 
-					Ptr<Action> action=new Action;
+					auto action = Ptr(new Action);
 					action->actionType=Action::Create;
 					action->actionSource=automaton->symbolManager->CacheGetType(node->type.Obj(), 0);
 					action->creatorRule=rule;
@@ -105,7 +105,7 @@ CreateEpsilonPDAVisitor
 				{
 					Transition* transition=Create(node->grammar.Obj(), startState, endState);
 
-					Ptr<Action> action=new Action;
+					auto action = Ptr(new Action);
 					action->actionType=Action::Assign;
 					action->actionSource=automaton->symbolManager->CacheGetSymbol(node);
 					action->creatorRule=rule;
@@ -116,7 +116,7 @@ CreateEpsilonPDAVisitor
 				{
 					Transition* transition=Create(node->grammar.Obj(), startState, endState);
 
-					Ptr<Action> action=new Action;
+					auto action = Ptr(new Action);
 					action->actionType=Action::Using;
 					action->creatorRule=rule;
 					transition->actions.Add(action);
@@ -128,7 +128,7 @@ CreateEpsilonPDAVisitor
 					Create(node->grammar.Obj(), startState, middleState);
 					Transition* transition=automaton->Epsilon(middleState, endState);
 
-					Ptr<Action> action=new Action;
+					auto action = Ptr(new Action);
 					action->actionType=Action::Setter;
 					action->actionSource=automaton->symbolManager->CacheGetSymbol(node);
 					action->actionTarget=action->actionSource->GetDescriptorSymbol()->GetSubSymbolByName(node->value);
@@ -143,7 +143,7 @@ CreateRuleEpsilonPDA
 
 			void CreateRuleEpsilonPDA(Ptr<Automaton> automaton, Ptr<definitions::ParsingDefinitionRuleDefinition> rule, ParsingSymbolManager* manager)
 			{
-				Ptr<RuleInfo> ruleInfo=new RuleInfo;
+				auto ruleInfo = Ptr(new RuleInfo);
 				automaton->AddRuleInfo(rule.Obj(), ruleInfo);
 
 				ruleInfo->rootRuleStartState=automaton->RootRuleStartState(rule.Obj());
@@ -170,7 +170,7 @@ CreateEpsilonPDA
 
 			Ptr<Automaton> CreateEpsilonPDA(Ptr<definitions::ParsingDefinition> definition, ParsingSymbolManager* manager)
 			{
-				Ptr<Automaton> automaton=new Automaton(manager);
+				auto automaton = Ptr(new Automaton(manager));
 				for (auto rule : definition->rules)
 				{
 					CreateRuleEpsilonPDA(automaton, rule, manager);

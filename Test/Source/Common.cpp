@@ -95,7 +95,7 @@ namespace test
 			stream.SeekFromBegin(0);
 
 			TEST_PRINT(L"Deserializing ...");
-			deserializedTable = new ParsingTable(stream);
+			deserializedTable = Ptr(new ParsingTable(stream));
 			TEST_ASSERT(stream.Position() == stream.Size());
 
 			TEST_PRINT(L"Initializing ...");

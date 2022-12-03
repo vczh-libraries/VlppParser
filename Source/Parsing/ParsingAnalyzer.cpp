@@ -232,8 +232,8 @@ ParsingSymbolManager
 			{
 				globalSymbol=new ParsingSymbol(this, ParsingSymbol::Global, L"", 0, L"");
 				tokenTypeSymbol=new ParsingSymbol(this, ParsingSymbol::TokenType, L"token", 0, L"");
-				createdSymbols.Add(globalSymbol);
-				createdSymbols.Add(tokenTypeSymbol);
+				createdSymbols.Add(Ptr(globalSymbol));
+				createdSymbols.Add(Ptr(tokenTypeSymbol));
 			}
 
 			ParsingSymbolManager::~ParsingSymbolManager()
@@ -257,13 +257,13 @@ ParsingSymbolManager
 					if(!elementType->arrayTypeSymbol)
 					{
 						elementType->arrayTypeSymbol=new ParsingSymbol(this, ParsingSymbol::ArrayType, L"", elementType, L"");
-						createdSymbols.Add(elementType->arrayTypeSymbol);
+						createdSymbols.Add(Ptr(elementType->arrayTypeSymbol));
 					}
 					return elementType->arrayTypeSymbol;
 				}
 				else
 				{
-					return 0;
+					return nullptr;
 				}
 			}
 
@@ -271,77 +271,77 @@ ParsingSymbolManager
 			{
 				if((!baseType || baseType->GetType()==ParsingSymbol::ClassType) && (!parentType || parentType->IsType()))
 				{
-					ParsingSymbol* symbol=new ParsingSymbol(this, ParsingSymbol::ClassType, classDef->name, baseType, L"");
+					auto symbol = Ptr(new ParsingSymbol(this, ParsingSymbol::ClassType, classDef->name, baseType, L""));
 					if(TryAddSubSymbol(symbol, parentType?parentType:globalSymbol))
 					{
-						symbolClassDefinitionCache.Add(symbol, classDef);
-						classDefinitionSymbolCache.Add(classDef, symbol);
-						return symbol;
+						symbolClassDefinitionCache.Add(symbol.Obj(), classDef);
+						classDefinitionSymbolCache.Add(classDef, symbol.Obj());
+						return symbol.Obj();
 					}
 				}
-				return 0;
+				return nullptr;
 			}
 
 			ParsingSymbol* ParsingSymbolManager::AddField(const WString& name, ParsingSymbol* classType, ParsingSymbol* fieldType)
 			{
 				if(classType && classType->GetType()==ParsingSymbol::ClassType && fieldType && fieldType->IsType())
 				{
-					ParsingSymbol* symbol=new ParsingSymbol(this, ParsingSymbol::ClassField, name, fieldType, L"");
+					auto symbol = Ptr(new ParsingSymbol(this, ParsingSymbol::ClassField, name, fieldType, L""));
 					if(TryAddSubSymbol(symbol, classType))
 					{
-						return symbol;
+						return symbol.Obj();
 					}
 				}
-				return 0;
+				return nullptr;
 			}
 
 			ParsingSymbol* ParsingSymbolManager::AddEnum(const WString& name, ParsingSymbol* parentType)
 			{
 				if(!parentType || parentType->GetType()==ParsingSymbol::ClassType)
 				{
-					ParsingSymbol* symbol=new ParsingSymbol(this, ParsingSymbol::EnumType, name, 0, L"");
+					auto symbol = Ptr(new ParsingSymbol(this, ParsingSymbol::EnumType, name, 0, L""));
 					if(TryAddSubSymbol(symbol, parentType?parentType:globalSymbol))
 					{
-						return symbol;
+						return symbol.Obj();
 					}
 				}
-				return 0;
+				return nullptr;
 			}
 
 			ParsingSymbol* ParsingSymbolManager::AddEnumItem(const WString& name, ParsingSymbol* enumType)
 			{
 				if(enumType && enumType->GetType()==ParsingSymbol::EnumType)
 				{
-					ParsingSymbol* symbol=new ParsingSymbol(this, ParsingSymbol::EnumItem, name, enumType, L"");
+					auto symbol = Ptr(new ParsingSymbol(this, ParsingSymbol::EnumItem, name, enumType, L""));
 					if(TryAddSubSymbol(symbol, enumType))
 					{
-						return symbol;
+						return symbol.Obj();
 					}
 				}
-				return 0;
+				return nullptr;
 			}
 
 			ParsingSymbol* ParsingSymbolManager::AddTokenDefinition(const WString& name, const WString& regex)
 			{
-				ParsingSymbol* symbol=new ParsingSymbol(this, ParsingSymbol::TokenDef, name, tokenTypeSymbol, regex);
+				auto symbol = Ptr(new ParsingSymbol(this, ParsingSymbol::TokenDef, name, tokenTypeSymbol, regex));
 				if(TryAddSubSymbol(symbol, globalSymbol))
 				{
-					return symbol;
+					return symbol.Obj();
 				}
-				return 0;
+				return nullptr;
 			}
 
 			ParsingSymbol* ParsingSymbolManager::AddRuleDefinition(const WString& name, ParsingSymbol* ruleType)
 			{
 				if(ruleType && ruleType->IsType())
 				{
-					ParsingSymbol* symbol=new ParsingSymbol(this, ParsingSymbol::RuleDef, name, ruleType, L"");
+					auto symbol = Ptr(new ParsingSymbol(this, ParsingSymbol::RuleDef, name, ruleType, L""));
 					if(TryAddSubSymbol(symbol, globalSymbol))
 					{
-						return symbol;
+						return symbol.Obj();
 					}
 				}
-				return 0;
+				return nullptr;
 			}
 
 			ParsingSymbolManager::ClassDefinition* ParsingSymbolManager::CacheGetClassDefinition(ParsingSymbol* type)
@@ -475,13 +475,13 @@ FindType
 							}
 							else
 							{
-								errors.Add(new ParsingError(node, L"\""+node->name+L"\" in current scope is not a type."));
+								errors.Add(Ptr(new ParsingError(node, L"\"" + node->name + L"\" in current scope is not a type.")));
 							}
 							return;
 						}
 						currentScope=currentScope->GetParentSymbol();
 					}
-					errors.Add(new ParsingError(node, L"Cannot not find \""+node->name+L"\" in current scope."));
+					errors.Add(Ptr(new ParsingError(node, L"Cannot not find \"" + node->name + L"\" in current scope.")));
 				}
 
 				void Visit(ParsingDefinitionTokenType* node)override
@@ -497,7 +497,7 @@ FindType
 						ParsingSymbol* subType=type->SearchClassSubSymbol(node->subTypeName);
 						if(!subType)
 						{
-							errors.Add(new ParsingError(node, L"\""+GetTypeFullName(type)+L"\" does not has a sub type called \""+node->subTypeName+L"\"."));
+							errors.Add(Ptr(new ParsingError(node, L"\"" + GetTypeFullName(type) + L"\" does not has a sub type called \"" + node->subTypeName + L"\".")));
 						}
 						else if(subType->IsType())
 						{
@@ -505,7 +505,7 @@ FindType
 						}
 						else
 						{
-							errors.Add(new ParsingError(node, L"\""+GetTypeFullName(type)+L"\" contains a sub definition called \""+node->subTypeName+L"\" but this is not a type."));
+							errors.Add(Ptr(new ParsingError(node, L"\"" + GetTypeFullName(type) + L"\" contains a sub definition called \"" + node->subTypeName + L"\" but this is not a type.")));
 						}
 					}
 				}
@@ -555,7 +555,7 @@ PrepareSymbols
 				{
 					if(scope->SearchClassSubSymbol(node->name))
 					{
-						errors.Add(new ParsingError(node, L"Cannot redefine \""+node->name+L"\" to be "+subjectName+L"."));
+						errors.Add(Ptr(new ParsingError(node, L"Cannot redefine \"" + node->name + L"\" to be " + subjectName + L".")));
 						return false;
 					}
 					else
@@ -574,7 +574,7 @@ PrepareSymbols
 							ParsingSymbol* field=manager->AddField(node->name, scope, fieldType);
 							if(!field)
 							{
-								errors.Add(new ParsingError(node, L"A class field cannot be defined here."));
+								errors.Add(Ptr(new ParsingError(node, L"A class field cannot be defined here.")));
 							}
 						}
 					}
@@ -604,7 +604,7 @@ PrepareSymbols
 						}
 						else
 						{
-							errors.Add(new ParsingError(node, L"A class type cannot be defined here."));
+							errors.Add(Ptr(new ParsingError(node, L"A class type cannot be defined here.")));
 						}
 					}
 				}
@@ -616,7 +616,7 @@ PrepareSymbols
 						ParsingSymbol* enumItem=manager->AddEnumItem(node->name, scope);
 						if(!enumItem)
 						{
-							errors.Add(new ParsingError(node, L"An enum item cannot be defined here."));
+							errors.Add(Ptr(new ParsingError(node, L"An enum item cannot be defined here.")));
 						}
 					}
 				}
@@ -636,7 +636,7 @@ PrepareSymbols
 						}
 						else
 						{
-							errors.Add(new ParsingError(node, L"An enum type cannot be defined here."));
+							errors.Add(Ptr(new ParsingError(node, L"An enum type cannot be defined here.")));
 						}
 					}
 				}
@@ -656,7 +656,7 @@ PrepareSymbols
 				{
 					if(manager->GetGlobal()->GetSubSymbolByName(token->name))
 					{
-						errors.Add(new ParsingError(token.Obj(), L"Cannot redefine \""+token->name+L"\" to be a token definition."));
+						errors.Add(Ptr(new ParsingError(token.Obj(), L"Cannot redefine \""+token->name+L"\" to be a token definition.")));
 					}
 					else
 					{
@@ -667,7 +667,7 @@ PrepareSymbols
 						}
 						catch(const regex_internal::RegexException& ex)
 						{
-							errors.Add(new ParsingError(token.Obj(), L"Wrong token definition for \""+token->name+L"\": "+ex.Message()));
+							errors.Add(Ptr(new ParsingError(token.Obj(), L"Wrong token definition for \""+token->name+L"\": "+ex.Message())));
 						}
 					}
 				}
@@ -676,7 +676,7 @@ PrepareSymbols
 				{
 					if(manager->GetGlobal()->GetSubSymbolByName(rule->name))
 					{
-						errors.Add(new ParsingError(rule.Obj(), L"Cannot redefine \""+rule->name+L"\" to be a rule definition."));
+						errors.Add(Ptr(new ParsingError(rule.Obj(), L"Cannot redefine \""+rule->name+L"\" to be a rule definition.")));
 					}
 					else
 					{
@@ -685,7 +685,7 @@ PrepareSymbols
 						{
 							if(type->GetType()!=ParsingSymbol::ClassType)
 							{
-								errors.Add(new ParsingError(rule.Obj(), L"\""+GetTypeFullName(type)+L"\" cannot be a type of a rule because this is not a class type."));
+								errors.Add(Ptr(new ParsingError(rule.Obj(), L"\""+GetTypeFullName(type)+L"\" cannot be a type of a rule because this is not a class type.")));
 							}
 							manager->AddRuleDefinition(rule->name, type);
 						}
@@ -727,12 +727,12 @@ ValidateRuleStructure
 						}
 						if(!currentType)
 						{
-							errors.Add(new ParsingError(node, L"Cannot create type \""+GetTypeFullName(nodeType)+L"\" in a rule of type \""+GetTypeFullName(ruleType)+L"\" because there are no implicit conversions from the created type to the rule type."));
+							errors.Add(Ptr(new ParsingError(node, L"Cannot create type \""+GetTypeFullName(nodeType)+L"\" in a rule of type \""+GetTypeFullName(ruleType)+L"\" because there are no implicit conversions from the created type to the rule type.")));
 						}
 					}
 					else
 					{
-						errors.Add(new ParsingError(node, L"\""+GetTypeFullName(nodeType)+L"\" cannot be created because this is not a class type."));
+						errors.Add(Ptr(new ParsingError(node, L"\""+GetTypeFullName(nodeType)+L"\" cannot be created because this is not a class type.")));
 					}
 				}
 
@@ -741,7 +741,7 @@ ValidateRuleStructure
 					ParsingSymbol* symbol=manager->GetGlobal()->GetSubSymbolByName(node->name);
 					if(!symbol)
 					{
-						errors.Add(new ParsingError(node, L"Cannot find a token or a rule with name \""+node->name+L"\"."));
+						errors.Add(Ptr(new ParsingError(node, L"Cannot find a token or a rule with name \""+node->name+L"\".")));
 					}
 					else switch(symbol->GetType())
 					{
@@ -758,7 +758,7 @@ ValidateRuleStructure
 							}
 							if(discard)
 							{
-								errors.Add(new ParsingError(node, L"Cannot use discard token \""+node->name+L"\" as input."));
+								errors.Add(Ptr(new ParsingError(node, L"Cannot use discard token \""+node->name+L"\" as input.")));
 								break;
 							}
 						}
@@ -770,7 +770,7 @@ ValidateRuleStructure
 						}
 						break;
 					default:
-						errors.Add(new ParsingError(node, L"\""+node->name+L"\" is not a token definition or rule definition."));
+						errors.Add(Ptr(new ParsingError(node, L"\""+node->name+L"\" is not a token definition or rule definition.")));
 					}
 				}
 
@@ -791,7 +791,7 @@ ValidateRuleStructure
 							}
 						}
 					}
-					errors.Add(new ParsingError(node, L"Cannot find a token whose definition is exactly \"" + u32tow(regex) + L"\"."));
+					errors.Add(Ptr(new ParsingError(node, L"Cannot find a token whose definition is exactly \"" + u32tow(regex) + L"\".")));
 				}
 
 				void Visit(ParsingDefinitionSequenceGrammar* node)override
@@ -822,7 +822,7 @@ ValidateRuleStructure
 				{
 					if(loopCount>0)
 					{
-						errors.Add(new ParsingError(node, L"Parsing tree node creation (the \"as\" operator) is not allowed inside loops."));
+						errors.Add(Ptr(new ParsingError(node, L"Parsing tree node creation (the \"as\" operator) is not allowed inside loops.")));
 					}
 					if(ParsingSymbol* nodeType=FindType(node->type.Obj(), manager, 0, errors))
 					{
@@ -835,7 +835,7 @@ ValidateRuleStructure
 				{
 					if(!node->grammar.Cast<ParsingDefinitionPrimitiveGrammar>() && !node->grammar.Cast<ParsingDefinitionTextGrammar>())
 					{
-						errors.Add(new ParsingError(node, L"Only parsing tree node returned from a rule or a token can be assigned to a class field."));
+						errors.Add(Ptr(new ParsingError(node, L"Only parsing tree node returned from a rule or a token can be assigned to a class field.")));
 					}
 					node->grammar->Accept(this);
 				}
@@ -844,17 +844,17 @@ ValidateRuleStructure
 				{
 					if(loopCount>0)
 					{
-						errors.Add(new ParsingError(node, L"Parsing tree node reusing (the \"!\" operator) is not allowed inside loops."));
+						errors.Add(Ptr(new ParsingError(node, L"Parsing tree node reusing (the \"!\" operator) is not allowed inside loops.")));
 					}
 					if(!node->grammar.Cast<ParsingDefinitionPrimitiveGrammar>())
 					{
-						errors.Add(new ParsingError(node, L"Only parsing tree node returned from a rule can be reused."));
+						errors.Add(Ptr(new ParsingError(node, L"Only parsing tree node returned from a rule can be reused.")));
 					}
 					else if(ParsingSymbol* symbol=manager->CacheGetSymbol(node->grammar.Obj()))
 					{
 						if(symbol->GetType()!=ParsingSymbol::RuleDef)
 						{
-							errors.Add(new ParsingError(node, L"Only parsing tree node returned from a rule can be reused."));
+							errors.Add(Ptr(new ParsingError(node, L"Only parsing tree node returned from a rule can be reused.")));
 						}
 					}
 					if(ParsingSymbol* nodeType=manager->CacheGetType(node->grammar.Obj()))
@@ -963,22 +963,22 @@ ResolveRuleSymbols
 				{
 					if(currentFragmentEnds.Count()==0)
 					{
-						GrammarPathFragment* fragment=new GrammarPathFragment;
+						auto fragment = Ptr(new GrammarPathFragment);
 						fragment->grammar=node;
 						fragment->epsilon=epsilon;
 						fragment->createdType=createdType;
 						createdFragments.Add(fragment);
-						currentFragmentEnds.Add(fragment);
+						currentFragmentEnds.Add(fragment.Obj());
 					}
 					else for(vint i=0;i<currentFragmentEnds.Count();i++)
 					{
-						GrammarPathFragment* fragment=new GrammarPathFragment;
+						auto fragment = Ptr(new GrammarPathFragment);
 						fragment->grammar=node;
 						fragment->epsilon=epsilon;
 						fragment->createdType=createdType;
 						createdFragments.Add(fragment);
 						fragment->previousFragment=currentFragmentEnds[i];
-						currentFragmentEnds[i]=fragment;
+						currentFragmentEnds[i] = fragment.Obj();
 					}
 				}
 
@@ -986,7 +986,7 @@ ResolveRuleSymbols
 				{
 					for (auto fragment : currentFragmentEnds)
 					{
-						Ptr<GrammarPath> path=new GrammarPath;
+						auto path = Ptr(new GrammarPath);
 						paths.Add(path);
 
 						GrammarPathFragment* current=fragment;
@@ -1106,11 +1106,11 @@ ResolveRuleSymbols
 						ParsingSymbol* field=pathType->SearchClassSubSymbol(fieldName);
 						if(!field)
 						{
-							errors.Add(new ParsingError(node, L"There are multiple grammar paths with different created types get through this operation for class field \""+fieldName+L"\", but the common base type \""+GetTypeFullName(pathType)+L"\" of these types doesn't contains the required class field. Types: "+typeNames+L"; Paths: "+pathNames+L"."));
+							errors.Add(Ptr(new ParsingError(node, L"There are multiple grammar paths with different created types get through this operation for class field \""+fieldName+L"\", but the common base type \""+GetTypeFullName(pathType)+L"\" of these types doesn't contains the required class field. Types: "+typeNames+L"; Paths: "+pathNames+L".")));
 						}
 						else if(field->GetType()!=ParsingSymbol::ClassField)
 						{
-							errors.Add(new ParsingError(node, L"There are multiple grammar paths with different created types get through this operation for class field \""+fieldName+L"\", and the common base type \""+GetTypeFullName(pathType)+L"\" of these types contains a symbol called \""+fieldName+L"\", but this is not a class field. Types: "+typeNames+L"; Paths: "+pathNames+L"."));
+							errors.Add(Ptr(new ParsingError(node, L"There are multiple grammar paths with different created types get through this operation for class field \""+fieldName+L"\", and the common base type \""+GetTypeFullName(pathType)+L"\" of these types contains a symbol called \""+fieldName+L"\", but this is not a class field. Types: "+typeNames+L"; Paths: "+pathNames+L".")));
 						}
 						else
 						{
@@ -1119,7 +1119,7 @@ ResolveRuleSymbols
 					}
 					else
 					{
-						errors.Add(new ParsingError(node, L"There are multiple grammar paths with different created types get through this operation for class field \""+fieldName+L"\", but these types don't have a common base type. Types: "+typeNames+L"; Paths: "+pathNames+L"."));
+						errors.Add(Ptr(new ParsingError(node, L"There are multiple grammar paths with different created types get through this operation for class field \""+fieldName+L"\", but these types don't have a common base type. Types: "+typeNames+L"; Paths: "+pathNames+L".")));
 					}
 					return 0;
 				}
@@ -1168,7 +1168,7 @@ ResolveRuleSymbols
 						}
 						if(targetFieldType!=valueType && valueType->SearchCommonBaseClass(targetFieldType)!=targetFieldType)
 						{
-							errors.Add(new ParsingError(node, L"Cannot assign value from grammar {"+GrammarToString(node->grammar.Obj())+L"} of type \""+GetTypeFullName(valueType)+L"\" to the field \""+node->memberName+L"\" of type \""+GetTypeFullName(fieldType)+L"\"."));
+							errors.Add(Ptr(new ParsingError(node, L"Cannot assign value from grammar {"+GrammarToString(node->grammar.Obj())+L"} of type \""+GetTypeFullName(valueType)+L"\" to the field \""+node->memberName+L"\" of type \""+GetTypeFullName(fieldType)+L"\".")));
 						}
 					}
 				}
@@ -1186,7 +1186,7 @@ ResolveRuleSymbols
 
 						if(field->GetDescriptorSymbol()->GetType()!=ParsingSymbol::EnumType)
 						{
-							errors.Add(new ParsingError(node, L"Setter operation (the \"with\" operator) can only specify the value of a class field of an enum type. But \""+GetTypeFullName(field->GetDescriptorSymbol())+L"\" is not a enum type."));
+							errors.Add(Ptr(new ParsingError(node, L"Setter operation (the \"with\" operator) can only specify the value of a class field of an enum type. But \""+GetTypeFullName(field->GetDescriptorSymbol())+L"\" is not a enum type.")));
 						}
 						else
 						{
@@ -1194,11 +1194,11 @@ ResolveRuleSymbols
 							ParsingSymbol* enumItem=enumType->GetSubSymbolByName(node->value);
 							if(!enumItem)
 							{
-								errors.Add(new ParsingError(node, L"Type \""+GetTypeFullName(enumType)+L"\" from field \""+node->memberName+L"\" does not have an enum item called \""+node->value+L"\"."));
+								errors.Add(Ptr(new ParsingError(node, L"Type \""+GetTypeFullName(enumType)+L"\" from field \""+node->memberName+L"\" does not have an enum item called \""+node->value+L"\".")));
 							}
 							else if(enumItem->GetType()!=ParsingSymbol::EnumItem)
 							{
-								errors.Add(new ParsingError(node, L"Type \""+GetTypeFullName(enumType)+L"\" from field \""+node->memberName+L"\" has a symbol called \""+node->value+L"\", but this is not an enum item."));
+								errors.Add(Ptr(new ParsingError(node, L"Type \""+GetTypeFullName(enumType)+L"\" from field \""+node->memberName+L"\" has a symbol called \""+node->value+L"\", but this is not an enum item.")));
 							}
 						}
 					}
@@ -1238,15 +1238,15 @@ ResolveRuleSymbols
 
 						if(createdTypeCount==0)
 						{
-							errors.Add(new ParsingError(grammar.Obj(), L"No parsing tree node is created if the following path is chosen: \""+path->ToString()+L"\" in rule \""+rule->name+L"\"."));
+							errors.Add(Ptr(new ParsingError(grammar.Obj(), L"No parsing tree node is created if the following path is chosen: \""+path->ToString()+L"\" in rule \""+rule->name+L"\".")));
 						}
 						else if(createdTypeCount>1)
 						{
-							errors.Add(new ParsingError(grammar.Obj(), L"Multiple parsing tree nodes are created if the following path is chosen: \""+path->ToString()+L"\" in rule \""+rule->name+L"\"."));
+							errors.Add(Ptr(new ParsingError(grammar.Obj(), L"Multiple parsing tree nodes are created if the following path is chosen: \""+path->ToString()+L"\" in rule \""+rule->name+L"\".")));
 						}
 						if(transitionCount==0)
 						{
-							errors.Add(new ParsingError(grammar.Obj(), L"Rule \""+rule->name+L"\" is not allowed to infer to an empty token sequence."));
+							errors.Add(Ptr(new ParsingError(grammar.Obj(), L"Rule \""+rule->name+L"\" is not allowed to infer to an empty token sequence.")));
 						}
 					}
 
@@ -1260,7 +1260,7 @@ ResolveRuleSymbols
 							vint index=grammarPathMap.Keys().IndexOf(grammar);
 							if(index==-1)
 							{
-								container=new GrammarPathContainer;
+								container = Ptr(new GrammarPathContainer);
 								grammarPathMap.Add(grammar, container);
 							}
 							else
@@ -1293,15 +1293,15 @@ ResolveSymbols
 						WString ambiguousTypeText=TypeToString(node->ambiguousType.Obj());
 						if(!ambigiousType)
 						{
-							errors.Add(new ParsingError(node.Obj(), L"Ambiguous type \""+ambiguousTypeText+L"\" for type \""+node->name+L"\" does not exist."));
+							errors.Add(Ptr(new ParsingError(node.Obj(), L"Ambiguous type \""+ambiguousTypeText+L"\" for type \""+node->name+L"\" does not exist.")));
 						}
 						else if(ambigiousType->GetType()!=ParsingSymbol::ClassType)
 						{
-							errors.Add(new ParsingError(node.Obj(), L"Ambiguous type \""+ambiguousTypeText+L"\" for type \""+node->name+L"\" is not a type."));
+							errors.Add(Ptr(new ParsingError(node.Obj(), L"Ambiguous type \""+ambiguousTypeText+L"\" for type \""+node->name+L"\" is not a type.")));
 						}
 						else if(ambigiousType->GetDescriptorSymbol()!=manager->GetGlobal()->GetSubSymbolByName(node->name))
 						{
-							errors.Add(new ParsingError(node.Obj(), L"Ambiguous type \""+ambiguousTypeText+L"\" for type \""+node->name+L"\" does not inherit from \""+node->name+L"\"."));
+							errors.Add(Ptr(new ParsingError(node.Obj(), L"Ambiguous type \""+ambiguousTypeText+L"\" for type \""+node->name+L"\" does not inherit from \""+node->name+L"\".")));
 						}
 						else
 						{
@@ -1320,7 +1320,7 @@ ResolveSymbols
 							}
 							if(!correct)
 							{
-								errors.Add(new ParsingError(node.Obj(), L"Ambiguous type \""+ambiguousTypeText+L"\" for type \""+node->name+L"\" can only contains one field called \"item\" which should be an array of \""+node->name+L"\"."));
+								errors.Add(Ptr(new ParsingError(node.Obj(), L"Ambiguous type \""+ambiguousTypeText+L"\" for type \""+node->name+L"\" can only contains one field called \"item\" which should be an array of \""+node->name+L"\".")));
 							}
 						}
 					}

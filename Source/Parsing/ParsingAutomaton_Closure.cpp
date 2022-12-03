@@ -35,7 +35,7 @@ CreateNondeterministicPDAFromEpsilonPDA::closure_searching
 				{
 					if(singleTransitionPath->source==state && closurePredicate(singleTransitionPath)!=ClosureItem::Blocked)
 					{
-						Ptr<List<Transition*>> path=new List<Transition*>;
+						auto path = Ptr(new List<Transition*>);
 						CopyFrom(*path.Obj(), transitionPath);
 						closure.Add(ClosureItem(state, path, true));
 						return;
@@ -60,7 +60,7 @@ CreateNondeterministicPDAFromEpsilonPDA::closure_searching
 					break;
 				case ClosureItem::Hit:
 					{
-						Ptr<List<Transition*>> path=new List<Transition*>;
+						auto path = Ptr(new List<Transition*>);
 						CopyFrom(*path.Obj(), transitionPath);
 						closure.Add(ClosureItem(state, path, false));
 					}

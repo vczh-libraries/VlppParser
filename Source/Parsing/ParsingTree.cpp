@@ -296,7 +296,7 @@ ParsingTreeToken
 
 		Ptr<ParsingTreeNode> ParsingTreeToken::Clone()
 		{
-			Ptr<ParsingTreeToken> clone=new ParsingTreeToken(value, tokenIndex, codeRange);
+			auto clone = Ptr(new ParsingTreeToken(value, tokenIndex, codeRange));
 			return clone;
 		}
 
@@ -346,7 +346,7 @@ ParsingTreeObject
 
 		Ptr<ParsingTreeNode> ParsingTreeObject::Clone()
 		{
-			Ptr<ParsingTreeObject> clone=new ParsingTreeObject(type, codeRange);
+			auto clone = Ptr(new ParsingTreeObject(type, codeRange));
 			CopyFrom(clone->rules, rules);
 			for(vint i=0;i<members.Count();i++)
 			{
@@ -447,7 +447,7 @@ ParsingTreeArray
 
 		Ptr<ParsingTreeNode> ParsingTreeArray::Clone()
 		{
-			Ptr<ParsingTreeArray> clone=new ParsingTreeArray(elementType, codeRange);
+			auto clone = Ptr(new ParsingTreeArray(elementType, codeRange));
 			for(vint i=0;i<items.Count();i++)
 			{
 				Ptr<ParsingTreeNode> node=items.Get(i)->Clone();

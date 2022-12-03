@@ -49,7 +49,7 @@ ParsingGeneralParser
 					const RegexToken* token=&state.GetTokens().Get(i);
 					if(token->token==-1 || !token->completeToken)
 					{
-						errors.Add(new ParsingError(token, L"Unrecognizable token: \""+WString::CopyFrom(token->reading, token->length)+L"\"."));
+						errors.Add(Ptr(new ParsingError(token, L"Unrecognizable token: \""+WString::CopyFrom(token->reading, token->length)+L"\".")));
 					}
 				}
 
@@ -59,7 +59,7 @@ ParsingGeneralParser
 					if(!result)
 					{
 						const RegexToken* token=state.GetToken(state.GetCurrentToken());
-						errors.Add(new ParsingError(token, L"Internal error when parsing."));
+						errors.Add(Ptr(new ParsingError(token, L"Internal error when parsing.")));
 						return false;
 					}
 					else if(result.transitionType==ParsingState::TransitionResult::SkipToken)
@@ -67,7 +67,7 @@ ParsingGeneralParser
 						if(state.GetCurrentTableTokenIndex()==ParsingTable::TokenFinish)
 						{
 							const RegexToken* token=state.GetToken(state.GetCurrentToken());
-							errors.Add(new ParsingError(token, L"Failed to recover error when reaching the end of the input."));
+							errors.Add(Ptr(new ParsingError(token, L"Failed to recover error when reaching the end of the input.")));
 							return false;
 						}
 						else
@@ -79,7 +79,7 @@ ParsingGeneralParser
 					else if(!processor.Run(result))
 					{
 						const RegexToken* token=state.GetToken(state.GetCurrentToken());
-						errors.Add(new ParsingError(token, L"Internal error when building the parsing tree."));
+						errors.Add(Ptr(new ParsingError(token, L"Internal error when building the parsing tree.")));
 						return false;
 					}
 					if(result.tableTokenIndex==ParsingTable::TokenFinish && !processor.GetProcessingAmbiguityBranch())
@@ -99,7 +99,7 @@ ParsingGeneralParser
 				Ptr<ParsingTreeNode> node=builder.GetNode();
 				if(!node)
 				{
-					errors.Add(new ParsingError(L"Internal error when building the parsing tree after a succeeded parsing process."));
+					errors.Add(Ptr(new ParsingError(L"Internal error when building the parsing tree after a succeeded parsing process.")));
 					return 0;
 				}
 				return node;
@@ -110,7 +110,7 @@ ParsingGeneralParser
 				ParsingState state(input, table, codeIndex);
 				if(state.Reset(rule)==-1)
 				{
-					errors.Add(new ParsingError(L"Rule \""+rule+L"\" does not exist."));
+					errors.Add(Ptr(new ParsingError(L"Rule \""+rule+L"\" does not exist.")));
 					return 0;
 				}
 				return Parse(state, errors);
@@ -132,7 +132,7 @@ ParsingStrictParser
 			ParsingState::TransitionResult ParsingStrictParser::OnErrorRecover(ParsingState& state, vint currentTokenIndex, collections::List<Ptr<ParsingError>>& errors)
 			{
 				const RegexToken* token=state.GetToken(state.GetCurrentToken());
-				errors.Add(new ParsingError(token, (token==0?L"Error happened during parsing when reaching the end of the input.":L"Error happened during parsing.")));
+				errors.Add(Ptr(new ParsingError(token, (token==0?L"Error happened during parsing when reaching the end of the input.":L"Error happened during parsing."))));
 				return ParsingState::TransitionResult();
 			}
 
@@ -627,7 +627,7 @@ ParsingAmbiguousParser
 				if(ambiguityNodeType==L"")
 				{
 					const RegexToken* token=state.GetToken(state.GetCurrentToken());
-					errors.Add(new ParsingError(token, L"Ambiguity happens when reducing rule \""+ambiguityRuleName+L"\" but this rule does not have an associated ambiguous node type."));
+					errors.Add(Ptr(new ParsingError(token, L"Ambiguity happens when reducing rule \""+ambiguityRuleName+L"\" but this rule does not have an associated ambiguous node type.")));
 					return;
 				}
 
@@ -635,7 +635,7 @@ ParsingAmbiguousParser
 				if(affectedStackNodeCount==-1)
 				{
 					const RegexToken* token=state.GetToken(state.GetCurrentToken());
-					errors.Add(new ParsingError(token, (token==0?L"Failed to pass ambiguity checking during parsing when reaching to the end of the input.":L"Failed to pass ambiguity checking during parsing.")));
+					errors.Add(Ptr(new ParsingError(token, (token==0?L"Failed to pass ambiguity checking during parsing when reaching to the end of the input.":L"Failed to pass ambiguity checking during parsing."))));
 					return;
 				}
 
@@ -697,7 +697,7 @@ ParsingAmbiguousParser
 				if(end-begin==0)
 				{
 					const RegexToken* token=state.GetToken(state.GetCurrentToken());
-					errors.Add(new ParsingError(token, (token==0?L"Error happened during parsing when reaching to the end of the input.":L"Error happened during parsing.")));
+					errors.Add(Ptr(new ParsingError(token, (token==0?L"Error happened during parsing when reaching to the end of the input.":L"Error happened during parsing."))));
 				}
 				else if(end-begin==1)
 				{
@@ -870,11 +870,11 @@ Helper Functions
 				{
 					if(table->GetAmbiguity())
 					{
-						return new ParsingAmbiguousParser(table);
+						return Ptr(new ParsingAmbiguousParser(table));
 					}
 					else
 					{
-						return new ParsingStrictParser(table);
+						return Ptr(new ParsingStrictParser(table));
 					}
 				}
 				else
@@ -889,11 +889,11 @@ Helper Functions
 				{
 					if(table->GetAmbiguity())
 					{
-						return new ParsingAutoRecoverAmbiguousParser(table);
+						return Ptr(new ParsingAutoRecoverAmbiguousParser(table));
 					}
 					else
 					{
-						return new ParsingAutoRecoverParser(table);
+						return Ptr(new ParsingAutoRecoverParser(table));
 					}
 				}
 				else
@@ -1069,7 +1069,7 @@ Type Loader
 				ITypeManager* manager=GetGlobalTypeManager();
 				if(manager)
 				{
-					Ptr<ITypeLoader> loader=new ParsingTypeLoader;
+					auto loader = Ptr(new ParsingTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif

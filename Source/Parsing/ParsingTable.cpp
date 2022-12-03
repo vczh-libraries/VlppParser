@@ -155,7 +155,7 @@ ParsingTable::LookAheadInfo
 							}
 							else
 							{
-								Ptr<LookAheadInfo> info=new LookAheadInfo;
+								auto info = Ptr(new LookAheadInfo);
 								info->state=item->targetState;
 								if(previous)
 								{
@@ -498,7 +498,7 @@ ParsingTable
 				{
 					discardTokenInfos[i].regexTokenIndex = regexTokenIndex++;
 				}
-				lexer = new RegexLexer(tokens);
+				lexer = Ptr(new RegexLexer(tokens));
 
 				ruleMap.Clear();
 				for (auto [rule, index] : indexed(ruleInfos))

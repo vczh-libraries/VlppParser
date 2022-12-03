@@ -136,43 +136,43 @@ Automaton
 
 			State* Automaton::RuleStartState(definitions::ParsingDefinitionRuleDefinition* ownerRule)
 			{
-				State* state=new State;
+				auto state = Ptr(new State);
 				states.Add(state);
 
 				state->ownerRule=ownerRule;
 				state->ownerRuleSymbol=symbolManager->GetGlobal()->GetSubSymbolByName(ownerRule->name);
 				state->stateName=ownerRule->name+L".Start";
 				state->stateExpression=L"@ <"+ownerRule->name+L">";
-				return state;
+				return state.Obj();
 			}
 
 			State* Automaton::RootRuleStartState(definitions::ParsingDefinitionRuleDefinition* ownerRule)
 			{
-				State* state=new State;
+				auto state = Ptr(new State);
 				states.Add(state);
 
 				state->ownerRule=ownerRule;
 				state->ownerRuleSymbol=symbolManager->GetGlobal()->GetSubSymbolByName(ownerRule->name);
 				state->stateName=ownerRule->name+L".RootStart";
 				state->stateExpression=L"@ $<"+ownerRule->name+L">";
-				return state;
+				return state.Obj();
 			}
 
 			State* Automaton::RootRuleEndState(definitions::ParsingDefinitionRuleDefinition* ownerRule)
 			{
-				State* state=new State;
+				auto state = Ptr(new State);
 				states.Add(state);
 
 				state->ownerRule=ownerRule;
 				state->ownerRuleSymbol=symbolManager->GetGlobal()->GetSubSymbolByName(ownerRule->name);
 				state->stateName=ownerRule->name+L".RootEnd";
 				state->stateExpression=L"$<"+ownerRule->name+L"> @";
-				return state;
+				return state.Obj();
 			}
 
 			State* Automaton::StartState(definitions::ParsingDefinitionRuleDefinition* ownerRule, definitions::ParsingDefinitionGrammar* grammarNode, definitions::ParsingDefinitionGrammar* stateNode)
 			{
-				State* state=new State;
+				auto state = Ptr(new State);
 				states.Add(state);
 
 				state->ownerRule=ownerRule;
@@ -183,12 +183,12 @@ Automaton
 				state->stateName=ownerRule->name+L"."+itow(++ruleDefToInfoMap[ownerRule]->stateNameCount);
 				stateNode=FindAppropriateGrammarState(grammarNode, stateNode, true);
 				state->stateExpression=L"<"+ownerRule->name+L">: "+GrammarStateToString(grammarNode, stateNode, true);
-				return state;
+				return state.Obj();
 			}
 
 			State* Automaton::EndState(definitions::ParsingDefinitionRuleDefinition* ownerRule, definitions::ParsingDefinitionGrammar* grammarNode, definitions::ParsingDefinitionGrammar* stateNode)
 			{
-				State* state=new State;
+				auto state = Ptr(new State);
 				states.Add(state);
 
 				state->ownerRule=ownerRule;
@@ -199,7 +199,7 @@ Automaton
 				state->stateName=ownerRule->name+L"."+itow(++ruleDefToInfoMap[ownerRule]->stateNameCount);
 				stateNode=FindAppropriateGrammarState(grammarNode, stateNode, false);
 				state->stateExpression=L"<"+ownerRule->name+L">: "+GrammarStateToString(grammarNode, stateNode, false);
-				return state;
+				return state.Obj();
 			}
 
 			State* Automaton::CopyState(State* oldState)
@@ -219,15 +219,15 @@ Automaton
 
 			Transition* Automaton::CreateTransition(State* start, State* end)
 			{
-				Transition* transition=new Transition;
+				auto transition = Ptr(new Transition);
 				transitions.Add(transition);
 
-				start->transitions.Add(transition);
-				end->inputs.Add(transition);
+				start->transitions.Add(transition.Obj());
+				end->inputs.Add(transition.Obj());
 
 				transition->source=start;
 				transition->target=end;
-				return transition;
+				return transition.Obj();
 			}
 
 			Transition* Automaton::TokenBegin(State* start, State* end)

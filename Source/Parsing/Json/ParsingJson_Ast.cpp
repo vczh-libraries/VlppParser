@@ -180,7 +180,7 @@ namespace vl
 				ITypeManager* manager = GetGlobalTypeManager();
 				if(manager)
 				{
-					Ptr<ITypeLoader> loader = new JsonTypeLoader;
+					auto loader = Ptr(new JsonTypeLoader);
 					return manager->AddTypeLoader(loader);
 				}
 #endif
