@@ -249,7 +249,7 @@ Parsing Tree Conversion Driver Implementation
 
 				vl::Ptr<vl::parsing::ParsingTreeCustomBase> ConvertClass(vl::Ptr<vl::parsing::ParsingTreeObject> obj, const TokenList& tokens)override
 				{
-					if (obj->GetType() == L"Literal")
+					if(obj->GetType() == L"Literal")
 					{
 						auto tree = vl::Ptr(new JsonLiteral);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
@@ -257,7 +257,7 @@ Parsing Tree Conversion Driver Implementation
 						Fill(tree.Cast<JsonNode>(), obj, tokens);
 						return tree;
 					}
-					else if(obj->GetType()==L"String")
+					else if(obj->GetType() == L"String")
 					{
 						auto tree = vl::Ptr(new JsonString);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
@@ -265,7 +265,7 @@ Parsing Tree Conversion Driver Implementation
 						Fill(tree.Cast<JsonNode>(), obj, tokens);
 						return tree;
 					}
-					else if(obj->GetType()==L"Number")
+					else if(obj->GetType() == L"Number")
 					{
 						auto tree = vl::Ptr(new JsonNumber);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
@@ -273,7 +273,7 @@ Parsing Tree Conversion Driver Implementation
 						Fill(tree.Cast<JsonNode>(), obj, tokens);
 						return tree;
 					}
-					else if(obj->GetType()==L"Array")
+					else if(obj->GetType() == L"Array")
 					{
 						auto tree = vl::Ptr(new JsonArray);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
@@ -281,7 +281,7 @@ Parsing Tree Conversion Driver Implementation
 						Fill(tree.Cast<JsonNode>(), obj, tokens);
 						return tree;
 					}
-					else if(obj->GetType()==L"ObjectField")
+					else if(obj->GetType() == L"ObjectField")
 					{
 						auto tree = vl::Ptr(new JsonObjectField);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
@@ -289,7 +289,7 @@ Parsing Tree Conversion Driver Implementation
 						Fill(tree.Cast<JsonNode>(), obj, tokens);
 						return tree;
 					}
-					else if(obj->GetType()==L"Object")
+					else if(obj->GetType() == L"Object")
 					{
 						auto tree = vl::Ptr(new JsonObject);
 						vl::collections::CopyFrom(tree->creatorRules, obj->GetCreatorRules());
@@ -390,7 +390,7 @@ Table Generation
 			{
 				vl::stream::MemoryStream stream;
 				JsonGetParserBuffer(stream);
-				auto table = Ptr(new vl::parsing::tabling::ParsingTable(stream));
+				auto table = vl::Ptr(new vl::parsing::tabling::ParsingTable(stream));
 				table->Initialize();
 				return table;
 			}

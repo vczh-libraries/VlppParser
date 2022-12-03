@@ -110,7 +110,7 @@ void WriteNodeConverterClassImplFragment(ParsingSymbolManager* manager, const WS
 		writer.WriteLine(L"{");
 
 		writer.WriteString(prefix);
-		writer.WriteString(L"\tauto tree = new vl::Ptr(");
+		writer.WriteString(L"\tauto tree = vl::Ptr(new ");
 		PrintType(scope, codeClassPrefix, writer);
 		writer.WriteLine(L");");
 		writer.WriteString(prefix);

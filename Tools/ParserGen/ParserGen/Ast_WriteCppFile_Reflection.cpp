@@ -278,7 +278,7 @@ void WriteTypeReflectionImplementation(ParsingSymbolManager* manager, const WStr
 	writer.WriteString(prefix);
 	writer.WriteLine(L"\t{");
 	writer.WriteString(prefix);
-	writer.WriteString(L"\t\tauto loader = new Ptr(");
+	writer.WriteString(L"\t\tauto loader = Ptr(new ");
 	writer.WriteString(config.classPrefix);
 	writer.WriteLine(L"TypeLoader);");
 	writer.WriteString(prefix);
