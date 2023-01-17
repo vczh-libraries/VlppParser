@@ -34,7 +34,7 @@ all:pre-build ./Bin/ParserGen
 ./Obj/VlppReflection.o: ../../Import/VlppReflection.cpp ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
 	$(CPP_COMPILE)
 
-./Obj/VlppRegex.o: ../../Import/VlppRegex.cpp ../../Import/VlppRegex.h ../../Import/Vlpp.h
+./Obj/VlppRegex.o: ../../Import/VlppRegex.cpp ../../Import/VlppRegex.h ../../Import/Vlpp.h ../../Import/VlppOS.h
 	$(CPP_COMPILE)
 
 ./Obj/VlppParser.o: ../../Release/VlppParser.cpp ../../Release/VlppParser.h ../../Import/VlppReflection.h ../../Import/VlppOS.h ../../Import/Vlpp.h ../../Import/VlppRegex.h
