@@ -37,21 +37,18 @@ DefinitionTypeScopePair
 				{
 				}
 
-				vint Compare(const DefinitionTypeScopePair& pair)const
+				std::strong_ordering operator<=>(const DefinitionTypeScopePair& pair)const
 				{
-					if(type<pair.type) return -1;
-					if(type>pair.type) return 1;
-					if(scope<pair.scope) return -1;
-					if(scope>pair.scope) return 1;
-					return 0;
+					std::strong_ordering
+					result = type <=> pair.type; if (result != 0) return result;
+					result = scope <=> pair.scope; if (result != 0) return result;
+					return result;
 				}
 
-				bool operator==	(const DefinitionTypeScopePair& pair)const	{return Compare(pair)==0;}
-				bool operator!=	(const DefinitionTypeScopePair& pair)const	{return Compare(pair)!=0;}
-				bool operator>	(const DefinitionTypeScopePair& pair)const	{return Compare(pair)>0;}
-				bool operator>=	(const DefinitionTypeScopePair& pair)const	{return Compare(pair)>=0;}
-				bool operator<	(const DefinitionTypeScopePair& pair)const	{return Compare(pair)<0;}
-				bool operator<=	(const DefinitionTypeScopePair& pair)const	{return Compare(pair)<=0;}
+				bool operator==(const DefinitionTypeScopePair& pair)const
+				{
+					return (*this <=> pair) == 0;
+				}
 			};
 
 /***********************************************************************

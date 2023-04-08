@@ -632,7 +632,7 @@ GenerateTable
 										i1 > i2 ? ParsingTable::TransitionItem::WrongOrder :
 										ParsingTable::TransitionItem::SameOrder
 										;
-									return ParsingTable::TransitionItem::Compare(t1, t2, defaultOrder);
+									return ParsingTable::TransitionItem::Compare(t1, t2, defaultOrder) <=> 0;
 								}));
 
 							// build look ahead inside a transition

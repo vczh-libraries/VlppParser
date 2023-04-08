@@ -16,10 +16,6 @@ namespace vl
 
 	namespace parsing
 	{
-		vint CompareTextRange(Ptr<ParsingTreeNode> r1, Ptr<ParsingTreeNode> r2)
-		{
-			return ParsingTextPos::Compare(r1->GetCodeRange().start, r2->GetCodeRange().start);
-		}
 
 /***********************************************************************
 ParsingTreeNode::TraversalVisitor
@@ -195,7 +191,7 @@ ParsingTreeNode
 							const auto& range = node->GetCodeRange();
 							return !range.start.IsInvalid() && !range.end.IsInvalid();
 						})
-						.OrderBy(&CompareTextRange)
+						.OrderByKey([](auto&& node) { return node->GetCodeRange().start; })
 					);
 			}
 		}

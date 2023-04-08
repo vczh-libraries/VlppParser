@@ -63,47 +63,45 @@ Location
 				return index < 0 && row < 0 && column < 0;
 			}
 
-			static vint Compare(const ParsingTextPos& a, const ParsingTextPos& b)
+			friend std::strong_ordering operator<=>(const ParsingTextPos& a, const ParsingTextPos& b)
 			{
 				if (a.IsInvalid() && b.IsInvalid())
 				{
-					return 0;
+					return std::strong_ordering::equal;
 				}
 				else if (a.IsInvalid())
 				{
-					return -1;
+					return std::strong_ordering::less;
 				}
 				else if (b.IsInvalid())
 				{
-					return 1;
+					return std::strong_ordering::greater;
 				}
 				else if (a.index >= 0 && b.index >= 0)
 				{
-					return a.index - b.index;
+					return a.index <=> b.index;
 				}
 				else if (a.row >= 0 && a.column >= 0 && b.row >= 0 && b.column >= 0)
 				{
 					if (a.row == b.row)
 					{
-						return a.column - b.column;
+						return a.column <=> b.column;
 					}
 					else
 					{
-						return a.row - b.row;
+						return a.row <=> b.row;
 					}
 				}
 				else
 				{
-					return 0;
+					return std::strong_ordering::equal;
 				}
 			}
 
-			bool operator==(const ParsingTextPos& pos)const{return Compare(*this, pos)==0;}
-			bool operator!=(const ParsingTextPos& pos)const{return Compare(*this, pos)!=0;}
-			bool operator<(const ParsingTextPos& pos)const{return Compare(*this, pos)<0;}
-			bool operator<=(const ParsingTextPos& pos)const{return Compare(*this, pos)<=0;}
-			bool operator>(const ParsingTextPos& pos)const{return Compare(*this, pos)>0;}
-			bool operator>=(const ParsingTextPos& pos)const{return Compare(*this, pos)>=0;}
+			friend bool operator==(const ParsingTextPos& a, const ParsingTextPos& b)
+			{
+				return (a <=> b) == 0;
+			}
 		};
 
 		/// <summary>A type representing text range.</summary>
