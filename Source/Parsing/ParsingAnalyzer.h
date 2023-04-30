@@ -37,18 +37,7 @@ DefinitionTypeScopePair
 				{
 				}
 
-				std::strong_ordering operator<=>(const DefinitionTypeScopePair& pair)const
-				{
-					std::strong_ordering
-					result = type <=> pair.type; if (result != 0) return result;
-					result = scope <=> pair.scope; if (result != 0) return result;
-					return result;
-				}
-
-				bool operator==(const DefinitionTypeScopePair& pair)const
-				{
-					return (*this <=> pair) == 0;
-				}
+				auto operator<=>(const DefinitionTypeScopePair&) const = default;
 			};
 
 /***********************************************************************

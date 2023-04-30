@@ -117,8 +117,8 @@ Location
 			ParsingTextRange()
 				:codeIndex(-1)
 			{
-				end.index=-1;
-				end.column=-1;
+				end.index = -1;
+				end.column = -1;
 			}
 
 			ParsingTextRange(const ParsingTextPos& _start, const ParsingTextPos& _end, vint _codeIndex = -1)
@@ -131,18 +131,29 @@ Location
 			ParsingTextRange(const regex::RegexToken* startToken, const regex::RegexToken* endToken)
 				:codeIndex(startToken->codeIndex)
 			{
-				start.index=startToken->start;
-				start.row=startToken->rowStart;
-				start.column=startToken->columnStart;
-				end.index=endToken->start+endToken->length-1;
-				end.row=endToken->rowEnd;
-				end.column=endToken->columnEnd;
+				start.index = startToken->start;
+				start.row = startToken->rowStart;
+				start.column = startToken->columnStart;
+				end.index = endToken->start + endToken->length - 1;
+				end.row = endToken->rowEnd;
+				end.column = endToken->columnEnd;
 			}
 
-			bool operator==(const ParsingTextRange& range)const{return start==range.start && end==range.end;}
-			bool operator!=(const ParsingTextRange& range)const{return start!=range.start || end!=range.end;}
-			bool Contains(const ParsingTextPos& pos)const{return start<=pos && pos<=end;}
-			bool Contains(const ParsingTextRange& range)const{return start<=range.start && range.end<=end;}
+			bool Contains(const ParsingTextPos& pos)const { return start <= pos && pos <= end; }
+			bool Contains(const ParsingTextRange& range)const { return start <= range.start && range.end <= end; }
+
+			friend std::strong_ordering operator<=>(const ParsingTextRange& a, const ParsingTextRange& b)
+			{
+				std::strong_ordering
+				result = a.start <=> b.start; if (result != 0) return result;
+				result = a.end <=> b.end; if (result != 0) return result;
+				return std::strong_ordering::equal;
+			}
+
+			friend bool operator==(const ParsingTextRange& a, const ParsingTextRange& b)
+			{
+				return (a <=> b) == 0;
+			}
 		};
 	}
 
