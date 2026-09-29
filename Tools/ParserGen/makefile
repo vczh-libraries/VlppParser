@@ -1,6 +1,9 @@
 .PHONY: all clean pre-build
 .DEFAULT_GOAL := all
 
+CPP_TARGET=./Bin/ParserGen
+CPP_OBJECTS=./Obj/Vlpp.o ./Obj/Vlpp.Linux.o ./Obj/VlppOS.o ./Obj/VlppOS.Linux.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/VlppParser.o ./Obj/Ast_WriteCppFile.o ./Obj/Ast_WriteHeaderFile.o ./Obj/Copy_WriteCppFile.o ./Obj/Copy_WriteHeaderFile.o ./Obj/Empty_WriteCppFile.o ./Obj/Empty_WriteHeaderFile.o ./Obj/Main.o ./Obj/ParserGen.o ./Obj/ParserGen_Codegen.o ./Obj/ParserGen_CreateTable.o ./Obj/ParserGen_PrintType.o ./Obj/ParserGen_VisitorDependency.o ./Obj/Parser_WriteCppFile.o ./Obj/Parser_WriteCppFile_ParserText.o ./Obj/Ast_WriteCppFile_Reflection.o ./Obj/Parser_WriteCppFile_TableGen.o ./Obj/Parser_WriteCppFile_TreeBuilder.o ./Obj/Parser_WriteCppFile_Unescaping.o ./Obj/Ast_WriteCppFile_Visitor.o ./Obj/Parser_WriteHeaderFile.o ./Obj/Parser_WriteHeaderFile_ParserFunctions.o ./Obj/Ast_WriteHeaderFile_Reflection.o ./Obj/Ast_WriteHeaderFile_TableGen.o ./Obj/Ast_WriteHeaderFile_Tokens.o ./Obj/Ast_WriteHeaderFile_Types.o ./Obj/Traverse_WriteCppFile.o ./Obj/Traverse_WriteHeaderFile.o
+
 CPP_COMPILE_OPTIONS=-I ../../Import -I ../../Release
 include $(VCPROOT)/vl/makefile-cpp
 
@@ -16,7 +19,9 @@ clean:
 
 all:pre-build ./Bin/ParserGen
 
-./Bin/ParserGen:./Obj/Vlpp.o ./Obj/Vlpp.Linux.o ./Obj/VlppOS.o ./Obj/VlppOS.Linux.o ./Obj/VlppReflection.o ./Obj/VlppRegex.o ./Obj/VlppParser.o ./Obj/Ast_WriteCppFile.o ./Obj/Ast_WriteHeaderFile.o ./Obj/Copy_WriteCppFile.o ./Obj/Copy_WriteHeaderFile.o ./Obj/Empty_WriteCppFile.o ./Obj/Empty_WriteHeaderFile.o ./Obj/Main.o ./Obj/ParserGen.o ./Obj/ParserGen_Codegen.o ./Obj/ParserGen_CreateTable.o ./Obj/ParserGen_PrintType.o ./Obj/ParserGen_VisitorDependency.o ./Obj/Parser_WriteCppFile.o ./Obj/Parser_WriteCppFile_ParserText.o ./Obj/Ast_WriteCppFile_Reflection.o ./Obj/Parser_WriteCppFile_TableGen.o ./Obj/Parser_WriteCppFile_TreeBuilder.o ./Obj/Parser_WriteCppFile_Unescaping.o ./Obj/Ast_WriteCppFile_Visitor.o ./Obj/Parser_WriteHeaderFile.o ./Obj/Parser_WriteHeaderFile_ParserFunctions.o ./Obj/Ast_WriteHeaderFile_Reflection.o ./Obj/Ast_WriteHeaderFile_TableGen.o ./Obj/Ast_WriteHeaderFile_Tokens.o ./Obj/Ast_WriteHeaderFile_Types.o ./Obj/Traverse_WriteCppFile.o ./Obj/Traverse_WriteHeaderFile.o
+$(CPP_TARGET) $(CPP_OBJECTS): | pre-build
+
+$(CPP_TARGET):$(CPP_OBJECTS)
 	$(CPP_LINK)
 
 ./Obj/Vlpp.o: ../../Import/Vlpp.cpp
