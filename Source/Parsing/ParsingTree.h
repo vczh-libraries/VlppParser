@@ -229,7 +229,7 @@ General Syntax Tree
 			ParsingTreeNode*					parent;
 			NodeList							cachedOrderedSubNodes;
 
-			virtual const NodeList&				GetSubNodesInternal()=0;
+			virtual const NodeList*				GetSubNodesInternal()=0;
 			bool								BeforeAddChild(Ptr<ParsingTreeNode> node);
 			void								AfterAddChild(Ptr<ParsingTreeNode> node);
 			bool								BeforeRemoveChild(Ptr<ParsingTreeNode> node);
@@ -279,7 +279,7 @@ General Syntax Tree
 			WString								value;
 			vint								tokenIndex;
 
-			const NodeList&						GetSubNodesInternal()override;
+			const NodeList*						GetSubNodesInternal()override;
 		public:
 			ParsingTreeToken(const WString& _value, vint _tokenIndex=-1, const ParsingTextRange& _codeRange=ParsingTextRange());
 			~ParsingTreeToken();
@@ -306,7 +306,7 @@ General Syntax Tree
 			NodeMap								members;
 			RuleList							rules;
 
-			const NodeList&			GetSubNodesInternal()override;
+			const NodeList*			GetSubNodesInternal()override;
 		public:
 			ParsingTreeObject(const WString& _type=L"", const ParsingTextRange& _codeRange=ParsingTextRange());
 			~ParsingTreeObject();
@@ -343,7 +343,7 @@ General Syntax Tree
 			WString								elementType;
 			NodeArray							items;
 
-			const NodeList&						GetSubNodesInternal()override;
+			const NodeList*						GetSubNodesInternal()override;
 		public:
 			ParsingTreeArray(const WString& _elementType=L"", const ParsingTextRange& _codeRange=ParsingTextRange());
 			~ParsingTreeArray();

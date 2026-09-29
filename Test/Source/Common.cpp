@@ -11,18 +11,13 @@ using namespace vl::parsing::analyzing;
 using namespace vl::parsing::tabling;
 using namespace vl::filesystem;
 
-#if defined(VCZH_GCC) && defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnull-dereference"
-#endif
-
 extern WString GetTestResourcePath();
 extern WString GetTestOutputPath();
 
 namespace test
 {
 	template<typename TLoggable>
-	void LogParsingData(TLoggable loggable, const Folder& folder, const WString& fileName, const WString& name, List<Ptr<ParsingError>>& errors = *(List<Ptr<ParsingError>>*)0)
+	void LogParsingData(TLoggable loggable, const Folder& folder, const WString& fileName, const WString& name, const List<Ptr<ParsingError>>* errors = nullptr)
 	{
 		TEST_PRINT(L"Writing " + fileName + L" ...");
 		FileStream fileStream((folder.GetFilePath() / fileName).GetFullPath(), FileStream::WriteOnly);
@@ -35,13 +30,12 @@ namespace test
 		writer.WriteLine(L"=============================================================");
 		Log(loggable, writer);
 
-		auto perrors = &errors; // clang++: -WUndefined-bool-conversion
-		if (perrors && errors.Count() > 0)
+		if (errors && errors->Count() > 0)
 		{
 			writer.WriteLine(L"=============================================================");
 			writer.WriteLine(L"Errors");
 			writer.WriteLine(L"=============================================================");
-			for (auto error : errors)
+			for (auto error : *errors)
 			{
 				writer.WriteLine(error->errorMessage);
 			}
@@ -64,7 +58,7 @@ namespace test
 			ParsingSymbolManager symbolManager;
 			List<Ptr<ParsingError>> errors;
 			ValidateDefinition(definition, &symbolManager, errors);
-			LogParsingData(definition, outputFolder, L"Parsing." + name + L".Definition.txt", L"Grammar Definition", errors);
+			LogParsingData(definition, outputFolder, L"Parsing." + name + L".Definition.txt", L"Grammar Definition", &errors);
 			TEST_ASSERT(errors.Count() == 0);
 
 			Ptr<Automaton> epsilonPDA = CreateEpsilonPDA(definition, &symbolManager);
@@ -79,11 +73,11 @@ namespace test
 			LogParsingData(jointPDA, outputFolder, L"Parsing." + name + L".JPDA-Compacted.txt", L"Compacted Joint PDA");
 
 			MarkLeftRecursiveInJointPDA(jointPDA, errors);
-			LogParsingData(jointPDA, outputFolder, L"Parsing." + name + L".JPDA-Marked.txt", L"Compacted Joint PDA", errors);
+			LogParsingData(jointPDA, outputFolder, L"Parsing." + name + L".JPDA-Marked.txt", L"Compacted Joint PDA", &errors);
 			TEST_ASSERT(errors.Count() == 0);
 
 			Ptr<ParsingTable> table = GenerateTableFromPDA(definition, &symbolManager, jointPDA, enableAmbiguity, errors);
-			LogParsingData(table, outputFolder, L"Parsing." + name + L".Table.txt", L"Table", errors);
+			LogParsingData(table, outputFolder, L"Parsing." + name + L".Table.txt", L"Table", &errors);
 			if (!enableAmbiguity)
 			{
 				TEST_ASSERT(errors.Count() == 0);
@@ -410,7 +404,3 @@ namespace test
 		}
 	}
 }
-
-#if defined(VCZH_GCC) && defined(__clang__)
-#pragma clang diagnostic pop
-#endif

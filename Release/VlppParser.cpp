@@ -8533,11 +8533,6 @@ Licensed under https://github.com/vczh-libraries/License
 ***********************************************************************/
 
 
-#if defined(VCZH_GCC) && defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnull-dereference"
-#endif
-
 namespace vl
 {
 	using namespace collections;
@@ -8682,19 +8677,18 @@ ParsingTreeNode
 
 		void ParsingTreeNode::InitializeQueryCache()
 		{
-			const NodeList& subNodes=GetSubNodesInternal();
+			const NodeList* subNodes=GetSubNodesInternal();
 			ClearQueryCache();
-			auto subNodesExists = &subNodes;
-			if(subNodesExists)
+			if(subNodes)
 			{
-				for (auto node : subNodes)
+				for (auto node : *subNodes)
 				{
 					node->InitializeQueryCache();
 				}
 
 				//if (codeRange.start.IsInvalid() || codeRange.start.IsInvalid())
 				{
-					for (auto subNode : subNodes)
+					for (auto subNode : *subNodes)
 					{
 						const auto& subRange = subNode->codeRange;
 						const auto& min = !subRange.start.IsInvalid() ? subRange.start : subRange.end;
@@ -8713,7 +8707,7 @@ ParsingTreeNode
 
 				CopyFrom(
 					cachedOrderedSubNodes,
-					From(subNodes)
+					From(*subNodes)
 						.Where([=](auto&& node)
 						{
 							const auto& range = node->GetCodeRange();
@@ -8797,9 +8791,9 @@ ParsingTreeNode
 ParsingTreeToken
 ***********************************************************************/
 
-		const ParsingTreeToken::NodeList& ParsingTreeToken::GetSubNodesInternal()
+		const ParsingTreeToken::NodeList* ParsingTreeToken::GetSubNodesInternal()
 		{
-			return *(NodeList*)0;
+			return nullptr;
 		}
 
 		ParsingTreeToken::ParsingTreeToken(const WString& _value, vint _tokenIndex, const ParsingTextRange& _codeRange)
@@ -8848,9 +8842,9 @@ ParsingTreeToken
 ParsingTreeObject
 ***********************************************************************/
 
-		const ParsingTreeObject::NodeList& ParsingTreeObject::GetSubNodesInternal()
+		const ParsingTreeObject::NodeList* ParsingTreeObject::GetSubNodesInternal()
 		{
-			return members.Values();
+			return &members.Values();
 		}
 
 		ParsingTreeObject::ParsingTreeObject(const WString& _type, const ParsingTextRange& _codeRange)
@@ -8949,9 +8943,9 @@ ParsingTreeObject
 ParsingTreeArray
 ***********************************************************************/
 
-		const ParsingTreeArray::NodeList& ParsingTreeArray::GetSubNodesInternal()
+		const ParsingTreeArray::NodeList* ParsingTreeArray::GetSubNodesInternal()
 		{
-			return items;
+			return &items;
 		}
 
 		ParsingTreeArray::ParsingTreeArray(const WString& _elementType, const ParsingTextRange& _codeRange)
@@ -9299,10 +9293,6 @@ ParsingWriter
 		}
 	}
 }
-
-#if defined(VCZH_GCC) && defined(__clang__)
-#pragma clang diagnostic pop
-#endif
 
 
 /***********************************************************************
